@@ -26,12 +26,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/editTextTextEmailAddress2"
+            android:id="@+id/editTextTextEmailAddress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
+            android:background="@drawable/custom_input"
             android:ems="10"
             android:hint="@string/login_fragment_email"
             android:inputType="textEmailAddress"
@@ -55,7 +56,7 @@
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress2" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
 
         <TextView
             android:id="@+id/textView5"
@@ -86,7 +87,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress2" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
 
         <EditText
             android:id="@+id/editTextTextPassword"
@@ -95,6 +96,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
+            android:background="@drawable/custom_input"
             android:ems="10"
             android:hint="@string/login_fragment_password_hint"
             android:inputType="textPassword"
