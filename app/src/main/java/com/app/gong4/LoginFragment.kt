@@ -1,12 +1,15 @@
 package com.app.gong4
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.app.gong4.databinding.FragmentLoginBinding
@@ -18,11 +21,8 @@ class LoginFragment : Fragment() {
     lateinit var passwordEditText: EditText
     lateinit var errorEmailTextView : TextView
     lateinit var errorPWTextView : TextView
+    lateinit var loginButton : Button
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,14 +32,26 @@ class LoginFragment : Fragment() {
 
         emailEditText = binding.emailEditText
         passwordEditText = binding.passwordEditText
-
         errorEmailTextView = binding.validEmailTextView
         errorPWTextView = binding.validPasswordTextView
+        loginButton = binding.loginButton
 
         checkEmail()
         checkPassword()
+        goLogin()
 
         return binding.root
+    }
+
+    // 로그인
+    fun goLogin(){
+        loginButton.setOnClickListener {
+            val email = emailEditText.text.toString()
+            val password = passwordEditText.text.toString()
+            Log.d("로그인","로그인 전달 값 : ${email} ${password}")
+            // 서버로 통신
+
+        }
     }
 
     fun checkEmail(){
@@ -62,7 +74,7 @@ class LoginFragment : Fragment() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
-
+                loginButton.isEnabled = passwordEditText.text.toString() != "" && errorEmailTextView.text == ""
             }
 
         })
@@ -84,10 +96,12 @@ class LoginFragment : Fragment() {
                 {
                     errorPWTextView.text = ""
                     passwordEditText.background = context!!.resources.getDrawable(R.drawable.custom_input)
+
                 }
             }
 
             override fun afterTextChanged(p0: Editable?) {
+                loginButton.isEnabled = emailEditText.text.toString() != "" && errorPWTextView.text == ""
             }
 
         })
