@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/drawable/custom_error_input.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable/custom_input.xml" value="0.1025" />
+        <entry key="app/src/main/res/drawable/splash_background.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.12298387096774194" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.41659806774508573" />
       </map>
