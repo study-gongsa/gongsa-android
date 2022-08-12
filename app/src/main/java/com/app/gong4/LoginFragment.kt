@@ -1,5 +1,6 @@
 package com.app.gong4
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -9,10 +10,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.app.gong4.DTO.RequestLoginBody
+import com.app.gong4.DTO.ResponseLoginBody
+import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentLoginBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.regex.Pattern
 
 class LoginFragment : Fragment() {
@@ -22,7 +30,8 @@ class LoginFragment : Fragment() {
     lateinit var errorEmailTextView : TextView
     lateinit var errorPWTextView : TextView
     lateinit var loginButton : Button
-
+    val requestServer = RequestServer
+    private var imm : InputMethodManager ?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +45,8 @@ class LoginFragment : Fragment() {
         errorPWTextView = binding.validPasswordTextView
         loginButton = binding.loginButton
 
+        imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+
         checkEmail()
         checkPassword()
         goLogin()
@@ -43,13 +54,36 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
+    //키보드 내리기
+    fun hideKeyboard(v:View){
+        if(v!=null){
+            imm?.hideSoftInputFromWindow(v.windowToken,0)
+        }
+    }
+
     // 로그인
     fun goLogin(){
         loginButton.setOnClickListener {
+            hideKeyboard(it)
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
             Log.d("로그인","로그인 전달 값 : ${email} ${password}")
-            // 서버로 통신
+            requestServer.userService.login(RequestLoginBody(email,password)).enqueue(object :
+                Callback<ResponseLoginBody>{
+                override fun onResponse(
+                    call: Call<ResponseLoginBody>,
+                    response: Response<ResponseLoginBody>
+                ) {
+                    // 응답받은 데이터를 가지고 처리할 코드 작성
+                    val repos:ResponseLoginBody? = response.body()
+                    Log.d("성공", repos.toString())
+                }
+
+                override fun onFailure(call: Call<ResponseLoginBody>, t: Throwable) {
+                    Log.d("로그인 결과", t.toString())
+                }
+            }
+            )
 
         }
     }
