@@ -8,7 +8,7 @@
     <string name="login_fragment_info1">아직 회원이 아니신가요?</string>
     <string name="login_fragment_info2">비밀번호를 잃어버리셨나요?</string>
     <string name="login_fragment_find_password">비밀번호 찾기</string>
-    <string name="login_fragment_wrong_answer">잘못된 형식의 %1$s입니다.</string>
+    <string name="login_fragment_wrong_answer">잘못된 형식의 %s입니다.</string>
 
     <!-- 회원가입 text -->
     <string name="signup_title">회원가입</string>
