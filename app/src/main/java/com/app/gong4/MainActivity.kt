@@ -17,7 +17,7 @@ import com.app.gong4.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
-    private lateinit var navController: NavController
+    lateinit var navController: NavController
     private lateinit var toolbarTitle: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
