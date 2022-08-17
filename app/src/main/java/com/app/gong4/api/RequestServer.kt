@@ -11,5 +11,6 @@ object RequestServer {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
+    // 로그인, 회원가입 서비스
     val userService : UserService = retrofit.create(UserService::class.java)
 }
