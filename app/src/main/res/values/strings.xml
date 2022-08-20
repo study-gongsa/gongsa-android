@@ -16,4 +16,8 @@
     <!-- 회원가입 text -->
     <string name="menu">홈</string>
 
+    <!-- 비밀번호 찾기 text -->
+    <string name="findpassword_fragment_info">회원가입 시 등록한 이메일을 입력하세요.</string>
+    <string name="confirm">확인</string>
+
 </resources>

@@ -29,7 +29,7 @@ import java.util.regex.Pattern
 
 class LoginFragment : Fragment() {
 
-    lateinit var binding: FragmentLoginBinding
+    private lateinit var binding: FragmentLoginBinding
 
     val requestServer = RequestServer
     private var imm : InputMethodManager ?=null
@@ -44,6 +44,7 @@ class LoginFragment : Fragment() {
         checkInput()
         goLogin()
         goSignupScreen()
+        goFindPasswordScreen()
 
         return binding.root
     }
@@ -62,9 +63,20 @@ class LoginFragment : Fragment() {
         }
     }
 
+    //비밀번호 찾기로 이동
+    fun goFindPasswordScreen(){
+        binding.findPasswordTextView.setOnClickListener {
+            it.findNavController().navigate(R.id.action_loginFragment_to_findpasswordFragment)
+        }
+    }
+
     // 로그인
     // TODO : Log 지우기
     fun goLogin(){
+        if(binding.emailEditText.text.toString() == "" && binding.passwordEditText.text.toString() == ""){
+            return
+        }
+
         binding.loginButton.setOnClickListener {
             hideKeyboard(it)
             val email = binding.emailEditText.text.toString()
