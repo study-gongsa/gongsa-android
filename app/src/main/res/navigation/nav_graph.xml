@@ -33,5 +33,9 @@
         android:id="@+id/findpasswordFragment"
         android:name="com.app.gong4.FindpasswordFragment"
         android:label="비밀번호 찾기"
-        tools:layout="@layout/fragment_findpassword" />
+        tools:layout="@layout/fragment_findpassword" >
+        <action
+            android:id="@+id/action_findpasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>

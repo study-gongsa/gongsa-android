@@ -73,15 +73,10 @@ class LoginFragment : Fragment() {
     // 로그인
     // TODO : Log 지우기
     fun goLogin(){
-        if(binding.emailEditText.text.toString() == "" && binding.passwordEditText.text.toString() == ""){
-            return
-        }
-
         binding.loginButton.setOnClickListener {
             hideKeyboard(it)
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-            Log.d("로그인","로그인 전달 값 : ${email} ${password}")
             requestServer.userService.login(RequestLoginBody(email,password)).enqueue(object :
                 Callback<ResponseLoginBody>{
                 override fun onResponse(
