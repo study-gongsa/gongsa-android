@@ -23,6 +23,8 @@
     <string name="signup_agree2">개인정보 수집 및 이용 동의 (필수)</string>
     <string name="signup_agree3">이벤트 정보 수신 동의 (선택)</string>
     <string name="signup_show_terms"><u>약관 보기</u></string>
+    <string name="signup_wrong_text">잘못된 형식의 %s입니다.</string>
+    <string name="signup_wrong_password">비밀번호가 일치하지 않습니다.</string>
 
     <!-- 회원가입 text -->
     <string name="menu">홈</string>

@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+<<<<<<< HEAD
         <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.163" />
         <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/drawable/custom_button.xml" value="0.1275" />
         <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/drawable/custom_error_input.xml" value="0.1275" />
@@ -20,6 +21,17 @@
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.3186646433990895" />
         <entry key="app/src/main/res/layout/fragment_signup.xml" value="0.109375" />
         <entry key="app/src/main/res/menu/nav_menu.xml" value="0.1625" />
+=======
+        <entry key="app/src/main/res/drawable/bg_custom_button.xml" value="0.215" />
+        <entry key="app/src/main/res/drawable/bg_custom_button_notenable.xml" value="0.215" />
+        <entry key="app/src/main/res/drawable/button.xml" value="0.215" />
+        <entry key="app/src/main/res/drawable/custom_button.xml" value="0.124" />
+        <entry key="app/src/main/res/drawable/custom_error_input.xml" value="0.1025" />
+        <entry key="app/src/main/res/drawable/custom_input.xml" value="0.1025" />
+        <entry key="app/src/main/res/drawable/splash_background.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.3433395872420263" />
+>>>>>>> develop
       </map>
     </option>
   </component>
