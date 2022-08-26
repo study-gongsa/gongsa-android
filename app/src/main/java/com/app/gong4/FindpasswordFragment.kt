@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import com.app.gong4.DTO.RequestFindPwdBody
 import com.app.gong4.DTO.RequestLoginBody
@@ -64,6 +65,7 @@ class FindpasswordFragment : Fragment() {
         binding.confirmButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
             binding.validEmailTextView.text = ""
+            binding.waitingView.visibility = View.VISIBLE
             requestServer.userService.findPwd(RequestFindPwdBody(email)).enqueue(object :
                 Callback<ResponseFindPwdBody>{
                 override fun onResponse(
@@ -72,7 +74,7 @@ class FindpasswordFragment : Fragment() {
                 ) {
                     if(response.isSuccessful){
                         var repos: ResponseFindPwdBody? = response.body()
-                        Log.d("결과 - 성공", repos.toString())
+                        binding.waitingView.visibility = View.INVISIBLE
                         it.findNavController().navigate(R.id.action_findpasswordFragment_to_loginFragment)
                     }else{
                         val error = response.errorBody()!!.string().trimIndent()
