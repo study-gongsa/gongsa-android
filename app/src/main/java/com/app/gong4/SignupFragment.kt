@@ -13,7 +13,13 @@ import java.util.regex.Pattern
 class SignupFragment : Fragment() {
 
     lateinit var binding:FragmentSignupBinding
+    var email: String = ""
     var password: String = ""
+    var passwordCheck: String = ""
+    var nickname: String = ""
+    var button1: Boolean = false
+    var button2: Boolean = false
+    var button3: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,6 +31,38 @@ class SignupFragment : Fragment() {
         checkPassword()
         confirmPassword()
         checkNickname()
+
+        binding.checkImageButton1.setOnClickListener {
+            button1 = if (!button1) {
+                binding.checkImageButton1.setImageResource(R.drawable.ic_baseline_check_circle_24)
+                true
+            } else {
+                binding.checkImageButton1.setImageResource(R.drawable.ic_baseline_check_circle_outline)
+                false
+            }
+            turnSignupButton()
+        }
+
+        binding.checkImageButton2.setOnClickListener {
+            button2 = if (!button2) {
+                binding.checkImageButton2.setImageResource(R.drawable.ic_baseline_check_circle_24)
+                true
+            } else {
+                binding.checkImageButton2.setImageResource(R.drawable.ic_baseline_check_circle_outline)
+                false
+            }
+            turnSignupButton()
+        }
+
+        binding.checkImageButton3.setOnClickListener {
+            button3 = if (!button3) {
+                binding.checkImageButton3.setImageResource(R.drawable.ic_baseline_check_circle_24)
+                true
+            } else {
+                binding.checkImageButton3.setImageResource(R.drawable.ic_baseline_check_circle_outline)
+                false
+            }
+        }
 
         return binding.root
     }
@@ -48,6 +86,8 @@ class SignupFragment : Fragment() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
+                email = if (binding.validEmailTextView.text == "") p0.toString() else ""
+                turnSignupButton()
             }
         })
     }
@@ -71,7 +111,8 @@ class SignupFragment : Fragment() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                password = p0.toString()
+                password = if (binding.validPasswordTextView.text == "") p0.toString() else ""
+                turnSignupButton()
             }
         })
     }
@@ -95,6 +136,8 @@ class SignupFragment : Fragment() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
+                passwordCheck = if (binding.validPasswordCheckTextView.text == "") p0.toString() else ""
+                turnSignupButton()
             }
         })
     }
@@ -118,7 +161,13 @@ class SignupFragment : Fragment() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
+                nickname = if (binding.validNicknameTextView.text == "") p0.toString() else ""
+                turnSignupButton()
             }
         })
+    }
+
+    private fun turnSignupButton() {
+        binding.signupButton.isEnabled = email != "" && password != "" && passwordCheck != "" && nickname != "" && button1 && button2
     }
 }
