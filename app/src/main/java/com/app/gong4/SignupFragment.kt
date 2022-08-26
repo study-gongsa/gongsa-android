@@ -3,11 +3,22 @@ package com.app.gong4
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.app.gong4.DTO.RequestLoginBody
+import com.app.gong4.DTO.RequestSignupBody
+import com.app.gong4.DTO.ResponseLoginBody
+import com.app.gong4.DTO.ResponseSignupBody
+import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentSignupBinding
+import com.google.gson.Gson
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.regex.Pattern
 
 class SignupFragment : Fragment() {
@@ -64,6 +75,7 @@ class SignupFragment : Fragment() {
             }
         }
 
+        goSignup()
         return binding.root
     }
 
@@ -169,5 +181,51 @@ class SignupFragment : Fragment() {
 
     private fun turnSignupButton() {
         binding.signupButton.isEnabled = email != "" && password != "" && passwordCheck != "" && nickname != "" && button1 && button2
+    }
+
+    // 회원가입
+    fun goSignup(){
+        binding.signupButton.setOnClickListener {
+            Log.d("로그인","로그인 전달 값 : ${email} ${password} ${nickname}")
+            val requestServer = RequestServer
+
+            requestServer.userService.signup(RequestSignupBody(email,nickname,password)).enqueue(object :
+                Callback<ResponseSignupBody> {
+                override fun onResponse(
+                    call: Call<ResponseSignupBody>,
+                    response: Response<ResponseSignupBody>
+                ) {
+                    Log.d("회원가입 코드", response.code().toString())
+
+                    if(response.isSuccessful){
+                        val repos: ResponseSignupBody? = response.body()
+                        Log.d("회원가입 결과 - 성공", repos.toString())
+                    }else{
+                        val error = response.errorBody()!!.string().trimIndent()
+                        Log.d("회원가입 결과 - tostring", error)
+                        val result = Gson().fromJson(error, ResponseLoginBody::class.java)
+                        showErrorMsg(result.location,result.msg)
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseSignupBody>, t: Throwable) {
+                    Log.d("로그인 결과", t.toString())
+                    Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT)
+                }
+            }
+            )
+
+        }
+    }
+
+    fun showErrorMsg(location : String?, msg:String?){
+        if(location == "email"){
+            binding.validEmailTextView.text = msg
+            binding.emailEditText.background = context!!.resources.getDrawable(R.drawable.custom_error_input, null)
+        }else if(location == "nickname"){
+            binding.validNicknameTextView.text = msg
+            binding.nicknameEditText.background = context!!.resources.getDrawable(R.drawable.custom_error_input, null)
+        }
+        binding.signupButton.isEnabled = false
     }
 }
