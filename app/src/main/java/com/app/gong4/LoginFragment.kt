@@ -29,7 +29,7 @@ import java.util.regex.Pattern
 
 class LoginFragment : Fragment() {
 
-    lateinit var binding: FragmentLoginBinding
+    private lateinit var binding: FragmentLoginBinding
 
     val requestServer = RequestServer
     private var imm : InputMethodManager ?=null
@@ -39,13 +39,12 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
-
         imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
 
-        checkEmail()
-        checkPassword()
+        checkInput()
         goLogin()
         goSignupScreen()
+        goFindPasswordScreen()
 
         return binding.root
     }
@@ -64,13 +63,20 @@ class LoginFragment : Fragment() {
         }
     }
 
+    //비밀번호 찾기로 이동
+    fun goFindPasswordScreen(){
+        binding.findPasswordTextView.setOnClickListener {
+            it.findNavController().navigate(R.id.action_loginFragment_to_findpasswordFragment)
+        }
+    }
+
     // 로그인
+    // TODO : Log 지우기
     fun goLogin(){
         binding.loginButton.setOnClickListener {
             hideKeyboard(it)
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-            Log.d("로그인","로그인 전달 값 : ${email} ${password}")
             requestServer.userService.login(RequestLoginBody(email,password)).enqueue(object :
                 Callback<ResponseLoginBody>{
                 override fun onResponse(
@@ -82,11 +88,12 @@ class LoginFragment : Fragment() {
                     if(response.isSuccessful()){
                         var repos: ResponseLoginBody? = response.body()
                         Log.d("로그인 결과 - 성공", repos.toString())
-                        // 메인페이지로 이동
+                        it.findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
                     }else{
                         val error = response.errorBody()!!.string().trimIndent()
                         Log.d("로그인 결과 - tostring", error)
                         val result = Gson().fromJson(error, ResponseLoginBody::class.java)
+                        resetLoginErrorMsg()
                         showLoginErrorMsg(result.location,result.msg)
                     }
                 }
@@ -101,17 +108,54 @@ class LoginFragment : Fragment() {
         }
     }
 
-    fun showLoginErrorMsg(location : String?, msg:String?){
-        //기존의 error msg 없애기
+    fun resetLoginErrorMsg(){
         binding.validPasswordTextView.text = ""
         binding.validEmailTextView.text = ""
+    }
 
+    // 로그인 에러메시지 보여주는 함수
+    fun showLoginErrorMsg(location : String?, msg:String?){
         if(location == "passwd"){
             binding.validPasswordTextView.text = msg
         }else if(location == "email"){
             binding.validEmailTextView.text = msg
         }
        binding.loginButton.isEnabled = false
+    }
+
+    // 입력값 체크
+    fun checkInput(){
+        binding.emailEditText.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                binding.validEmailTextView.text = ""
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                binding.loginButton.isEnabled = true
+            }
+
+        })
+        binding.passwordEditText.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                binding.validPasswordTextView.text = ""
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                binding.loginButton.isEnabled = true
+            }
+
+        })
+
     }
 
     fun checkEmail(){
@@ -139,7 +183,6 @@ class LoginFragment : Fragment() {
 
         })
     }
-
     fun checkPassword(){
         binding.passwordEditText.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -166,9 +209,10 @@ class LoginFragment : Fragment() {
 
         })
     }
+
     override fun onResume() {
         super.onResume()
-        (context as MainActivity).binding.toolbarTitle.text = (context as MainActivity).navController.currentDestination?.label.toString()
+    //    (context as MainActivity).binding.toolbarTitle.text = (context as MainActivity).navController.currentDestination?.label.toString()
     }
 
 }
