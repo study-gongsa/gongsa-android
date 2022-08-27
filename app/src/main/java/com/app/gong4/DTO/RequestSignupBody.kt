@@ -11,8 +11,3 @@ data class ResponseSignupBody(
     var msg : String,
     var data : Token
 )
-
-data class Token(
-    var accessToken : String,
-    var refreshToken : String
-)

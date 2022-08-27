@@ -184,9 +184,9 @@ class SignupFragment : Fragment() {
     }
 
     // 회원가입
-    fun goSignup(){
+    private fun goSignup(){
         binding.signupButton.setOnClickListener {
-            Log.d("로그인","로그인 전달 값 : ${email} ${password} ${nickname}")
+
             val requestServer = RequestServer
 
             requestServer.userService.signup(RequestSignupBody(email,nickname,password)).enqueue(object :
@@ -198,19 +198,17 @@ class SignupFragment : Fragment() {
                     Log.d("회원가입 코드", response.code().toString())
 
                     if(response.isSuccessful){
-                        val repos: ResponseSignupBody? = response.body()
-                        Log.d("회원가입 결과 - 성공", repos.toString())
+                        val repo: ResponseSignupBody? = response.body()
+                        Log.d("회원가입 성공", repo.toString())
                     }else{
                         val error = response.errorBody()!!.string().trimIndent()
-                        Log.d("회원가입 결과 - tostring", error)
                         val result = Gson().fromJson(error, ResponseLoginBody::class.java)
                         showErrorMsg(result.location,result.msg)
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseSignupBody>, t: Throwable) {
-                    Log.d("로그인 결과", t.toString())
-                    Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT)
+                    Toast.makeText(context,"회원가입 실패", Toast.LENGTH_SHORT)
                 }
             }
             )

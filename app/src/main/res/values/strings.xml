@@ -25,8 +25,15 @@
     <string name="signup_show_terms"><u>약관 보기</u></string>
     <string name="signup_wrong_text">잘못된 형식의 %s입니다.</string>
     <string name="signup_wrong_password">비밀번호가 일치하지 않습니다.</string>
+    <string name="email_certify_msg">입력하신 이메일 주소</string>
+    <string name="hint_code">코드를 입력하세요 (6자리)</string>
+    <string name="error_code"><u>코드를 받지 못하셨나요?</u></string>
+    <string name="email_next">다음</string>
+    <string name="email_cancel">취소</string>
 
     <!-- 회원가입 text -->
     <string name="menu">홈</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
