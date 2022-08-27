@@ -24,28 +24,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //toolbar 안 보이도록 설정
+
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        //toolbar title
-        toolbarTitle = binding.toolbarTitle
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_container) as NavHostFragment
         navController = navHostFragment.navController
+        navController.addOnDestinationChangedListener {
+                controller, destination, arguments ->
+            binding.toolbarTitle.text = navController.currentDestination?.label.toString()
+        }
         val appBarConfiguration = AppBarConfiguration(navController.graph)
-        //toolbar.setupWithNavController(navController, appBarConfiguration)
         setupActionBarWithNavController(navController,appBarConfiguration)
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
-    override fun onResume() {
-        super.onResume()
-        toolbarTitle.text = navController.currentDestination?.label.toString()
-    }
-
 }
