@@ -40,6 +40,10 @@ class LoginFragment : Fragment() {
     ): View? {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
         imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        println("LoginFragment onCreateView")
+
+        val mainActivity = activity as MainActivity
+        mainActivity.hideBottomNavigationBar(true)
 
         checkInput()
         goLogin()
@@ -47,6 +51,12 @@ class LoginFragment : Fragment() {
         goFindPasswordScreen()
 
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val mainActivity = activity as MainActivity
+        mainActivity.hideBottomNavigationBar(false)
     }
 
     //키보드 내리기
@@ -210,9 +220,8 @@ class LoginFragment : Fragment() {
         })
     }
 
-    override fun onResume() {
-        super.onResume()
-    //    (context as MainActivity).binding.toolbarTitle.text = (context as MainActivity).navController.currentDestination?.label.toString()
+    fun hideBottomNavigation(){
+
     }
 
 }
