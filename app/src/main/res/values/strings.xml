@@ -42,4 +42,8 @@
     <string name="findpassword_waiting_msg2">임시비밀번호가 메일함으로 전송되었습니다.</string><!-- 추후 변경 예정 -->
     <string name="confirm">확인</string>
 
+    <!-- 메인화면 text -->
+    <string name="main_search_hint">궁금하신게 있으신가요?</string>
+    <string name="main_title">이런 방은 어떠세요?</string>
+
 </resources>

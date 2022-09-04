@@ -20,6 +20,7 @@ import com.app.gong4.DTO.RequestLoginBody
 import com.app.gong4.DTO.ResponseLoginBody
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentLoginBinding
+import com.app.gong4.util.MainApplication
 import com.google.gson.Gson
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -98,6 +99,11 @@ class LoginFragment : Fragment() {
                     if(response.isSuccessful()){
                         var repos: ResponseLoginBody? = response.body()
                         Log.d("로그인 결과 - 성공", repos.toString())
+                        repos.let { it ->
+                           val accessToken = it!!.data.accessToken
+                            Log.d("로그인 결과 - accessToken", accessToken.toString())
+                            MainApplication.prefs.setData("accessToken",accessToken)
+                        }
                         it.findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
                     }else{
                         val error = response.errorBody()!!.string().trimIndent()
