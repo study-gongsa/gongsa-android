@@ -40,10 +40,22 @@
     <string name="findpassword_fragment_info">회원가입 시 등록한 이메일을 입력하세요.</string>
     <string name="findpassword_waiting_msg1">이메일 전송중입니다.</string>
     <string name="findpassword_waiting_msg2">임시비밀번호가 메일함으로 전송되었습니다.</string><!-- 추후 변경 예정 -->
-    <string name="confirm">확인</string>
 
     <!-- 메인화면 text -->
     <string name="main_search_hint">궁금하신게 있으신가요?</string>
     <string name="main_title">이런 방은 어떠세요?</string>
+    <string name="main_filter_title">스터디룸 필터</string>
+    <string name="main_filter_isCam">카메라 여부</string>
+    <string name="main_filter_isCam_all">모두보기</string>
+    <string name="main_filter_isCam_true">캠 켜기</string>
+    <string name="main_filter_isCam_false">캠 끄기</string>
+    <string name="main_filter_category">카테고리 (복수선택 가능)</string>
+    <string name="main_filter_period">기간 (선택)</string>
+    <string name="main_filter_period_new">최신순</string>
+    <string name="main_filter_period_old">마감순</string>
+    <string name="main_filter_period_info">오늘을 기준으로 마감일이 가까운 스터디가 노출됩니다.</string>
 
+    <!-- 공통 text -->
+    <string name="save">저장</string>
+    <string name="confirm">확인</string>
 </resources>
