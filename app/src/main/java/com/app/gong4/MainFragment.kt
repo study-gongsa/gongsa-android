@@ -6,10 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,7 +32,7 @@ class MainFragment : Fragment() {
         mainActivity.hideToolbar(true)
 
         goRecommendStudygroup()
-        showStudyRoomDialog()
+
     }
 
     override fun onCreateView(
@@ -63,6 +60,8 @@ class MainFragment : Fragment() {
                     response: Response<ResponseStudycategoryBody>
                 ) {
                     Log.d("응답 결과 : ", response.body()!!.data.toString())
+                    val data = response.body()!!.data
+                    GroupfilterDialog(data).show(parentFragmentManager,"filterDialog")
                 }
 
                 override fun onFailure(call: Call<ResponseStudycategoryBody>, t: Throwable) {
@@ -121,8 +120,8 @@ class StudyGroupListAdapter(private val context: MainFragment, val dataSet: Muta
         val group_title_textView: TextView
         val group_date_textView: TextView
         val group_image_imageView : ImageView
-        val group_cam_button : Button
-        val group_info_button : Button
+        val group_cam_button : ImageButton
+        val group_info_button : ImageButton
 
         init {
             group_title_textView = view.findViewById(R.id.group_item_title_textView)
@@ -146,9 +145,9 @@ class StudyGroupListAdapter(private val context: MainFragment, val dataSet: Muta
         // 아직 이미지 규격이 나온게 없어서 기본이미지 출력하도록 개발
         holder.group_image_imageView.setImageResource(R.drawable.ic_gongsa)
         if(!dataSet[position].isCam){
-            holder.group_cam_button.setBackgroundResource(R.drawable.ic_camera_off_22)
+            holder.group_cam_button.setImageResource(R.drawable.ic_camera_off_22)
         }else{
-            holder.group_cam_button.setBackgroundResource(R.drawable.ic_baseline_photo_camera_24)
+            holder.group_cam_button.setImageResource(R.drawable.ic_baseline_photo_camera_24)
         }
     }
 

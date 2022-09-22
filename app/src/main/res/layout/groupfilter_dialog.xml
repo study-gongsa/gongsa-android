@@ -10,6 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:padding="28dp">
 
         <TextView
@@ -46,26 +47,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView10">
 
-            <android.support.v7.widget.AppCompatRadioButton
+            <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/filter_cam_all_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="17dp"
+                android:textSize="14sp"
                 android:buttonTint="@color/green_03_main"
                 android:text="@string/main_filter_isCam_all" />
 
-            <android.support.v7.widget.AppCompatRadioButton
+            <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/filter_cam_true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="17dp"
+                android:textSize="14sp"
                 android:buttonTint="@color/green_03_main"
                 android:text="@string/main_filter_isCam_true" />
 
-            <android.support.v7.widget.AppCompatRadioButton
+            <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/filter_cam_false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="14sp"
                 android:buttonTint="@color/green_03_main"
                 android:text="@string/main_filter_isCam_false" />
         </RadioGroup>
@@ -113,19 +117,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView12">
 
-            <android.support.v7.widget.AppCompatRadioButton
+            <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/filter_period_new_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="17dp"
+                android:textSize="14sp"
                 android:buttonTint="@color/green_03_main"
                 android:text="@string/main_filter_period_new" />
 
-            <android.support.v7.widget.AppCompatRadioButton
+            <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/filter_period_old_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="17dp"
+                android:textSize="14sp"
                 android:buttonTint="@color/green_03_main"
                 android:text="@string/main_filter_period_old" />
 
@@ -145,7 +151,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:id="@+id/save_button"
+        android:id="@+id/enter_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/green_03_main"

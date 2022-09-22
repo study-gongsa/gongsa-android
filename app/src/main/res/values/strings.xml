@@ -54,6 +54,9 @@
     <string name="main_filter_period_new">최신순</string>
     <string name="main_filter_period_old">마감순</string>
     <string name="main_filter_period_info">오늘을 기준으로 마감일이 가까운 스터디가 노출됩니다.</string>
+    <string name="main_enter_code_text">입장코드</string>
+    <string name="main_enter_code_hint">A123-8123-C123</string>
+    <string name="main_enter_button_text">입장하기</string>
 
     <!-- 공통 text -->
     <string name="save">저장</string>
