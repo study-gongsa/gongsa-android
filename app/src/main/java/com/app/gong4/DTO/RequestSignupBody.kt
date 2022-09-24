@@ -9,5 +9,5 @@ data class RequestSignupBody(
 data class ResponseSignupBody(
     var location : String,
     var msg : String,
-    var data : Token
+    var data : String
 )

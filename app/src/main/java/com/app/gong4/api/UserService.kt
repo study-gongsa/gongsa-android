@@ -1,11 +1,6 @@
 package com.app.gong4.api
 
-import com.app.gong4.DTO.RequestFindPwdBody
-import com.app.gong4.DTO.RequestLoginBody
-import com.app.gong4.DTO.RequestSignupBody
-import com.app.gong4.DTO.ResponseFindPwdBody
-import com.app.gong4.DTO.ResponseLoginBody
-import com.app.gong4.DTO.ResponseSignupBody
+import com.app.gong4.DTO.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.PATCH
@@ -16,9 +11,15 @@ interface UserService {
     @POST("/api/user/login")
     fun login(@Body body: RequestLoginBody) : Call<ResponseLoginBody>
 
-
+    /* 회원가임 */
     @POST("/api/user/join")
     fun signup(@Body body: RequestSignupBody) : Call<ResponseSignupBody>
+
+    /* 이메일 인증 */
+    @PATCH("/api/user/mail/join")
+    fun certifyEmail(@Body body: RequestCertifyEmailBody) : Call<ResponseCertifyEmailBody>
+    @PATCH("api/user/code")
+    fun confirmCode(@Body body: RequestAuthCodeBody) : Call<ResponseAuthCodeBody>
 
     /* 비밀번호 찾기 */
     @PATCH("/api/user/mail/passwd")

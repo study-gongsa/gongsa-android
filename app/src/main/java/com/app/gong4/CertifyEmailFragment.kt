@@ -1,59 +1,130 @@
 package com.app.gong4
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
+import com.app.gong4.DTO.RequestAuthCodeBody
+import com.app.gong4.DTO.RequestCertifyEmailBody
+import com.app.gong4.DTO.ResponseAuthCodeBody
+import com.app.gong4.DTO.ResponseCertifyEmailBody
+import com.app.gong4.api.RequestServer
+import com.app.gong4.databinding.FragmentCertifyEmailBinding
+import com.app.gong4.databinding.FragmentSignupBinding
+import com.google.gson.Gson
+import retrofit2.Call
+import retrofit2.Response
+import java.util.regex.Pattern
+import javax.security.auth.callback.Callback
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CertifyEmailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CertifyEmailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    lateinit var binding: FragmentCertifyEmailBinding
+    private val args by navArgs<CertifyEmailFragmentArgs>()
+    private val requestServer = RequestServer
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_certify_email, container, false)
+
+        binding = FragmentCertifyEmailBinding.inflate(inflater, container, false)
+        binding.emailTextView.text = args.email
+
+        sendEmail()
+        checkCode()
+        goNext()
+        goLogin()
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CertifyEmailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CertifyEmailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private fun sendEmail() {
+        requestServer.userService.certifyEmail(RequestCertifyEmailBody(args.email)).enqueue(object :
+            retrofit2.Callback<ResponseCertifyEmailBody> {
+            override fun onResponse(
+                call: Call<ResponseCertifyEmailBody>,
+                response: Response<ResponseCertifyEmailBody>
+            ) {
+                binding.waitingView.visibility = View.INVISIBLE
+//                    if(response.isSuccessful) {
+//                        binding.waitingView.visibility = View.INVISIBLE
+//                    } else {
+//                        val error = response.errorBody()!!.string().trimIndent()
+//                        val result = Gson().fromJson(error, ResponseCertifyEmailBody::class.java)
+//                    }
             }
+
+            override fun onFailure(call: Call<ResponseCertifyEmailBody>, t: Throwable) {
+                Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.",Toast.LENGTH_SHORT)
+            }
+        })
     }
+
+    private fun checkCode(){
+        binding.codeEditText.addTextChangedListener(object :TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                binding.validCodeTextView.text = ""
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                binding.confirmButton.isEnabled =
+                    Pattern.matches("^[0-9].{5}$", p0.toString())
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+        })
+    }
+
+    private fun goNext(){
+        binding.confirmButton.setOnClickListener {
+            val authCode = binding.codeEditText.text.toString()
+
+            requestServer.userService.confirmCode(RequestAuthCodeBody(authCode, args.email)).enqueue(object :
+                retrofit2.Callback<ResponseAuthCodeBody> {
+                override fun onResponse(
+                    call: Call<ResponseAuthCodeBody>,
+                    response: Response<ResponseAuthCodeBody>
+                ) {
+                    if(response.isSuccessful) {
+                        binding.waitingView.visibility = View.VISIBLE
+                        binding.progressBar.visibility = View.INVISIBLE
+
+                        binding.checkImageView.visibility = View.VISIBLE
+                        binding.startButton.visibility = View.VISIBLE
+
+                        binding.checkEmailTextView.text = R.string.certify_success.toString()
+                        binding.sendCodeTextView.text = R.string.success_msg.toString()
+
+
+                    } else {
+                        val error = response.errorBody()!!.string().trimIndent()
+                        val result = Gson().fromJson(error, ResponseCertifyEmailBody::class.java)
+                        binding.validCodeTextView.text = result.msg
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseAuthCodeBody>, t: Throwable) {
+                    Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.",Toast.LENGTH_SHORT)
+                }
+            })
+        }
+    }
+
+    private fun goLogin() {
+        binding.startButton.setOnClickListener {
+            it.findNavController().navigate(R.id.action_certifyEmailFragment_to_loginFragment)
+        }
+    }
+
 }

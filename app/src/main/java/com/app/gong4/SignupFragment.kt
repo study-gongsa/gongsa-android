@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.app.gong4.DTO.RequestLoginBody
 import com.app.gong4.DTO.RequestSignupBody
 import com.app.gong4.DTO.ResponseLoginBody
@@ -200,6 +201,11 @@ class SignupFragment : Fragment() {
                     if(response.isSuccessful){
                         val repo: ResponseSignupBody? = response.body()
                         Log.d("회원가입 성공", repo.toString())
+
+                        // 이메일 인증 프레그먼트 이동
+                        val action = SignupFragmentDirections.actionSignupFragmentToCertifyEmailFragment(email)
+                        findNavController().navigate(action)
+
                     }else{
                         val error = response.errorBody()!!.string().trimIndent()
                         val result = Gson().fromJson(error, ResponseLoginBody::class.java)

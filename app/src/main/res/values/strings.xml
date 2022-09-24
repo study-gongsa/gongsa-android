@@ -27,9 +27,14 @@
     <string name="signup_wrong_password">비밀번호가 일치하지 않습니다.</string>
     <string name="email_certify_msg">입력하신 이메일 주소</string>
     <string name="hint_code">코드를 입력하세요 (6자리)</string>
+    <string name="wrong_code">잘못된 인증 코드입니다.</string>
     <string name="error_code"><u>코드를 받지 못하셨나요?</u></string>
     <string name="email_next">다음</string>
-    <string name="email_cancel">취소</string>
+    <string name="signup_success">회원가입이 완료되었습니다.</string>
+    <string name="send_code">인증 코드를 전송중입니다.</string>
+    <string name="certify_success">이메일 인증이 완료되었습니다.</string>
+    <string name="success_msg">공사와 함께 원하는 목표를 달성하세요.</string>
+    <string name="start">시작하기</string>
 
     <!-- 회원가입 text -->
     <string name="menu">홈</string>

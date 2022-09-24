@@ -24,7 +24,11 @@
         android:name="com.app.gong4.SignupFragment"
         android:label="회원가입"
 
-        tools:layout="@layout/fragment_signup" />
+        tools:layout="@layout/fragment_signup" >
+        <action
+            android:id="@+id/action_signupFragment_to_certifyEmailFragment"
+            app:destination="@id/certifyEmailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.app.gong4.MainFragment"
@@ -37,6 +41,18 @@
         tools:layout="@layout/fragment_findpassword" >
         <action
             android:id="@+id/action_findpasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/certifyEmailFragment"
+        android:name="com.app.gong4.CertifyEmailFragment"
+        android:label="이메일 인증"
+        tools:layout="@layout/fragment_certify_email" >
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_certifyEmailFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
 </navigation>
