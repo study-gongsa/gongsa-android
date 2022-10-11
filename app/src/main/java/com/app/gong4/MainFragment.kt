@@ -2,13 +2,14 @@ package com.app.gong4
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import androidx.appcompat.app.AlertDialog
-import androidx.navigation.findNavController
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.gong4.DTO.*
@@ -18,12 +19,12 @@ import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
+    private lateinit var category: List<StudyCategory>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +33,7 @@ class MainFragment : Fragment() {
         mainActivity.hideToolbar(true)
 
         goRecommendStudygroup()
+        getCategories() //livedata 로 카테고리 데이터 관리하는게 맞는지..?
 
     }
 
@@ -40,7 +42,10 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMainBinding.inflate(inflater, container, false)
+
+        showEnterDialog()
         showStudyRoomDialog()
+
         return binding.root
     }
 
@@ -50,27 +55,62 @@ class MainFragment : Fragment() {
         mainActivity.hideToolbar(false)
     }
 
+    private fun showEnterDialog(){
+        binding.enterButton.setOnClickListener {
+            GroupenterDialog().show(parentFragmentManager,"EnterDialog")
+        }
+    }
+
+    // 스터디 정보 다이얼로그
+    fun showStudyInfoDialog(groupId :Int){
+        RequestServer.studyGroupService.getStudygroupInfo(groupId).enqueue(object :
+            Callback<ResponseStudygroupinfoBody>{
+            override fun onResponse(
+                call: Call<ResponseStudygroupinfoBody>,
+                response: Response<ResponseStudygroupinfoBody>
+            ) {
+                val data = response.body()!!.data
+                Log.d("studyinfo 응답 결과 : ", data.toString())
+                Log.d("categories", category.toString())
+                StudygroupinfoDialog(data).show(parentFragmentManager,"InfoDialog")
+            }
+
+            override fun onFailure(call: Call<ResponseStudygroupinfoBody>, t: Throwable) {
+                Log.d("스터디 정보 결과 - onFailure", t.toString())
+                Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT)
+            }
+
+        })
+    }
+
     // 필터 다이얼로그 보여주기
     private fun showStudyRoomDialog(){
         binding.filterButton.setOnClickListener {
-            RequestServer.studyGroupService.getCategory().enqueue(object :
-                Callback<ResponseStudycategoryBody>{
-                override fun onResponse(
-                    call: Call<ResponseStudycategoryBody>,
-                    response: Response<ResponseStudycategoryBody>
-                ) {
-                    Log.d("응답 결과 : ", response.body()!!.data.toString())
-                    val data = response.body()!!.data
-                    GroupfilterDialog(data).show(parentFragmentManager,"filterDialog")
-                }
-
-                override fun onFailure(call: Call<ResponseStudycategoryBody>, t: Throwable) {
-                    Log.d("로그인 결과 - onFailure", t.toString())
-                    Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT)
-                }
-
-            })
+            if(category.isEmpty()){
+                getCategories()
+            }else {
+                GroupfilterDialog(category).show(parentFragmentManager, "filterDialog")
+            }
         }
+    }
+
+    private fun getCategories(){
+        RequestServer.studyGroupService.getCategory().enqueue(object :
+            Callback<ResponseStudycategoryBody>{
+            override fun onResponse(
+                call: Call<ResponseStudycategoryBody>,
+                response: Response<ResponseStudycategoryBody>
+            ) {
+                Log.d("getCategories 응답 결과 : ", response.body()!!.data.toString())
+                category = response.body()!!.data
+            }
+
+            override fun onFailure(call: Call<ResponseStudycategoryBody>, t: Throwable) {
+                Log.d("로그인 결과 - onFailure", t.toString())
+                Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT)
+            }
+
+        })
     }
 
     // 추천 스터디 그룹 보여주기
@@ -148,6 +188,9 @@ class StudyGroupListAdapter(private val context: MainFragment, val dataSet: Muta
             holder.group_cam_button.setImageResource(R.drawable.ic_camera_off_22)
         }else{
             holder.group_cam_button.setImageResource(R.drawable.ic_baseline_photo_camera_24)
+        }
+        holder.group_info_button.setOnClickListener {
+            context.showStudyInfoDialog(dataSet[position].studyGroupUID)
         }
     }
 

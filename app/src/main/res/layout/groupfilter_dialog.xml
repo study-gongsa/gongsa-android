@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/searchview_background"
     android:orientation="vertical">
 
 
@@ -52,26 +53,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="17dp"
-                android:textSize="14sp"
                 android:buttonTint="@color/green_03_main"
-                android:text="@string/main_filter_isCam_all" />
+                android:text="@string/main_filter_isCam_all"
+                android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/filter_cam_true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="17dp"
-                android:textSize="14sp"
                 android:buttonTint="@color/green_03_main"
-                android:text="@string/main_filter_isCam_true" />
+                android:text="@string/main_filter_isCam_true"
+                android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/filter_cam_false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
                 android:buttonTint="@color/green_03_main"
-                android:text="@string/main_filter_isCam_false" />
+                android:text="@string/main_filter_isCam_false"
+                android:textSize="14sp" />
         </RadioGroup>
 
         <TextView
@@ -92,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView11"/>
+            app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
         <TextView
             android:id="@+id/textView12"
@@ -122,18 +123,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="17dp"
-                android:textSize="14sp"
                 android:buttonTint="@color/green_03_main"
-                android:text="@string/main_filter_period_new" />
+                android:text="@string/main_filter_period_new"
+                android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/filter_period_old_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="17dp"
-                android:textSize="14sp"
                 android:buttonTint="@color/green_03_main"
-                android:text="@string/main_filter_period_old" />
+                android:text="@string/main_filter_period_old"
+                android:textSize="14sp" />
 
         </RadioGroup>
 
@@ -151,7 +152,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:id="@+id/enter_button"
+        android:id="@+id/save_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/green_03_main"
