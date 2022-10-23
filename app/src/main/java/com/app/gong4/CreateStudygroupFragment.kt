@@ -42,7 +42,6 @@ class CreateStudygroupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCreateStudygroupBinding.inflate(inflater, container, false)
-
         categories = DataViewModel().getCategories()
 
         showCategories()

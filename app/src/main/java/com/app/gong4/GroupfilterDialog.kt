@@ -1,6 +1,8 @@
 package com.app.gong4
 
 import android.R
+import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -9,14 +11,11 @@ import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.util.TypedValue
 import android.view.*
-
 import androidx.core.view.children
 import androidx.fragment.app.DialogFragment
 import com.app.gong4.DTO.ResponseGroupItemBody
-import com.app.gong4.DTO.ResponseStudygroupinfoBody
-
+import com.app.gong4.DTO.StduyGroupItem
 import com.app.gong4.DTO.StudyCategory
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.GroupfilterDialogBinding
@@ -29,6 +28,7 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
 
     private var _binding: GroupfilterDialogBinding? = null
     private val binding get() = _binding!!
+    internal lateinit var listener: DialogResult
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,16 +41,20 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         showCategories()
-
         saveFilter();
 
         return view
     }
 
+    fun setEventListener(listener:DialogResult){
+        this.listener = listener
+    }
+
     private fun saveFilter(){
         var checkedIsCame :Boolean = true
         var checkedAlign :String = "latest"
-        var checkedChipList : ArrayList<Int>
+        var checkedChipList : List<Int>
+        var checkedCategory : ArrayList<StudyCategory> = arrayListOf()
 
         binding.saveButton.setOnClickListener{
             binding.filterCamRadioGroup.setOnCheckedChangeListener { group, checkedId ->
@@ -60,18 +64,17 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
                 }
             }
             checkedChipList =
-                binding.categoryChipGroup.children?.filter { (it as Chip).isChecked }?.map { it.id }?.toList() as ArrayList<Int>
-
+                binding.categoryChipGroup.children?.filter { (it as Chip).isChecked }?.map { it.id }?.toList()!!
+            binding.categoryChipGroup.children.filter { (it as Chip).isChecked }.map {
+                val studyCategory = StudyCategory((it as Chip).id,(it as Chip).text.toString())
+                checkedCategory.add(studyCategory)
+            }.toList()
             binding.filterPeriodRadioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
                 when(checkedId){
                     binding.filterPeriodOldRadio.id -> checkedAlign = "expire"
                     binding.filterPeriodNewRadio.id -> checkedAlign = "latest"
                 }
             }
-
-            Log.d("checkCHiplist : ",checkedChipList.toString());
-            Log.d("checkedAlign : ",checkedAlign);
-
             //api 호출
            RequestServer.studyGroupService.getStudygroupfilterInfo(checkedAlign,checkedChipList,checkedIsCame).enqueue(object :
                Callback<ResponseGroupItemBody>{
@@ -79,9 +82,9 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
                    call: Call<ResponseGroupItemBody>,
                    response: Response<ResponseGroupItemBody>
                ) {
-                   val data = response.body()!!.data
-                   Log.d("응답 결과 : ", data.toString())
+                   val data = response.body()!!.data.studyGroupList
                     // mainfragment에 값 변경하기
+                   listener?.result(checkedCategory,data)
                    dismiss()
                }
 
@@ -91,6 +94,7 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
            })
         }
     }
+
     private fun showCategories(){
         for (c in categories){
             binding.categoryChipGroup.addView(Chip(context).apply {
@@ -124,6 +128,7 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
     }
     override fun onResume() {
         super.onResume()
+
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         val windowManager = activity?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val size = windowManager.currentWindowMetricsPointCompat()
@@ -161,4 +166,8 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
         _binding = null
     }
 
+}
+
+interface DialogResult{
+    fun result(category:List<StudyCategory>,Data:List<StduyGroupItem>)
 }

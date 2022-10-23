@@ -1,5 +1,7 @@
 package com.app.gong4
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +11,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +22,7 @@ import com.app.gong4.util.DataViewModel
 import com.app.gong4.util.MainApplication
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
+import com.google.android.material.chip.Chip
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,6 +33,8 @@ class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
     private lateinit var category: List<StudyCategory>
+    private lateinit var dataList : ArrayList<StduyGroupItem>
+    private lateinit var mAdapter : StudyGroupListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,7 +99,16 @@ class MainFragment : Fragment() {
             if(category.isEmpty()){
                 getCategories()
             }else {
-                GroupfilterDialog(category).show(parentFragmentManager, "filterDialog")
+                val mDialog = GroupfilterDialog(category)
+                val listener = object : DialogResult {
+                    override fun result(category: List<StudyCategory>, Data: List<StduyGroupItem>) {
+                        showCategoryChipList(category)
+                        refreshData(Data as ArrayList<StduyGroupItem>)
+                        binding.cameraSegmentButton.visibility = View.VISIBLE
+                    }
+                }
+                mDialog.setEventListener(listener)
+                mDialog.show(parentFragmentManager, "filterDialog")
             }
         }
     }
@@ -117,6 +132,46 @@ class MainFragment : Fragment() {
         })
     }
 
+    // 카테고리 chip 띄우기
+    private fun showCategoryChipList(category: List<StudyCategory>){
+        binding.checkChipGroup.removeAllViews()
+        for (c in category){
+            binding.checkChipGroup.addView(Chip(context).apply {
+                text = c.name
+                id = c.categoryUID
+                width = 48
+                height = 22
+                chipStrokeWidth = 2f
+                chipStrokeColor = ColorStateList(
+                    arrayOf(
+                        intArrayOf(-android.R.attr.state_checked), intArrayOf(android.R.attr.state_checked)),
+                    intArrayOf(Color.parseColor("#2DB57B"),Color.parseColor("#2DB57B"))
+                )
+                chipBackgroundColor = ColorStateList(
+                    arrayOf(
+                        intArrayOf(-android.R.attr.state_checked), intArrayOf(android.R.attr.state_checked)),
+                    intArrayOf(Color.WHITE, Color.parseColor("#2DB57B"))
+                )
+
+                setTextColor(
+                    ColorStateList(
+                        arrayOf(
+                            intArrayOf(-android.R.attr.state_checked), intArrayOf(android.R.attr.state_checked)),
+                        intArrayOf(Color.BLACK, Color.WHITE)
+                    )
+
+                )
+            })
+        }
+    }
+
+    // 데이터 리스트 새로고침
+    private fun refreshData(data: ArrayList<StduyGroupItem>){
+        dataList.clear()
+        dataList.addAll(data)
+        mAdapter.notifyDataSetChanged()
+    }
+
     // 추천 스터디 그룹 보여주기
     private fun goRecommendStudygroup() {
         RequestServer.studyGroupService.recommend(type = "main").enqueue(object :
@@ -128,7 +183,7 @@ class MainFragment : Fragment() {
                 if (response.isSuccessful) {
                     val data: ResponseGroupItemBody? = response.body()
                     data.let { it ->
-                        val dataList = it!!.data.studyGroupList
+                        dataList = it!!.data.studyGroupList as ArrayList<StduyGroupItem>
                         setAdapter(dataList)
                     }
                 } else {
@@ -147,7 +202,7 @@ class MainFragment : Fragment() {
     }
 
     fun setAdapter(list: List<StduyGroupItem>) {
-        val mAdapter = StudyGroupListAdapter(this, list as MutableList<StduyGroupItem>)
+        mAdapter = StudyGroupListAdapter(this, list as MutableList<StduyGroupItem>)
         binding.recyclerView.adapter = mAdapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         mAdapter.notifyDataSetChanged()
