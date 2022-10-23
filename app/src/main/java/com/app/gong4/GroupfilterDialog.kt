@@ -8,16 +8,22 @@ import android.graphics.Insets
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
 
 import androidx.core.view.children
 import androidx.fragment.app.DialogFragment
+import com.app.gong4.DTO.ResponseGroupItemBody
+import com.app.gong4.DTO.ResponseStudygroupinfoBody
 
 import com.app.gong4.DTO.StudyCategory
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.GroupfilterDialogBinding
 import com.google.android.material.chip.Chip
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFragment() {
 
@@ -36,19 +42,25 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
 
         showCategories()
 
-        binding.saveButton.setOnClickListener{
-            var checkedIsCame :Boolean = true
-            var checkedAlign :String = ""
+        saveFilter();
 
+        return view
+    }
+
+    private fun saveFilter(){
+        var checkedIsCame :Boolean = true
+        var checkedAlign :String = "latest"
+        var checkedChipList : ArrayList<Int>
+
+        binding.saveButton.setOnClickListener{
             binding.filterCamRadioGroup.setOnCheckedChangeListener { group, checkedId ->
                 when(checkedId){
                     binding.filterCamTrue.id -> checkedIsCame = true
                     binding.filterCamFalse.id -> checkedIsCame = false
                 }
             }
-            val checkedChipList =binding.categoryChipGroup.children?.toList()
-                ?.filter { (it as Chip).isChecked }
-                ?.joinToString(",") { it.id.toString() }
+            checkedChipList =
+                binding.categoryChipGroup.children?.filter { (it as Chip).isChecked }?.map { it.id }?.toList() as ArrayList<Int>
 
             binding.filterPeriodRadioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
                 when(checkedId){
@@ -57,13 +69,28 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
                 }
             }
 
+            Log.d("checkCHiplist : ",checkedChipList.toString());
+            Log.d("checkedAlign : ",checkedAlign);
 
+            //api 호출
+           RequestServer.studyGroupService.getStudygroupfilterInfo(checkedAlign,checkedChipList,checkedIsCame).enqueue(object :
+               Callback<ResponseGroupItemBody>{
+               override fun onResponse(
+                   call: Call<ResponseGroupItemBody>,
+                   response: Response<ResponseGroupItemBody>
+               ) {
+                   val data = response.body()!!.data
+                   Log.d("응답 결과 : ", data.toString())
+                    // mainfragment에 값 변경하기
+                   dismiss()
+               }
 
+               override fun onFailure(call: Call<ResponseGroupItemBody>, t: Throwable) {
+                   TODO("Not yet implemented")
+               }
+           })
         }
-
-        return view
     }
-
     private fun showCategories(){
         for (c in categories){
             binding.categoryChipGroup.addView(Chip(context).apply {
@@ -71,8 +98,8 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
                 id = c.categoryUID
                 isCheckable = true
                 isCheckedIconVisible = false
-                chipStrokeWidth = 1f
-                setTextSize(TypedValue.COMPLEX_UNIT_DIP,12f)
+                chipStrokeWidth = 2f
+              //  setTextSize(TypedValue.COMPLEX_UNIT_DIP,10f)
                 chipStrokeColor = ColorStateList(
                     arrayOf(
                         intArrayOf(-R.attr.state_checked), intArrayOf(R.attr.state_checked)),

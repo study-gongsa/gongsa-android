@@ -15,6 +15,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.gong4.DTO.*
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMainBinding
+import com.app.gong4.util.DataViewModel
+import com.app.gong4.util.MainApplication
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
@@ -94,15 +98,15 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun getCategories(){
+    fun getCategories(){
         RequestServer.studyGroupService.getCategory().enqueue(object :
             Callback<ResponseStudycategoryBody>{
             override fun onResponse(
                 call: Call<ResponseStudycategoryBody>,
                 response: Response<ResponseStudycategoryBody>
             ) {
-                Log.d("getCategories 응답 결과 : ", response.body()!!.data.toString())
                 category = response.body()!!.data
+                DataViewModel().loadCategories(category) //category 전역에서 사용하기 위해 viewmodel 사용
             }
 
             override fun onFailure(call: Call<ResponseStudycategoryBody>, t: Throwable) {
@@ -125,12 +129,10 @@ class MainFragment : Fragment() {
                     val data: ResponseGroupItemBody? = response.body()
                     data.let { it ->
                         val dataList = it!!.data.studyGroupList
-                        Log.d("test", dataList.toString())
                         setAdapter(dataList)
                     }
                 } else {
                     val error = response.errorBody()!!.string().trimIndent()
-                    Log.d("로그인 결과 - tostring", error)
                     val result = Gson().fromJson(error, ResponseLoginBody::class.java)
                     Log.d("로그인 응답 값 결과 - tostring", result.toString())
                 }
@@ -179,11 +181,19 @@ class StudyGroupListAdapter(private val context: MainFragment, val dataSet: Muta
         return ViewHolder(view)
     }
 
+    fun getImageGlide(imagePath : String): GlideUrl {
+        val USER_TOKEN = MainApplication.prefs.getData("accessToken","")
+        val IMAGE_URL = "${RequestServer.BASE_URL}/api/image/"+imagePath
+        val glideUrl = GlideUrl(IMAGE_URL) { mapOf(Pair("Authorization", "Bearer $USER_TOKEN")) }
+        return glideUrl
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.group_title_textView.text = dataSet[position].name
         holder.group_date_textView.text = "${convertTimestampToDate(dataSet[position].createdAt)} ~ ${convertTimestampToDate(dataSet[position].expiredAt)}"
-        // 아직 이미지 규격이 나온게 없어서 기본이미지 출력하도록 개발
-        holder.group_image_imageView.setImageResource(R.drawable.ic_gongsa)
+
+        val url = getImageGlide(dataSet[position].imgPath)
+        Glide.with(context).load(url).into(holder.group_image_imageView)
         if(!dataSet[position].isCam){
             holder.group_cam_button.setImageResource(R.drawable.ic_camera_off_22)
         }else{

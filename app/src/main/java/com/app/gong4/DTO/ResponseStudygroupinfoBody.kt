@@ -11,6 +11,8 @@ data class StduyGroupDetailItem(
     var expiredAt : Long,
     var name : String,
     var isCam: Boolean,
+    var maxMember :Int,
+    var currentMember : Int,
     var groupUID : Int,
     var code : String,
     var minStudyHour : String,

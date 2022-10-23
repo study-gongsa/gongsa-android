@@ -1,5 +1,6 @@
 package com.app.gong4
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -7,6 +8,7 @@ import android.graphics.Insets
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +24,7 @@ class StudygroupinfoDialog(private val data: StduyGroupDetailItem) : DialogFragm
     private var _binding: StudygroupinfoDialogBinding? = null
     private val binding get() = _binding!!
 
+    @SuppressLint("ResourceAsColor")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,7 +45,16 @@ class StudygroupinfoDialog(private val data: StduyGroupDetailItem) : DialogFragm
             deleteCharAt(lastIndexOf(", "))
         }.toString()
 
-        binding.peoplecntTextview.text = "" // 인원수 현재 구현 안되어 있음
+        binding.peoplecntTextview.text = String.format(resources.getString(R.string.main_study_info_pepole_cnt),data.maxMember)
+
+        if(data.maxMember == data.currentMember){
+            binding.remainpeopleTextview.text = resources.getString(R.string.main_study_info_pepole_cnt_err_msg)
+            binding.joinButton.setBackgroundColor(R.color.black02)
+            binding.joinButton.isClickable = false
+            binding.buttonText.setTextColor(R.color.black03)
+        }else{
+            binding.remainpeopleTextview.text = String.format(resources.getString(R.string.main_study_info_pepole_cnt_msg),data.maxMember - data.currentMember)
+        }
 
         binding.joinButton.setOnClickListener{
             print("가입하기 구현하기")

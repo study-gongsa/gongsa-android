@@ -27,4 +27,8 @@
     <style name="AppTheme.SearchView" parent="Widget.AppCompat.SearchView">
         <item name="android:textSize">12sp</item>
     </style>
+    <style name="CustomRadioButton" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/green_03_main</item>
+        <item name="colorControlNormal">@color/black02</item>
+    </style>
 </resources>

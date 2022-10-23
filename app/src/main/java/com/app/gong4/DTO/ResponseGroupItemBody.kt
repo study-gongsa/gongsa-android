@@ -17,6 +17,7 @@ data class StduyGroupItem(
     var expiredAt : Long,
     var name : String,
     var isCam: Boolean,
+    var imgPath : String,
     var studyGroupUID : Int,
 )
 
