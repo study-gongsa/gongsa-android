@@ -88,6 +88,9 @@
     <string name="main_study_make_study_opt">최대 7번까지 가능합니다.</string>
     <string name="main_study_make_time_title">스터디 목표 시간</string>
     <string name="main_study_make_time_opt">24시간 이내 30분 단위로 가능합니다.</string>
+    <string name="main_study_make_create_btn">생성하기</string>
+    <string name="main_study_make_complete_title">스터디그룹이 생성되었어요!</string>
+    <string name="main_study_make_move_title">대기실로 이동하기</string>
 
     <!-- 공통 text -->
     <string name="save">저장</string>

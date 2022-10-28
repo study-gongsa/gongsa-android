@@ -7,18 +7,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.fragment.app.DialogFragment
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.gong4.DTO.*
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMainBinding
-import com.app.gong4.util.DataViewModel
 import com.app.gong4.util.MainApplication
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
@@ -28,6 +23,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainFragment : Fragment() {
 
@@ -55,14 +52,60 @@ class MainFragment : Fragment() {
 
         showEnterDialog()
         showStudyRoomDialog()
+        searchKeyword()
+        cameraToogle()
 
         return binding.root
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        val mainActivity = activity as MainActivity
-        mainActivity.hideToolbar(false)
+    private fun cameraToogle(){
+        binding.cameraSegmentButton.setOnPositionChangedListener {
+            val isCame = it != 0
+            mAdapter.filter.filter(isCame.toString())
+        }
+    }
+
+    private fun searchKeyword(){
+        var searchViewTextListener: SearchView.OnQueryTextListener =
+            object : SearchView.OnQueryTextListener {
+                //검색버튼 입력시 호출, 검색버튼이 없으므로 사용하지 않음
+                override fun onQueryTextSubmit(s: String): Boolean {
+                    // api 호출
+                    RequestServer.studyGroupService.getStudygroupfilterInfo(word = s).enqueue(object :
+                        Callback<ResponseGroupItemBody>{
+                        override fun onResponse(
+                            call: Call<ResponseGroupItemBody>,
+                            response: Response<ResponseGroupItemBody>
+                        ) {
+                            Log.d("호출", "searchKeyword")
+                            if (response.isSuccessful) {
+                                val data: ResponseGroupItemBody? = response.body()
+                                data.let { it ->
+                                    dataList = it!!.data.studyGroupList as ArrayList<StduyGroupItem>
+                                    setAdapter(dataList)
+                                    Log.d("응답 값 결과 - tostring", dataList.toString())
+                                }
+                            } else {
+                                val error = response.errorBody()!!.string().trimIndent()
+                                val result = Gson().fromJson(error, ResponseGroupItemBody::class.java)
+                                Log.d("응답 값 결과 - tostring", result.toString())
+                            }
+
+                        }
+
+                        override fun onFailure(call: Call<ResponseGroupItemBody>, t: Throwable) {
+                            TODO("Not yet implemented")
+                        }
+                    })
+                    return false
+                }
+
+                //텍스트 입력/수정시에 호출
+                override fun onQueryTextChange(s: String): Boolean {
+                    return false
+                }
+            }
+        binding.searchView.setOnQueryTextListener(searchViewTextListener)
     }
 
     private fun showEnterDialog(){
@@ -121,7 +164,6 @@ class MainFragment : Fragment() {
                 response: Response<ResponseStudycategoryBody>
             ) {
                 category = response.body()!!.data
-                DataViewModel().loadCategories(category) //category 전역에서 사용하기 위해 viewmodel 사용
             }
 
             override fun onFailure(call: Call<ResponseStudycategoryBody>, t: Throwable) {
@@ -188,13 +230,13 @@ class MainFragment : Fragment() {
                     }
                 } else {
                     val error = response.errorBody()!!.string().trimIndent()
-                    val result = Gson().fromJson(error, ResponseLoginBody::class.java)
-                    Log.d("로그인 응답 값 결과 - tostring", result.toString())
+                    val result = Gson().fromJson(error, ResponseGroupItemBody::class.java)
+                    Log.d("스터디그룹 응답- tostring", result.toString())
                 }
             }
 
             override fun onFailure(call: Call<ResponseGroupItemBody>, t: Throwable) {
-                Log.d("로그인 결과 - onFailure", t.toString())
+                Log.d("결과 - onFailure", t.toString())
                 Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT)
             }
 
@@ -211,7 +253,9 @@ class MainFragment : Fragment() {
 }
 
 class StudyGroupListAdapter(private val context: MainFragment, val dataSet: MutableList<StduyGroupItem>)
-    : RecyclerView.Adapter<StudyGroupListAdapter.ViewHolder>() {
+    : RecyclerView.Adapter<StudyGroupListAdapter.ViewHolder>(),Filterable {
+
+    private var searchList : List<StduyGroupItem>?=null
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val group_title_textView: TextView
@@ -227,6 +271,9 @@ class StudyGroupListAdapter(private val context: MainFragment, val dataSet: Muta
             group_cam_button = view.findViewById(R.id.group_cam_button)
             group_info_button = view.findViewById(R.id.group_info_button)
         }
+    }
+    init {
+        searchList = dataSet
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -268,4 +315,38 @@ class StudyGroupListAdapter(private val context: MainFragment, val dataSet: Muta
         val date = sdf.format(time).toString()
         return date
     }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            //Automatic on background thread
+            override fun performFiltering(c: CharSequence?): FilterResults? {
+                val cam_flag = c.toString().toBoolean() // cam_flag => true, flase
+                val filteredList = ArrayList<StduyGroupItem>()
+                if(cam_flag){
+                    for(item in dataSet){
+                        if(item.isCam){
+                            filteredList.add(item)
+                        }
+                    }
+                }else{
+                    for(item in dataSet){
+                        if(!item.isCam){
+                            filteredList.add(item)
+                        }
+                    }
+                }
+
+                val results = FilterResults()
+                results.values = filteredList
+                return results
+            }
+
+            //Automatic on UI thread
+            override fun publishResults(constraint: CharSequence?, results: FilterResults) {
+                searchList = results.values as ArrayList<StduyGroupItem>
+                notifyDataSetChanged()
+            }
+        }
+    }
+
 }

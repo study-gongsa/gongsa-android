@@ -33,6 +33,7 @@ class GroupenterDialog() : DialogFragment() {
         _binding = GroupenterDialogBinding.inflate(inflater,container,false)
         val view = binding.root
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
         moveToStudyGroupInfo()
 

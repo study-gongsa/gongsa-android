@@ -14,7 +14,7 @@
             android:id="@+id/filter_button"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginStart="11dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="28dp"
             android:layout_marginEnd="19dp"
             android:background="@drawable/ic_icon_filter"
@@ -87,6 +87,7 @@
             app:selectedButtonRadius="12dp">
 
             <com.addisonelliott.segmentedbutton.SegmentedButton
+                android:id="@+id/isFalseCam"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -97,6 +98,7 @@
                 app:drawable="@drawable/ic_camera_off_22" />
 
             <com.addisonelliott.segmentedbutton.SegmentedButton
+                android:id="@+id/isCam"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -119,16 +121,18 @@
             app:layout_constraintTop_toBottomOf="@+id/textView9"
             app:layout_constraintVertical_bias="1.0" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/enter_button"
             android:layout_width="69dp"
             android:layout_height="28dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="11dp"
+            android:layout_marginEnd="8dp"
             android:background="@drawable/searchview_background"
             android:text="@string/main_enter_code_text"
+            android:textColor="@color/black02"
             android:textSize="12dp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/filter_button"
             app:layout_constraintStart_toEndOf="@+id/searchView"
             app:layout_constraintTop_toTopOf="parent" />

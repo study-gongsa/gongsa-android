@@ -76,7 +76,7 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
                 }
             }
             //api 호출
-           RequestServer.studyGroupService.getStudygroupfilterInfo(checkedAlign,checkedChipList,checkedIsCame).enqueue(object :
+           RequestServer.studyGroupService.getStudygroupfilterInfo(align = checkedAlign, categoryUIDs = checkedChipList,isCam=checkedIsCame).enqueue(object :
                Callback<ResponseGroupItemBody>{
                override fun onResponse(
                    call: Call<ResponseGroupItemBody>,
