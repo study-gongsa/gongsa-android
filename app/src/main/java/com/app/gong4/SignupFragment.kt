@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -88,7 +89,7 @@ class SignupFragment : Fragment() {
             }
 
             override fun onTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {
-                if(android.util.Patterns.EMAIL_ADDRESS.matcher(p0).matches()){
+                if(Patterns.EMAIL_ADDRESS.matcher(p0).matches()){
                     binding.validEmailTextView.text = ""
                     binding.emailEditText.background = context!!.resources.getDrawable(R.drawable.custom_input, null)
 

@@ -7,11 +7,19 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
+<<<<<<< HEAD
             <value value="C:\Users\kkw27\.android\avd\Gong4_API_30.avd" />
+=======
+            <value value="$USER_HOME$/.android/avd/Pixel_2_API_30.avd" />
+>>>>>>> develop
           </Key>
         </deviceKey>
       </Target>
     </targetSelectedWithDropDown>
+<<<<<<< HEAD
     <timeTargetWasSelectedWithDropDown value="2022-09-24T20:13:23.411277800Z" />
+=======
+    <timeTargetWasSelectedWithDropDown value="2022-10-02T08:58:58.028881Z" />
+>>>>>>> develop
   </component>
 </project>

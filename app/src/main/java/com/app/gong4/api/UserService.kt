@@ -11,6 +11,10 @@ interface UserService {
     @POST("/api/user/login")
     fun login(@Body body: RequestLoginBody) : Call<ResponseLoginBody>
 
+    /* refresh token */
+    @POST("/api/user/login/refresh")
+    fun refreshToken(@Body body: RequestRefreshTokenBody) : Call<ResponseRefreshTokenBody>
+
     /* 회원가임 */
     @POST("/api/user/join")
     fun signup(@Body body: RequestSignupBody) : Call<ResponseSignupBody>
