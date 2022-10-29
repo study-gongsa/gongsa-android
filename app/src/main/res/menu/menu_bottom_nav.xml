@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mainFragment"
+        android:icon="@drawable/ic_icon_home_mono"
+        android:title="홈"/>
+    <item
+        android:id="@+id/menu_list"
+        android:icon="@drawable/ic_icon_line_three_mono"
+        android:title="홈"/>
+    <item
+        android:id="@+id/createStudygroupFragment"
+        android:icon="@drawable/ic_icon_plus_mono"
+        android:title="스터디룸 생성"/>
+    <item
+        android:id="@+id/menu_user"
+        android:icon="@drawable/ic_icon_user_mono"
+        android:title="홈"/>
+</menu>

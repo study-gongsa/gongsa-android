@@ -3,40 +3,42 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-<<<<<<< HEAD
-        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.163" />
-        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/drawable/custom_button.xml" value="0.1275" />
-        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/drawable/custom_error_input.xml" value="0.1275" />
-        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/drawable/custom_input.xml" value="0.2095" />
-        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/drawable/ic_baseline_check_circle_outline.xml" value="0.16" />
-        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/drawable/ic_launcher_background.xml" value="0.163" />
-        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/drawable/splash_background.xml" value="0.1275" />
-        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/layout/activity_main.xml" value="0.290625" />
-        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/layout/fragment_login.xml" value="0.290625" />
-        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/layout/fragment_signup.xml" value="0.2" />
-        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1205" />
-        <entry key="app/src/main/res/drawable/custom_input.xml" value="0.1195" />
-        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1205" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2935943603515625" />
-        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.3186646433990895" />
-        <entry key="app/src/main/res/layout/fragment_signup.xml" value="0.109375" />
-        <entry key="app/src/main/res/menu/nav_menu.xml" value="0.1625" />
-=======
         <entry key="app/src/main/res/drawable/bg_custom_button.xml" value="0.215" />
         <entry key="app/src/main/res/drawable/bg_custom_button_notenable.xml" value="0.215" />
+        <entry key="app/src/main/res/drawable/bg_dialog_radius.xml" value="0.108" />
         <entry key="app/src/main/res/drawable/button.xml" value="0.215" />
         <entry key="app/src/main/res/drawable/custom_button.xml" value="0.124" />
+        <entry key="app/src/main/res/drawable/custom_cancel_button.xml" value="0.199" />
         <entry key="app/src/main/res/drawable/custom_error_input.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable/custom_input.xml" value="0.1025" />
+        <entry key="app/src/main/res/drawable/ic_baseline_check_circle_24.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/ic_baseline_check_circle_outline.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/ic_baseline_photo_camera_24.xml" value="0.146" />
+        <entry key="app/src/main/res/drawable/ic_camera_off_22.xml" value="0.144" />
+        <entry key="app/src/main/res/drawable/ic_icon_filter.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/ic_icon_home_mono.xml" value="0.1225" />
+        <entry key="app/src/main/res/drawable/ic_icon_line_three_mono.xml" value="0.1225" />
+        <entry key="app/src/main/res/drawable/menu_select_color.xml" value="0.145" />
+        <entry key="app/src/main/res/drawable/round_background.xml" value="0.1505" />
+        <entry key="app/src/main/res/drawable/searchview_background.xml" value="0.254" />
         <entry key="app/src/main/res/drawable/splash_background.xml" value="0.165" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/studygroup_row_item.xml" value="0.1215" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_certify_email.xml" value="0.1315592203898051" />
+        <entry key="app/src/main/res/layout/fragment_complete_studygroup.xml" value="0.23333333333333334" />
+        <entry key="app/src/main/res/layout/fragment_create_studygroup.xml" value="0.4141921997070313" />
         <entry key="app/src/main/res/layout/fragment_findpassword.xml" value="0.375" />
-        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.3433395872420263" />
-<<<<<<< HEAD
->>>>>>> develop
-=======
-        <entry key="app/src/main/res/layout/fragment_main.xml" value="0.1671875" />
->>>>>>> develop
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.171875" />
+        <entry key="app/src/main/res/layout/fragment_main.xml" value="0.4421875" />
+        <entry key="app/src/main/res/layout/fragment_signup.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/groupenter_dialog.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/groupfilter_dialog.xml" value="0.3731958762886598" />
+        <entry key="app/src/main/res/layout/item_chip_category.xml" value="0.2452956989247312" />
+        <entry key="app/src/main/res/layout/layout_group_filter_dialog.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/layout_studygroup_info_dialog.xml" value="0.15053763440860216" />
+        <entry key="app/src/main/res/layout/studygroup_row_item.xml" value="0.5052264808362369" />
+        <entry key="app/src/main/res/layout/studygroupinfo_dialog.xml" value="0.1825726141078838" />
+        <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.1" />
       </map>
     </option>
   </component>
@@ -45,5 +47,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.4082934609250399" />
+      </ProjectState>
+    </option>
   </component>
 </project>

@@ -20,6 +20,7 @@ import com.app.gong4.DTO.RequestLoginBody
 import com.app.gong4.DTO.ResponseLoginBody
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentLoginBinding
+import com.app.gong4.util.MainApplication
 import com.google.gson.Gson
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -40,6 +41,10 @@ class LoginFragment : Fragment() {
     ): View? {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
         imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        println("LoginFragment onCreateView")
+
+        val mainActivity = activity as MainActivity
+        mainActivity.hideBottomNavigationBar(true)
 
         checkInput()
         goLogin()
@@ -47,6 +52,12 @@ class LoginFragment : Fragment() {
         goFindPasswordScreen()
 
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val mainActivity = activity as MainActivity
+        mainActivity.hideBottomNavigationBar(false)
     }
 
     //키보드 내리기
@@ -88,6 +99,11 @@ class LoginFragment : Fragment() {
                     if(response.isSuccessful()){
                         var repos: ResponseLoginBody? = response.body()
                         Log.d("로그인 결과 - 성공", repos.toString())
+                        repos.let { it ->
+                           val accessToken = it!!.data.accessToken
+                            Log.d("로그인 결과 - accessToken", accessToken.toString())
+                            MainApplication.prefs.setData("accessToken",accessToken)
+                        }
                         it.findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
                     }else{
                         val error = response.errorBody()!!.string().trimIndent()
@@ -210,9 +226,8 @@ class LoginFragment : Fragment() {
         })
     }
 
-    override fun onResume() {
-        super.onResume()
-    //    (context as MainActivity).binding.toolbarTitle.text = (context as MainActivity).navController.currentDestination?.label.toString()
+    fun hideBottomNavigation(){
+
     }
 
 }

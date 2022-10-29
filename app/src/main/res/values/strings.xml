@@ -38,8 +38,61 @@
 
     <!-- 비밀번호 찾기 text -->
     <string name="findpassword_fragment_info">회원가입 시 등록한 이메일을 입력하세요.</string>
-    <string name="findpassword_waiting_msg1">이메일 확인중입니다.</string>
-    <string name="findpassword_waiting_msg2">메일함을 확인해주세요.</string><!-- 추후 변경 예정 -->
-    <string name="confirm">확인</string>
+    <string name="findpassword_waiting_msg1">이메일 전송중입니다.</string>
+    <string name="findpassword_waiting_msg2">임시비밀번호가 메일함으로 전송되었습니다.</string><!-- 추후 변경 예정 -->
 
+    <!-- 메인화면 text -->
+    <string name="main_search_hint">궁금하신게 있으신가요?</string>
+    <string name="main_title">이런 방은 어떠세요?</string>
+    <string name="main_filter_title">스터디룸 필터</string>
+    <string name="main_filter_isCam">카메라 여부</string>
+    <string name="main_filter_isCam_all">모두보기</string>
+    <string name="main_filter_isCam_true">캠 켜기</string>
+    <string name="main_filter_isCam_false">캠 끄기</string>
+    <string name="main_filter_category">카테고리 (복수선택 가능)</string>
+    <string name="main_filter_category02">카테고리</string>
+    <string name="main_filter_period">기간 (선택)</string>
+    <string name="main_filter_period_new">최신순</string>
+    <string name="main_filter_period_old">마감순</string>
+    <string name="main_filter_period_info">오늘을 기준으로 마감일이 가까운 스터디가 노출됩니다.</string>
+    <string name="main_enter_code_text">입장코드</string>
+    <string name="main_enter_code_hint">A123-8123-C123</string>
+    <string name="main_enter_button_text">입장하기</string>
+    <string name="main_join_button_text">가입하기</string>
+    <string name="main_study_info_isCam_true">카메라가 켜져있어요.</string>
+    <string name="main_study_info_isCam_false">카메라가 꺼져있어요.</string>
+    <string name="main_study_info_pepole_cnt">%d명</string>
+    <string name="main_study_info_pepole_cnt_msg">입장 제한까지 %d명 남았어요.</string>
+    <string name="main_study_info_pepole_cnt_err_msg">최대 인원으로 입장이 불가능 합니다.</string>
+    <string name="main_study_info_cnt">인원</string>
+
+    <!--스터디 그룹 생성-->
+    <string name="main_study_make_title">스터디그룹 생성하기</string>
+    <string name="main_study_make_room_title">방 제목</string>
+    <string name="main_study_make_camera_title">카메라</string>
+    <string name="main_study_make_chat_title">채팅</string>
+    <string name="main_study_make_chat_true">채팅 허용</string>
+    <string name="main_study_make_chat_false">채팅 비허용</string>
+    <string name="main_study_make_cnt_title">제한 인원</string>
+    <string name="main_study_make_open_title">공개여부</string>
+    <string name="main_study_make_open_true">공개</string>
+    <string name="main_study_make_open_false">비공개</string>
+    <string name="main_study_make_category_title">카테고리 선택(복수 선택 가능)</string>
+    <string name="main_study_make_penel_title">벌점</string>
+    <string name="main_study_make_penel_true">있음</string>
+    <string name="main_study_make_penel_false">없음</string>
+    <string name="main_study_make_penel_opt">최대 10점까지 가능합니다.</string>
+    <string name="main_study_make_study_title">스터디 재진입</string>
+    <string name="main_study_make_study_true">허용</string>
+    <string name="main_study_make_study_false">불가</string>
+    <string name="main_study_make_study_opt">최대 7번까지 가능합니다.</string>
+    <string name="main_study_make_time_title">스터디 목표 시간</string>
+    <string name="main_study_make_time_opt">24시간 이내 30분 단위로 가능합니다.</string>
+    <string name="main_study_make_create_btn">생성하기</string>
+    <string name="main_study_make_complete_title">스터디그룹이 생성되었어요!</string>
+    <string name="main_study_make_move_title">대기실로 이동하기</string>
+
+    <!-- 공통 text -->
+    <string name="save">저장</string>
+    <string name="confirm">확인</string>
 </resources>

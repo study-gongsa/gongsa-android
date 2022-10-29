@@ -2,8 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    android:id="@+id/nav_graph">
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.app.gong4.LoginFragment"
@@ -39,4 +38,18 @@
             android:id="@+id/action_findpasswordFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/createStudygroupFragment"
+        android:name="com.app.gong4.CreateStudygroupFragment"
+        android:label="스터디그룹 생성"
+        tools:layout="@layout/fragment_create_studygroup" >
+        <action
+            android:id="@+id/action_createStudygroupFragment_to_completeStudygroupFragment"
+            app:destination="@id/completeStudygroupFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/completeStudygroupFragment"
+        android:name="com.app.gong4.CompleteStudygroupFragment"
+        android:label="fragment_complete_studygroup"
+        tools:layout="@layout/fragment_complete_studygroup" />
 </navigation>
