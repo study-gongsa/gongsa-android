@@ -23,7 +23,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 class MainFragment : Fragment() {
@@ -40,7 +39,7 @@ class MainFragment : Fragment() {
         mainActivity.hideToolbar(true)
 
         goRecommendStudygroup()
-        getCategories() //livedata 로 카테고리 데이터 관리하는게 맞는지..?
+        getCategories()
 
     }
 
@@ -53,10 +52,11 @@ class MainFragment : Fragment() {
         showEnterDialog()
         showStudyRoomDialog()
         searchKeyword()
-        cameraToogle()
+        //cameraToogle()
 
         return binding.root
     }
+
 
     private fun cameraToogle(){
         binding.cameraSegmentButton.setOnPositionChangedListener {

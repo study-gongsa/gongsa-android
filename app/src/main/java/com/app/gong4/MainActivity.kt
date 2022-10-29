@@ -2,30 +2,27 @@ package com.app.gong4
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.app.gong4.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.app.gong4.util.MainApplication
 
 
 class MainActivity : AppCompatActivity(){
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val loginFlag = MainApplication.prefs.getData("loginFlag","false").toBoolean()
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -37,6 +34,14 @@ class MainActivity : AppCompatActivity(){
                 controller, destination, arguments ->
             binding.toolbarTitle.text = navController.currentDestination?.label.toString()
         }
+        val graph = navController.navInflater.inflate(R.navigation.nav_graph)
+        if(loginFlag){
+            graph.setStartDestination(R.id.mainFragment)
+        }else{
+            graph.setStartDestination(R.id.loginFragment)
+        }
+        navController.graph = graph
+
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController,appBarConfiguration)
         binding.bottomNav.setupWithNavController(navController)
