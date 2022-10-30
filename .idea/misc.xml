@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/drawable/custom_button.xml" value="0.1395" />
+        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/drawable/custom_input.xml" value="0.1395" />
+        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/layout/fragment_login.xml" value="0.23856348867037194" />
         <entry key="app/src/main/res/drawable/bg_custom_button.xml" value="0.215" />
         <entry key="app/src/main/res/drawable/bg_custom_button_notenable.xml" value="0.215" />
         <entry key="app/src/main/res/drawable/bg_dialog_radius.xml" value="0.108" />
