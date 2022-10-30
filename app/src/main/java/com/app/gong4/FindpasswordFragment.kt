@@ -28,12 +28,17 @@ class FindpasswordFragment : Fragment() {
     private lateinit var binding: FragmentFindpasswordBinding
     val requestServer = RequestServer
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val mainActivity = activity as MainActivity
+        mainActivity.hideBottomNavigationBar(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentFindpasswordBinding.inflate(inflater, container, false)
-
         //확인 버튼 비활성화
         binding.confirmButton.isEnabled = false
 
@@ -72,9 +77,9 @@ class FindpasswordFragment : Fragment() {
                     call: Call<ResponseFindPwdBody>,
                     response: Response<ResponseFindPwdBody>
                 ) {
+                    binding.waitingView.visibility = View.INVISIBLE
                     if(response.isSuccessful){
                         var repos: ResponseFindPwdBody? = response.body()
-                        binding.waitingView.visibility = View.INVISIBLE
                         it.findNavController().navigate(R.id.action_findpasswordFragment_to_loginFragment)
                     }else{
                         val error = response.errorBody()!!.string().trimIndent()
@@ -86,6 +91,7 @@ class FindpasswordFragment : Fragment() {
 
                 override fun onFailure(call: Call<ResponseFindPwdBody>, t: Throwable) {
                     Log.d("결과 - 통신 실패", t.toString())
+                    binding.waitingView.visibility = View.INVISIBLE
                     Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.",Toast.LENGTH_SHORT)
                 }
 

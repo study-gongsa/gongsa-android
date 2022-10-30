@@ -1,12 +1,8 @@
 package com.app.gong4.api
 
-import com.app.gong4.DTO.ResponseGroupItemBody
-import com.app.gong4.DTO.ResponseStudycategoryBody
-import com.app.gong4.DTO.ResponseStudygroupinfoBody
+import com.app.gong4.DTO.*
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface StudyGroupService {
     @GET("/api/study-group/recommend")
@@ -28,4 +24,7 @@ interface StudyGroupService {
 
     @GET("/api/study-group/code/{code}")
     fun getStudygroupCodeInfo(@Path("code")code:String) : Call<ResponseStudygroupinfoBody>
+
+    @POST("/api/group-member")
+    fun getStudyEnter(@Body body:RequestEnterMember) : Call<ResponseEnterMember>
 }
