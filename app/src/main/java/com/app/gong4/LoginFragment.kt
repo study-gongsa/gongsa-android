@@ -41,7 +41,6 @@ class LoginFragment : Fragment() {
     ): View? {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
         imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-        println("LoginFragment onCreateView")
 
         val mainActivity = activity as MainActivity
         mainActivity.hideBottomNavigationBar(true)
@@ -101,8 +100,10 @@ class LoginFragment : Fragment() {
                         Log.d("로그인 결과 - 성공", repos.toString())
                         repos.let { it ->
                            val accessToken = it!!.data.accessToken
-                            Log.d("로그인 결과 - accessToken", accessToken.toString())
+                            val refreshToken = it!!.data.refreshToken
+                            Log.d("로그인 결과 - refreshToken", accessToken.toString())
                             MainApplication.prefs.setData("accessToken",accessToken)
+                            MainApplication.prefs.setData("refreshToken",refreshToken)
                         }
                         it.findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
                     }else{
@@ -224,10 +225,6 @@ class LoginFragment : Fragment() {
             }
 
         })
-    }
-
-    fun hideBottomNavigation(){
-
     }
 
 }
