@@ -13,16 +13,16 @@ class AutoLoginService {
     private lateinit var mAutoLoinView: AutoLoginView
 
 
-    val USER_TOKEN = MainApplication.prefs.getData("accessToken","")
+    val USER_REFRESH_TOKEN = MainApplication.prefs.getData("refreshToken","")
 
     constructor(mAutoLoinView: AutoLoginView) {
         this.mAutoLoinView = mAutoLoinView
     }
 
     fun goServerAutoLogin(){
-        val accessToken = RequestRefreshTokenBody(USER_TOKEN)
-        Log.d("accessToken",USER_TOKEN)
-        RequestServer.userService.refreshToken(accessToken).enqueue(object :
+        val refreshToken = RequestRefreshTokenBody(USER_REFRESH_TOKEN)
+        Log.d("refreshToken",USER_REFRESH_TOKEN)
+        RequestServer.userService.refreshToken(refreshToken).enqueue(object :
             Callback<ResponseRefreshTokenBody>{
             override fun onResponse(
                 call: Call<ResponseRefreshTokenBody>,
