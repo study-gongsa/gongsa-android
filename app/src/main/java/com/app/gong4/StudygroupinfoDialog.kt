@@ -67,12 +67,12 @@ class StudygroupinfoDialog(private val data: StduyGroupDetailItem) : DialogFragm
                     call: Call<ResponseEnterMember>,
                     response: Response<ResponseEnterMember>
                 ) {
-                    Log.d("응답결과",response.toString())
                     if(response.isSuccessful) {
                         val successMsg = resources.getString(R.string.main_join_success)
                         Toast.makeText(context,successMsg, Toast.LENGTH_SHORT).show()
                         dismiss()
                     }else{
+                        Log.d("응답결과",response.toString())
                         val errorMsg = response.body()!!.msg
                         Toast.makeText(context,errorMsg, Toast.LENGTH_SHORT).show()
                         dismiss()

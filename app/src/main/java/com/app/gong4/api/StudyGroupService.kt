@@ -16,10 +16,10 @@ interface StudyGroupService {
 
     @GET("/api/study-group/search")
     fun getStudygroupfilterInfo(
-        @Query("align")align:String?=null,
-        @Query("categoryUIDs")categoryUIDs:List<Int>?=null,
-        @Query("isCam")isCam:Boolean?=null,
-        @Query("word")word:String?=null,
+        @Query("align") align:String?=null,
+        @Query("categoryUIDs") categoryUIDs: List<Int>? =null,
+        @Query("isCam") isCam:Boolean?=null,
+        @Query("word") word:String?=null,
     ) : Call<ResponseGroupItemBody>
 
     @GET("/api/study-group/code/{code}")

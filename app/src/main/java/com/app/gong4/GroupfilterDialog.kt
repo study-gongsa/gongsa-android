@@ -1,8 +1,7 @@
 package com.app.gong4
 
 import android.R
-import android.app.Activity
-import android.content.ContentValues.TAG
+import android.app.Dialog
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -14,6 +13,7 @@ import android.util.Log
 import android.view.*
 import androidx.core.view.children
 import androidx.fragment.app.DialogFragment
+import com.app.gong4.DTO.RequestGroupItemBody
 import com.app.gong4.DTO.ResponseGroupItemBody
 import com.app.gong4.DTO.StduyGroupItem
 import com.app.gong4.DTO.StudyCategory
@@ -39,9 +39,10 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
         val view = binding.root
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
         showCategories()
-        saveFilter();
+        saveFilter()
 
         return view
     }
@@ -51,18 +52,27 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
     }
 
     private fun saveFilter(){
-        var checkedIsCame :Boolean = true
+        var checkedIsCam :Boolean = true
+        var checkedCam : Int = 1 // 모두 보기 선택 변수
         var checkedAlign :String = "latest"
         var checkedChipList : List<Int>
         var checkedCategory : ArrayList<StudyCategory> = arrayListOf()
 
-        binding.saveButton.setOnClickListener{
-            binding.filterCamRadioGroup.setOnCheckedChangeListener { group, checkedId ->
-                when(checkedId){
-                    binding.filterCamTrue.id -> checkedIsCame = true
-                    binding.filterCamFalse.id -> checkedIsCame = false
+        binding.filterCamRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+            when(checkedId){
+                binding.filterCamAll.id -> checkedCam = 1
+                binding.filterCamTrue.id -> {
+                    checkedCam = 0
+                    checkedIsCam = true
+                }
+                binding.filterCamFalse.id -> {
+                    checkedCam = 0
+                    checkedIsCam = false
                 }
             }
+        }
+
+        binding.saveButton.setOnClickListener{
             checkedChipList =
                 binding.categoryChipGroup.children?.filter { (it as Chip).isChecked }?.map { it.id }?.toList()!!
             binding.categoryChipGroup.children.filter { (it as Chip).isChecked }.map {
@@ -75,23 +85,47 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
                     binding.filterPeriodNewRadio.id -> checkedAlign = "latest"
                 }
             }
-            //api 호출
-           RequestServer.studyGroupService.getStudygroupfilterInfo(align = checkedAlign, categoryUIDs = checkedChipList,isCam=checkedIsCame).enqueue(object :
-               Callback<ResponseGroupItemBody>{
-               override fun onResponse(
-                   call: Call<ResponseGroupItemBody>,
-                   response: Response<ResponseGroupItemBody>
-               ) {
-                   val data = response.body()!!.data.studyGroupList
-                    // mainfragment에 값 변경하기
-                   listener?.result(checkedCategory,data)
-                   dismiss()
-               }
 
-               override fun onFailure(call: Call<ResponseGroupItemBody>, t: Throwable) {
-                   TODO("Not yet implemented")
-               }
-           })
+            //api 호출
+            val request = RequestGroupItemBody(checkedAlign,checkedChipList,checkedIsCam,null)
+            if(checkedCam == 1){
+                RequestServer.studyGroupService.getStudygroupfilterInfo(align = checkedAlign, categoryUIDs = checkedChipList).enqueue(object :
+                    Callback<ResponseGroupItemBody>{
+                    override fun onResponse(
+                        call: Call<ResponseGroupItemBody>,
+                        response: Response<ResponseGroupItemBody>
+                    ) {
+                        val data = response.body()!!.data.studyGroupList
+                        // mainfragment에 값 변경하기
+                        listener?.result(request,checkedCategory,data)
+                        dismiss()
+                    }
+
+                    override fun onFailure(call: Call<ResponseGroupItemBody>, t: Throwable) {
+                        TODO("Not yet implemented")
+                    }
+                })
+            }else{
+                RequestServer.studyGroupService.getStudygroupfilterInfo(
+                    align = checkedAlign, categoryUIDs = checkedChipList,
+                    isCam =checkedIsCam).enqueue(object :
+                    Callback<ResponseGroupItemBody>{
+                    override fun onResponse(
+                        call: Call<ResponseGroupItemBody>,
+                        response: Response<ResponseGroupItemBody>
+                    ) {
+                        val data = response.body()!!.data.studyGroupList
+                        // mainfragment에 값 변경하기
+                        listener?.result(request,checkedCategory,data)
+                        dismiss()
+                    }
+
+                    override fun onFailure(call: Call<ResponseGroupItemBody>, t: Throwable) {
+                        TODO("Not yet implemented")
+                    }
+                })
+            }
+
         }
     }
 
@@ -102,6 +136,8 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
                 id = c.categoryUID
                 isCheckable = true
                 isCheckedIconVisible = false
+                width = 56
+                height = 28
                 chipStrokeWidth = 2f
               //  setTextSize(TypedValue.COMPLEX_UNIT_DIP,10f)
                 chipStrokeColor = ColorStateList(
@@ -134,8 +170,23 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
         val size = windowManager.currentWindowMetricsPointCompat()
         val deviceWidth = size.x
 
-        params?.width = (deviceWidth * 0.8).toInt()
+        params?.width = (deviceWidth * 0.83).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
+     //   dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
+
+    fun resizeDialog() {
+        val windowManager = activity?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
+        val deviceWidth = size.x
+        val deviceHeight = size.y
+        params?.width = (deviceWidth * 0.8).toInt()
+        params?.height = (deviceHeight * 0.3).toInt()
+        dialog?.window?.attributes = params as WindowManager.LayoutParams
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     fun WindowManager.currentWindowMetricsPointCompat(): Point {
@@ -169,5 +220,5 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
 }
 
 interface DialogResult{
-    fun result(category:List<StudyCategory>,Data:List<StduyGroupItem>)
+    fun result(request:RequestGroupItemBody,category:List<StudyCategory>,Data:List<StduyGroupItem>)
 }
