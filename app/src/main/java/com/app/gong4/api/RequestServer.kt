@@ -33,4 +33,7 @@ object RequestServer {
 
     // 스터디 그룹 관련 함수
     val studyGroupService : StudyGroupService = retrofit.create(StudyGroupService::class.java)
+
+    // 스터디 그룹 관련 함수
+    val userCategoryService : UserCategoryService = retrofit.create(UserCategoryService::class.java)
 }

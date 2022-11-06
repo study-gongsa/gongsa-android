@@ -32,18 +32,19 @@
         <entry key="app/src/main/res/layout/fragment_create_studygroup.xml" value="0.4141921997070313" />
         <entry key="app/src/main/res/layout/fragment_findpassword.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_group_qna_list.xml" value="0.2515625" />
-        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.171875" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.330120849609375" />
         <entry key="app/src/main/res/layout/fragment_main.xml" value="0.521505376344086" />
         <entry key="app/src/main/res/layout/fragment_signup.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_study_group.xml" value="0.2390625" />
         <entry key="app/src/main/res/layout/groupenter_dialog.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/groupfilter_dialog.xml" value="0.3731958762886598" />
+        <entry key="app/src/main/res/layout/groupfilter_dialog.xml" value="0.32216494845360827" />
         <entry key="app/src/main/res/layout/item_chip_category.xml" value="0.2452956989247312" />
         <entry key="app/src/main/res/layout/layout_group_filter_dialog.xml" value="0.45" />
         <entry key="app/src/main/res/layout/layout_studygroup_info_dialog.xml" value="0.15053763440860216" />
         <entry key="app/src/main/res/layout/studygroup_row_item.xml" value="0.5052264808362369" />
         <entry key="app/src/main/res/layout/studygroupinfo_dialog.xml" value="0.1825726141078838" />
-        <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/usercategory_dialog.xml" value="0.5413528442382813" />
+        <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.29899902343749996" />
       </map>
     </option>
   </component>

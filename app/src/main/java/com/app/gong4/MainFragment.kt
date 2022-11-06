@@ -9,16 +9,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.gong4.DTO.*
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMainBinding
+import com.app.gong4.util.AppViewModel
 import com.app.gong4.util.MainApplication
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,10 +32,11 @@ import kotlin.collections.ArrayList
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
-    private lateinit var category: List<StudyCategory>
+    private lateinit var category: ArrayList<StudyCategory>
     private lateinit var dataList : ArrayList<StduyGroupItem>
     private lateinit var dataAllList : ArrayList<StduyGroupItem>
     private lateinit var mAdapter : StudyGroupListAdapter
+    private lateinit var viewModel : AppViewModel
     var mRequest : RequestGroupItemBody?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +45,8 @@ class MainFragment : Fragment() {
         val mainActivity = activity as MainActivity
         mainActivity.hideToolbar(true)
 
+        viewModel = ViewModelProvider(this).get(AppViewModel::class.java)
+        getCategories()
     }
 
     override fun onCreateView(
@@ -48,8 +55,10 @@ class MainFragment : Fragment() {
     ): View? {
         binding = FragmentMainBinding.inflate(inflater, container, false)
 
-        goRecommendStudygroup()
-        getCategories()
+        CoroutineScope(Dispatchers.IO).launch {
+            goRecommendStudygroup()
+            getUserCategory()
+        }
 
         showEnterDialog()
         showStudyRoomDialog()
@@ -59,6 +68,26 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
+    private fun getUserCategory() : ArrayList<UserCategory>{
+        var userCategory : List<UserCategory> = arrayListOf()
+        RequestServer.userCategoryService.getUserCategory().enqueue(object :
+            Callback<ResponseUserCategory>{
+            override fun onResponse(
+                call: Call<ResponseUserCategory>,
+                response: Response<ResponseUserCategory>
+            ) {
+                userCategory = response.body()!!.data!!
+                if(userCategory.isEmpty()){
+                    UsercategoryDialog(viewModel.getCategoryList()).show(parentFragmentManager,"UserCategoryDialog")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseUserCategory>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+       })
+        return userCategory as ArrayList<UserCategory>
+    }
 
     private fun cameraToogle(){
         binding.isCam.setOnClickListener{
@@ -177,7 +206,8 @@ class MainFragment : Fragment() {
                 call: Call<ResponseStudycategoryBody>,
                 response: Response<ResponseStudycategoryBody>
             ) {
-                category = response.body()!!.data
+                category = response.body()!!.data as ArrayList<StudyCategory>
+                viewModel.initCategoryList(category)
             }
 
             override fun onFailure(call: Call<ResponseStudycategoryBody>, t: Throwable) {
