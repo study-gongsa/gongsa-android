@@ -1,20 +1,20 @@
 package com.app.gong4.util
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.gong4.DTO.StudyCategory
 
 class AppViewModel:ViewModel() {
-    private var categoryList :MutableList<StudyCategory>
+    private val categoryList = arrayListOf<StudyCategory>()
 
-    init {
-        categoryList = arrayListOf()
-    }
     fun getCategoryList() : ArrayList<StudyCategory>{
-        return categoryList as ArrayList<StudyCategory>
+        Log.d("getCategoryList",categoryList.toString());
+        return categoryList
     }
 
     fun initCategoryList(category : ArrayList<StudyCategory>){
-        categoryList = category
+        categoryList.addAll(category)
+        Log.d("initCategoryList",categoryList.toString());
     }
 }

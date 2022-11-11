@@ -117,7 +117,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/camera_radioGroup" />
 
             <RadioGroup
-                android:id="@+id/radioGroup2"
+                android:id="@+id/chatting_radioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -156,10 +156,10 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroup2" />
+                app:layout_constraintTop_toBottomOf="@+id/chatting_radioGroup" />
 
             <com.addisonelliott.segmentedbutton.SegmentedButtonGroup
-                android:id="@+id/segmentedButtonGroup"
+                android:id="@+id/people_segmented"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -259,10 +259,10 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/segmentedButtonGroup" />
+                app:layout_constraintTop_toBottomOf="@+id/people_segmented" />
 
             <RadioGroup
-                android:id="@+id/radioGroup3"
+                android:id="@+id/open_radioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -301,7 +301,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroup3" />
+                app:layout_constraintTop_toBottomOf="@+id/open_radioGroup" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/categoriy_chipGroup"
@@ -332,7 +332,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/categoriy_chipGroup" />
 
             <RadioGroup
-                android:id="@+id/radioGroup4"
+                android:id="@+id/penalty_radioGroup"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -367,7 +367,7 @@
                 android:background="@drawable/custom_input"
                 android:padding="4dp"
                 android:text="@string/main_study_make_penel_opt"
-                app:layout_constraintStart_toEndOf="@+id/radioGroup4"
+                app:layout_constraintStart_toEndOf="@+id/penalty_radioGroup"
                 app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
             <TextView
@@ -383,10 +383,10 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroup4" />
+                app:layout_constraintTop_toBottomOf="@+id/penalty_radioGroup" />
 
             <RadioGroup
-                android:id="@+id/radioGroup5"
+                android:id="@+id/input_radioGroup"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -401,15 +401,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
-                    android:theme="@style/CustomRadioButton"
-                    android:text="@string/main_study_make_penel_false" />
+                    android:text="@string/main_study_make_study_false"
+                    android:theme="@style/CustomRadioButton" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/radioButton9"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:theme="@style/CustomRadioButton"
-                    android:text="@string/main_study_make_penel_true" />
+                    android:text="@string/main_study_make_study_true"
+                    android:theme="@style/CustomRadioButton" />
             </RadioGroup>
             <TextView
                 android:id="@+id/textView26"
@@ -420,7 +420,7 @@
                 android:background="@drawable/custom_input"
                 android:padding="4dp"
                 android:text="@string/main_study_make_study_opt"
-                app:layout_constraintStart_toEndOf="@+id/radioGroup5"
+                app:layout_constraintStart_toEndOf="@+id/input_radioGroup"
                 app:layout_constraintTop_toBottomOf="@+id/textView25" />
 
             <TextView
@@ -436,16 +436,21 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroup5" />
+                app:layout_constraintTop_toBottomOf="@+id/input_radioGroup" />
 
-            <EditText
-                android:id="@+id/editTextTime"
+            <TextView
+                android:id="@+id/time_textView"
                 android:layout_width="64dp"
-                android:layout_height="wrap_content"
+                android:layout_height="21dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/chip_hashta"
                 android:ems="10"
+                android:gravity="center|center_vertical"
                 android:inputType="time"
+                android:text="09 : 00"
+                android:textColor="@color/black_06_main"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
@@ -454,12 +459,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="24dp"
                 android:text="@string/main_study_make_time_opt"
                 android:textColor="@color/black02"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/editTextTime"
+                app:layout_constraintStart_toEndOf="@+id/time_textView"
                 app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -473,8 +478,115 @@
                 android:text="@string/main_study_make_create_btn"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTime" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+            <TextView
+                android:id="@+id/textView31"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/main_study_make_study_image"
+                android:textColor="@color/black06"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/time_textView" />
+
+            <RadioGroup
+                android:id="@+id/background_radioGroup"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="9dp"
+                android:checkedButton="@id/radioButton11"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView31">
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/radioButton11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:text="@string/main_study_make_study_false"
+                    android:theme="@style/CustomRadioButton" />
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/radioButton12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_study_make_study_true"
+                    android:theme="@style/CustomRadioButton" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/textView32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/main_study_make_study_period"
+                android:textColor="@color/black_06_main"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/background_radioGroup" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/chip_hashta"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView32">
+
+                <TextView
+                    android:id="@+id/start_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="YYYY.MM.DD"
+                    android:textColor="@color/black_06_main"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/textView35"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="~" />
+
+                <TextView
+                    android:id="@+id/end_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="YYYY.MM.DD"
+                    android:textColor="@color/black_06_main"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/image_select_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="11dp"
+                android:background="@drawable/custom_input"
+                android:padding="4dp"
+                android:text="@string/main_study_make_study_image_select"
+                app:layout_constraintStart_toEndOf="@+id/background_radioGroup"
+                app:layout_constraintTop_toBottomOf="@+id/textView31" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

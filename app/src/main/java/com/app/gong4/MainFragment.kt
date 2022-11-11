@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,7 +38,7 @@ class MainFragment : Fragment() {
     private lateinit var dataList : ArrayList<StduyGroupItem>
     private lateinit var dataAllList : ArrayList<StduyGroupItem>
     private lateinit var mAdapter : StudyGroupListAdapter
-    private lateinit var viewModel : AppViewModel
+    private val viewModel : AppViewModel by activityViewModels()
     var mRequest : RequestGroupItemBody?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +47,6 @@ class MainFragment : Fragment() {
         val mainActivity = activity as MainActivity
         mainActivity.hideToolbar(true)
 
-        viewModel = ViewModelProvider(this).get(AppViewModel::class.java)
         getCategories()
     }
 

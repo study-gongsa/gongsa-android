@@ -1,6 +1,8 @@
 package com.app.gong4
 
 import android.R
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -10,27 +12,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.app.gong4.DTO.ResponseStudycategoryBody
 import com.app.gong4.DTO.StudyCategory
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentCreateStudygroupBinding
+import com.app.gong4.util.AppViewModel
 import com.google.android.material.chip.Chip
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CreateStudygroupFragment : Fragment() {
 
     private lateinit var binding: FragmentCreateStudygroupBinding
     private lateinit var categories : List<StudyCategory>
-
+    private val viewModel : AppViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.d("CreateStudygroup","onCreate")
-        getCategories()
-
+        categories = viewModel.getCategoryList()
+        //getCategories()
     }
 
     override fun onCreateView(
@@ -39,13 +45,11 @@ class CreateStudygroupFragment : Fragment() {
     ): View? {
         val mainActivity = activity as MainActivity
         mainActivity.hideToolbar(true)
-
         binding = FragmentCreateStudygroupBinding.inflate(inflater, container, false)
 
-        Log.d("CreateStudygroup","onCreateView")
-
-        //getCategories()
         showCategories()
+        showDatePicker()
+        showTimePicker()
         createStudyGroup()
 
         return binding.root
@@ -80,6 +84,35 @@ class CreateStudygroupFragment : Fragment() {
             }
 
         })
+    }
+
+    private fun showDatePicker(){
+        val today = Calendar.getInstance()
+        binding.startDate.text ="${today.get(Calendar.YEAR)}-${today.get(Calendar.MONTH)+1}-${today.get(Calendar.DATE)}"
+        binding.endDate.text ="${today.get(Calendar.YEAR)}-${today.get(Calendar.MONTH)+1}-${today.get(Calendar.DATE)}"
+
+        binding.endDate.setOnClickListener {
+            val cal = Calendar.getInstance()
+            val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                binding.endDate.text = "${year}-${month+1}-${day}"
+
+            }
+            DatePickerDialog(requireContext(), data, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
+                .apply { datePicker.minDate = System.currentTimeMillis() }
+                .show()
+        }
+    }
+
+    private fun showTimePicker(){
+        binding.timeTextView.text = "01:00"
+        binding.timeTextView.setOnClickListener {
+            val cal = Calendar.getInstance()
+            val time = TimePickerDialog.OnTimeSetListener { view, hour, minute ->
+                binding.timeTextView.text = "${hour}:00"
+            }
+            TimePickerDialog(requireContext(),time,cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE),false)
+                .show()
+        }
     }
 
     private fun showCategories(){
