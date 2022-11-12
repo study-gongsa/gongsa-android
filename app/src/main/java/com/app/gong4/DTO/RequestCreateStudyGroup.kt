@@ -14,10 +14,10 @@ data class RequestCreateStudyGroup(
 )
 
 data class ResponseCreateStudyGroup (
-    val data: ResponseGroupUID,
-    val location: String,
-    val msg: String
-    )
+    val location: Any,
+    val msg: String,
+    val data: ResponseGroupUID
+)
 
 data class ResponseGroupUID(
     val groupUID: Int

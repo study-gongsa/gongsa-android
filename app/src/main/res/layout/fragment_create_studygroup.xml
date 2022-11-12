@@ -101,47 +101,6 @@
                     android:text="@string/main_filter_isCam_false" />
             </RadioGroup>
 
-            <TextView
-                android:id="@+id/textView19"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="33dp"
-                android:layout_marginEnd="24dp"
-                android:text="@string/main_study_make_chat_title"
-                android:textColor="@color/black_06_main"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/camera_radioGroup" />
-
-            <RadioGroup
-                android:id="@+id/chatting_radioGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="9dp"
-                android:checkedButton="@id/chat_true"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView19">
-
-                <RadioButton
-                    android:id="@+id/chat_true"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:theme="@style/CustomRadioButton"
-                    android:text="@string/main_study_make_chat_true" />
-
-                <RadioButton
-                    android:id="@+id/chat_false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/CustomRadioButton"
-                    android:text="@string/main_study_make_chat_false" />
-            </RadioGroup>
 
             <TextView
                 android:id="@+id/textView20"
@@ -156,7 +115,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/chatting_radioGroup" />
+                app:layout_constraintTop_toBottomOf="@+id/camera_radioGroup" />
 
             <com.addisonelliott.segmentedbutton.SegmentedButtonGroup
                 android:id="@+id/people_segmented"

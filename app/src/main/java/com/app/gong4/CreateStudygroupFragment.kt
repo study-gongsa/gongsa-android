@@ -47,12 +47,6 @@ class CreateStudygroupFragment : Fragment() {
     private lateinit var categories : List<StudyCategory>
     private val viewModel : AppViewModel by activityViewModels()
 
-    private var checkedCamera = true
-    private var checkedChatting = true
-    private var checkedOpened = true
-    private var checkedInput = true
-    private var checkedPanelty = true
-
     private var imageFile : File? = null
 
     companion object{
@@ -83,19 +77,17 @@ class CreateStudygroupFragment : Fragment() {
     }
 
     private fun createStudyGroup(){
+        var checkedCamera = true
+        var checkedOpened = true
+        var checkedInput = true
+        var checkedPanelty = true
+
         binding.cameraRadioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
             when(checkedId){
                 binding.cameraTrue.id -> { checkedCamera = true}
                 binding.cameraFalse.id -> { checkedCamera = false }
             }
         }//카메라 여부
-
-        binding.chattingRadioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
-            when(checkedId){
-                binding.chatTrue.id -> { checkedChatting = true }
-                binding.chatFalse.id -> { checkedChatting = false }
-            }
-        }//채팅
 
         binding.openRadioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
             when(checkedId){
@@ -113,7 +105,7 @@ class CreateStudygroupFragment : Fragment() {
                 }
                 binding.paneltyFalse.id -> {
                     checkedPanelty = false
-                    binding.paneltyEdittext.isFocusableInTouchMode = true
+                    binding.paneltyEdittext.isFocusableInTouchMode = false
                 }
             }
         }//벌점
@@ -122,10 +114,11 @@ class CreateStudygroupFragment : Fragment() {
             when(checkedId){
                 binding.inputTrue.id -> {
                     checkedInput = true
-                    binding.inputEdittext.isFocusable = true
+                    binding.inputEdittext.isFocusableInTouchMode = true
                 }
                 binding.inputFalse.id -> {
                     checkedInput = false
+                    binding.inputEdittext.isFocusableInTouchMode = false
                 }
             }
         }//스터디 재진입
@@ -163,23 +156,23 @@ class CreateStudygroupFragment : Fragment() {
                 maxMember,maxTodayStudy,minStudyHour,roomName)
 
             val requestFile = RequestBody.create(MediaType.parse("image/jpeg"),imageFile)
-            val body = MultipartBody.Part.createFormData("image",imageFile?.name,requestFile)
+            val image = MultipartBody.Part.createFormData("image",imageFile?.name,requestFile)
 
-            RequestServer.studyGroupService.createStudygroup(body,requestBody).enqueue(object :
+            RequestServer.studyGroupService.createStudygroup(image,requestBody).enqueue(object :
                 Callback<ResponseCreateStudyGroup> {
                 override fun onResponse(
                     call: Call<ResponseCreateStudyGroup>,
                     response: Response<ResponseCreateStudyGroup>
                 ) {
-                    Log.d("createStudygroup 결과",response.toString())
-
-                    if(response.isSuccessful){
+                    if(response.isSuccessful && response.body()!!.data.groupUID != null){
                         view.findNavController().navigate(com.app.gong4.R.id.action_createStudyFragment_to_completeStudyFragment)
                     }else{
-                        val msg = response.body()!!.msg
+                        var msg = ""
+                        if(response.body()!!.msg != null){
+                            msg = response.body()!!.msg
+                        }
                         Toast.makeText(context,msg,Toast.LENGTH_SHORT).show()
                     }
-
                 }
 
                 override fun onFailure(call: Call<ResponseCreateStudyGroup>, t: Throwable) {

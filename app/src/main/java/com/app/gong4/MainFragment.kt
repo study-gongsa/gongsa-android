@@ -162,8 +162,8 @@ class MainFragment : Fragment() {
                 call: Call<ResponseStudygroupinfoBody>,
                 response: Response<ResponseStudygroupinfoBody>
             ) {
+                Log.d("studyinfo 응답 결과 : ", response.toString())
                 val data = response.body()!!.data
-                Log.d("studyinfo 응답 결과 : ", data.toString())
                 Log.d("categories", category.toString())
                 StudygroupinfoDialog(data).show(parentFragmentManager,"InfoDialog")
             }

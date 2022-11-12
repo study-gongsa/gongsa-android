@@ -31,6 +31,7 @@ interface StudyGroupService {
     fun getStudyEnter(@Body body:RequestEnterMember) : Call<ResponseEnterMember>
 
     @Multipart
+    @Headers("accept: application/json")
     @POST("/api/study-group")
     fun createStudygroup(
         @Part image:MultipartBody.Part,
