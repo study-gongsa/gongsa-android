@@ -61,7 +61,7 @@
         android:label="스터디그룹 생성"
         tools:layout="@layout/fragment_create_studygroup" >
         <action
-            android:id="@+id/action_createStudygroupFragment_to_completeStudygroupFragment"
+            android:id="@+id/action_createStudyFragment_to_completeStudyFragment"
             app:destination="@id/completeStudygroupFragment" />
     </fragment>
     <fragment

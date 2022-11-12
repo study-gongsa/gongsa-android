@@ -1,6 +1,8 @@
 package com.app.gong4.api
 
 import com.app.gong4.DTO.*
+import okhttp3.MultipartBody
+import okhttp3.Request
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -27,4 +29,11 @@ interface StudyGroupService {
 
     @POST("/api/group-member")
     fun getStudyEnter(@Body body:RequestEnterMember) : Call<ResponseEnterMember>
+
+    @Multipart
+    @POST("/api/study-group")
+    fun createStudygroup(
+        @Part image:MultipartBody.Part,
+        @Part("json") body: Any
+    ) : Call<ResponseCreateStudyGroup>
 }

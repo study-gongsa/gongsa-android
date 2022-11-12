@@ -43,7 +43,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
             <EditText
-                android:id="@+id/name_editText"
+                android:id="@+id/room_edittext"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -72,7 +72,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/name_editText" />
+                app:layout_constraintTop_toBottomOf="@+id/room_edittext" />
 
             <RadioGroup
                 android:id="@+id/camera_radioGroup"
@@ -80,21 +80,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="9dp"
-                android:checkedButton="@id/radioButton"
+                android:checkedButton="@id/camera_true"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView17">
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/radioButton"
+                <RadioButton
+                    android:id="@+id/camera_true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:theme="@style/CustomRadioButton"
                     android:text="@string/main_filter_isCam_true" />
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/radioButton2"
+                <RadioButton
+                    android:id="@+id/camera_false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:theme="@style/CustomRadioButton"
@@ -122,21 +122,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="9dp"
-                android:checkedButton="@id/radioButton3"
+                android:checkedButton="@id/chat_true"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView19">
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/radioButton3"
+                <RadioButton
+                    android:id="@+id/chat_true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:theme="@style/CustomRadioButton"
                     android:text="@string/main_study_make_chat_true" />
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/radioButton4"
+                <RadioButton
+                    android:id="@+id/chat_false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:theme="@style/CustomRadioButton"
@@ -161,7 +161,7 @@
             <com.addisonelliott.segmentedbutton.SegmentedButtonGroup
                 android:id="@+id/people_segmented"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="32dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
@@ -170,7 +170,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView20"
-                app:radius="20dp"
+                app:radius="10dp"
                 app:selectedBackground="@color/green_03_main">
 
                 <com.addisonelliott.segmentedbutton.SegmentedButton
@@ -267,21 +267,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="9dp"
-                android:checkedButton="@id/radioButton6"
+                android:checkedButton="@id/open_true"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView21">
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/radioButton6"
+                <RadioButton
+                    android:id="@+id/open_true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
                     android:theme="@style/CustomRadioButton"
                     android:text="@string/main_study_make_open_true" />
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/radioButton5"
+                <RadioButton
+                    android:id="@+id/open_false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:theme="@style/CustomRadioButton"
@@ -337,36 +337,38 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="9dp"
-                android:checkedButton="@id/radioButton8"
+                android:checkedButton="@id/panelty_false"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView23">
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/radioButton8"
+                <RadioButton
+                    android:id="@+id/panelty_true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
-                    android:theme="@style/CustomRadioButton"
-                    android:text="@string/main_study_make_penel_false" />
+                    android:text="@string/main_study_make_penel_false"
+                    android:theme="@style/CustomRadioButton" />
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/radioButton7"
+                <RadioButton
+                    android:id="@+id/panelty_false"
                     android:layout_width="match_parent"
-                    android:theme="@style/CustomRadioButton"
                     android:layout_height="wrap_content"
-                    android:text="@string/main_study_make_penel_true" />
+                    android:text="@string/main_study_make_penel_true"
+                    android:theme="@style/CustomRadioButton" />
             </RadioGroup>
 
-            <TextView
-                android:id="@+id/textView24"
+            <EditText
+                android:id="@+id/panelty_edittext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="17dp"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="11dp"
                 android:background="@drawable/custom_input"
+                android:hint="@string/main_study_make_penel_opt"
+                android:inputType="number"
                 android:padding="4dp"
-                android:text="@string/main_study_make_penel_opt"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/penalty_radioGroup"
                 app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
@@ -391,35 +393,38 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="9dp"
-                android:checkedButton="@id/radioButton10"
+                android:checkedButton="@id/input_true"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView25">
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/radioButton10"
+                <RadioButton
+                    android:id="@+id/input_false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
                     android:text="@string/main_study_make_study_false"
                     android:theme="@style/CustomRadioButton" />
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/radioButton9"
+                <RadioButton
+                    android:id="@+id/input_true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/main_study_make_study_true"
                     android:theme="@style/CustomRadioButton" />
             </RadioGroup>
-            <TextView
-                android:id="@+id/textView26"
+
+            <EditText
+                android:id="@+id/input_edittext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="17dp"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="11dp"
                 android:background="@drawable/custom_input"
+                android:hint="@string/main_study_make_study_opt"
+                android:inputType="number"
                 android:padding="4dp"
-                android:text="@string/main_study_make_study_opt"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/input_radioGroup"
                 app:layout_constraintTop_toBottomOf="@+id/textView25" />
 
@@ -501,21 +506,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="9dp"
-                android:checkedButton="@id/radioButton11"
+                android:checkedButton="@id/image_false"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView31">
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/radioButton11"
+                <RadioButton
+                    android:id="@+id/image_false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
                     android:text="@string/main_study_make_study_false"
                     android:theme="@style/CustomRadioButton" />
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/radioButton12"
+                <RadioButton
+                    android:id="@+id/image_true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/main_study_make_study_true"
@@ -582,6 +587,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="11dp"
                 android:background="@drawable/custom_input"
+                android:clickable="false"
                 android:padding="4dp"
                 android:text="@string/main_study_make_study_image_select"
                 app:layout_constraintStart_toEndOf="@+id/background_radioGroup"
