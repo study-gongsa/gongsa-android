@@ -18,6 +18,7 @@ import com.app.gong4.DTO.*
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.StudygroupinfoDialogBinding
 import com.google.android.material.chip.Chip
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -67,14 +68,14 @@ class StudygroupinfoDialog(private val data: StduyGroupDetailItem) : DialogFragm
                     call: Call<ResponseEnterMember>,
                     response: Response<ResponseEnterMember>
                 ) {
-                    Log.d("응답결과",response.toString())
                     if(response.isSuccessful) {
                         val successMsg = resources.getString(R.string.main_join_success)
                         Toast.makeText(context,successMsg, Toast.LENGTH_SHORT).show()
                         dismiss()
                     }else{
-                        val errorMsg = response.body()!!.msg
-                        Toast.makeText(context,errorMsg, Toast.LENGTH_SHORT).show()
+                        val error = response.errorBody()!!.string().trimIndent()
+                        val msg = Gson().fromJson(error, ResponseEnterMember::class.java).msg
+                        Toast.makeText(context,msg, Toast.LENGTH_SHORT).show()
                         dismiss()
                     }
                 }

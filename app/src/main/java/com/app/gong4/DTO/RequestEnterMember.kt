@@ -7,5 +7,5 @@ data class RequestEnterMember(
 data class ResponseEnterMember(
     var location : String,
     var msg : String,
-    var data : Token
+    var data : String
 )

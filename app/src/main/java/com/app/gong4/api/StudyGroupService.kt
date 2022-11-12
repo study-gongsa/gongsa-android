@@ -1,6 +1,8 @@
 package com.app.gong4.api
 
 import com.app.gong4.DTO.*
+import okhttp3.MultipartBody
+import okhttp3.Request
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -16,10 +18,10 @@ interface StudyGroupService {
 
     @GET("/api/study-group/search")
     fun getStudygroupfilterInfo(
-        @Query("align")align:String?=null,
-        @Query("categoryUIDs")categoryUIDs:List<Int>?=null,
-        @Query("isCam")isCam:Boolean?=null,
-        @Query("word")word:String?=null,
+        @Query("align") align:String?=null,
+        @Query("categoryUIDs") categoryUIDs: List<Int>? =null,
+        @Query("isCam") isCam:Boolean?=null,
+        @Query("word") word:String?=null,
     ) : Call<ResponseGroupItemBody>
 
     @GET("/api/study-group/code/{code}")
@@ -27,4 +29,12 @@ interface StudyGroupService {
 
     @POST("/api/group-member")
     fun getStudyEnter(@Body body:RequestEnterMember) : Call<ResponseEnterMember>
+
+    @Multipart
+    @Headers("accept: application/json")
+    @POST("/api/study-group")
+    fun createStudygroup(
+        @Part image:MultipartBody.Part,
+        @Part("json") body: Any
+    ) : Call<ResponseCreateStudyGroup>
 }

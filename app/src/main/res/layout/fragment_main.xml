@@ -74,40 +74,51 @@
 
         <com.addisonelliott.segmentedbutton.SegmentedButtonGroup
             android:id="@+id/camera_segmentButton"
-            android:layout_width="72dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:visibility="invisible"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="24dp"
-            android:visibility="invisible"
             app:borderColor="@color/green_03_main"
-            app:borderWidth="1dp"
+            app:borderWidth="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/chip_scrollview"
-            app:radius="16dp"
-            app:selectedButtonRadius="12dp">
+            app:radius="30dp"
+            app:selectedBackground="@color/green_03_main"
+            app:selectedBorderColor="#5555"
+            app:selectedButtonRadius="30dp">
 
             <com.addisonelliott.segmentedbutton.SegmentedButton
                 android:id="@+id/isFalseCam"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="3dp"
                 android:paddingStart="8dp"
                 android:paddingTop="4dp"
                 android:paddingEnd="8dp"
+                android:background="@color/white"
+                android:layout_marginRight="2dp"
                 android:paddingBottom="4dp"
+                app:drawableTint="@color/green_03_main"
+                app:selectedDrawableTint="@color/white"
                 app:drawable="@drawable/ic_camera_off_22" />
-
             <com.addisonelliott.segmentedbutton.SegmentedButton
                 android:id="@+id/isCam"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="3dp"
                 android:paddingStart="8dp"
                 android:paddingTop="4dp"
                 android:paddingEnd="8dp"
+                android:background="@color/white"
+                android:layout_marginRight="2dp"
                 android:paddingBottom="4dp"
-                app:drawable="@drawable/ic_baseline_photo_camera_24"
-                app:selectedBackground="@color/green_03_main" />
+                app:drawableTint="@color/green_03_main"
+                app:selectedDrawableTint="@color/white"
+                app:drawable="@drawable/ic_baseline_photo_camera_24" />
         </com.addisonelliott.segmentedbutton.SegmentedButtonGroup>
 
         <androidx.recyclerview.widget.RecyclerView
