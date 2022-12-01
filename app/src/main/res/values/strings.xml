@@ -56,6 +56,7 @@
     <string name="main_filter_isCam_false">캠 끄기</string>
     <string name="main_filter_category">카테고리 (복수선택 가능)</string>
     <string name="main_filter_category02">카테고리</string>
+    <string name="main_filter_category03">카테고리 설정</string>
     <string name="main_filter_period">기간 (선택)</string>
     <string name="main_filter_period_new">최신순</string>
     <string name="main_filter_period_old">마감순</string>
@@ -64,6 +65,8 @@
     <string name="main_enter_code_hint">A123-8123-C123</string>
     <string name="main_enter_button_text">입장하기</string>
     <string name="main_join_button_text">가입하기</string>
+    <string name="main_join_success">가입이 완료되었습니다.</string>
+    <string name="main_save_success">저장되었습니다</string>
     <string name="main_study_info_isCam_true">카메라가 켜져있어요.</string>
     <string name="main_study_info_isCam_false">카메라가 꺼져있어요.</string>
     <string name="main_study_info_pepole_cnt">%d명</string>
@@ -92,18 +95,24 @@
     <string name="main_study_make_study_false">불가</string>
     <string name="main_study_make_study_opt">최대 7번까지 가능합니다.</string>
     <string name="main_study_make_time_title">스터디 목표 시간</string>
-    <string name="main_study_make_time_opt">24시간 이내 30분 단위로 가능합니다.</string>
+    <string name="main_study_make_time_opt">24시간 이내 1시간 단위로 가능합니다.</string>
     <string name="main_study_make_create_btn">생성하기</string>
     <string name="main_study_make_complete_title">스터디그룹이 생성되었어요!</string>
     <string name="main_study_make_move_title">대기실로 이동하기</string>
+    <string name="main_study_make_study_image">배경 이미지</string>
+    <string name="main_study_make_study_image_true">사용안함</string>
+    <string name="main_study_make_study_image_false">사용함</string>
+    <string name="main_study_make_study_image_select">이미지 올리기</string>
+    <string name="main_study_make_study_period">스터디 기간</string>
 
     <!-- 스터디 그룹 text -->
+    <string name="my_study_title">가입한 스터디그룹 내역</string>
     <string name="study_info">스터디 정보</string>
-    <string name="study_name">스터디 명:</string>
-    <string name="study_term">기간:</string>
-    <string name="study_cam">캠 여부:</string>
-    <string name="study_penalty">벌점:</string>
-    <string name="study_min_time">최소 시간:</string>
+    <string name="study_name">스터디 명: </string>
+    <string name="study_term">기간: </string>
+    <string name="study_cam">캠 여부: </string>
+    <string name="study_penalty">벌점: 최대 10점 이상 강퇴</string>
+    <string name="study_min_time">최소 시간: </string>
     <string name="study_category">카테고리</string>
     <string name="study_qna">Q<![CDATA[&]]>A</string>
 

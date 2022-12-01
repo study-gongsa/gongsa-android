@@ -1,12 +1,10 @@
 package com.app.gong4.api
 
-import com.app.gong4.DTO.ResponseGroupItemBody
-import com.app.gong4.DTO.ResponseStudycategoryBody
-import com.app.gong4.DTO.ResponseStudygroupinfoBody
+import com.app.gong4.DTO.*
+import okhttp3.MultipartBody
+import okhttp3.Request
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface StudyGroupService {
     @GET("/api/study-group/recommend")
@@ -20,12 +18,27 @@ interface StudyGroupService {
 
     @GET("/api/study-group/search")
     fun getStudygroupfilterInfo(
-        @Query("align")align:String?=null,
-        @Query("categoryUIDs")categoryUIDs:List<Int>?=null,
-        @Query("isCam")isCam:Boolean?=null,
-        @Query("word")word:String?=null,
+        @Query("align") align:String?=null,
+        @Query("categoryUIDs") categoryUIDs: List<Int>? =null,
+        @Query("isCam") isCam:Boolean?=null,
+        @Query("word") word:String?=null,
     ) : Call<ResponseGroupItemBody>
 
     @GET("/api/study-group/code/{code}")
     fun getStudygroupCodeInfo(@Path("code")code:String) : Call<ResponseStudygroupinfoBody>
+
+    @POST("/api/group-member")
+    fun getStudyEnter(@Body body:RequestEnterMember) : Call<ResponseEnterMember>
+
+    //나의 스터디 그룹 조회
+    @GET("/api/study-group/my-group")
+    fun getMyStudyGroup() : Call<ResponseGroupItemBody>
+
+    @Multipart
+    @Headers("accept: application/json")
+    @POST("/api/study-group")
+    fun createStudygroup(
+        @Part image:MultipartBody.Part,
+        @Part("json") body: Any
+    ) : Call<ResponseCreateStudyGroup>
 }

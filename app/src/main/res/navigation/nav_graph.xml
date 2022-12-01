@@ -60,7 +60,7 @@
         android:label="스터디그룹 생성"
         tools:layout="@layout/fragment_create_studygroup" >
         <action
-            android:id="@+id/action_createStudygroupFragment_to_completeStudygroupFragment"
+            android:id="@+id/action_createStudyFragment_to_completeStudyFragment"
             app:destination="@id/completeStudygroupFragment" />
     </fragment>
     <fragment
@@ -73,6 +73,9 @@
         android:name="com.app.gong4.StudyGroupFragment"
         android:label="fragment_study_group"
         tools:layout="@layout/fragment_study_group" >
+        <argument
+            android:name="pid"
+            app:argType="integer" />
         <action
             android:id="@+id/action_studyGroupFragment_to_groupQnaListFragment"
             app:destination="@id/groupQnaListFragment" />
@@ -82,4 +85,13 @@
         android:name="com.app.gong4.GroupQnaListFragment"
         android:label="fragment_group_qna_list"
         tools:layout="@layout/fragment_group_qna_list" />
+    <fragment
+        android:id="@+id/myStudyGroupFragment"
+        android:name="com.app.gong4.MyStudyGroupFragment"
+        android:label="fragment_my_study_group"
+        tools:layout="@layout/fragment_my_study_group" >
+        <action
+            android:id="@+id/action_myStudyGroupFragment_to_studyGroupFragment"
+            app:destination="@id/studyGroupFragment" />
+    </fragment>
 </navigation>

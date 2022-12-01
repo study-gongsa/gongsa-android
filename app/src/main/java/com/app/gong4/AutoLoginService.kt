@@ -10,8 +10,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class AutoLoginService {
-    private lateinit var mAutoLoinView: AutoLoginView
-
+    private var mAutoLoinView: AutoLoginView
 
     val USER_REFRESH_TOKEN = MainApplication.prefs.getData("refreshToken","")
 

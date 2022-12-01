@@ -11,13 +11,18 @@ import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
-import com.app.gong4.DTO.StduyGroupDetailItem
-import com.app.gong4.DTO.StduyGroupItem
-import com.app.gong4.DTO.StudyCategory
+import com.app.gong4.DTO.*
+import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.StudygroupinfoDialogBinding
 import com.google.android.material.chip.Chip
+import com.google.gson.Gson
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.time.LocalDate
 
 class StudygroupinfoDialog(private val data: StduyGroupDetailItem) : DialogFragment() {
 
@@ -57,8 +62,28 @@ class StudygroupinfoDialog(private val data: StduyGroupDetailItem) : DialogFragm
         }
 
         binding.joinButton.setOnClickListener{
-            print("가입하기 구현하기")
+            RequestServer.studyGroupService.getStudyEnter(RequestEnterMember(data.groupUID)).enqueue(object :
+                Callback<ResponseEnterMember>{
+                override fun onResponse(
+                    call: Call<ResponseEnterMember>,
+                    response: Response<ResponseEnterMember>
+                ) {
+                    if(response.isSuccessful) {
+                        val successMsg = resources.getString(R.string.main_join_success)
+                        Toast.makeText(context,successMsg, Toast.LENGTH_SHORT).show()
+                        dismiss()
+                    }else{
+                        val error = response.errorBody()!!.string().trimIndent()
+                        val msg = Gson().fromJson(error, ResponseEnterMember::class.java).msg
+                        Toast.makeText(context,msg, Toast.LENGTH_SHORT).show()
+                        dismiss()
+                    }
+                }
 
+                override fun onFailure(call: Call<ResponseEnterMember>, t: Throwable) {
+                    Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT).show()
+                }
+            })
         }
 
         return view

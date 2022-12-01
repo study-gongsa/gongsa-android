@@ -22,6 +22,7 @@ class SplashScreenAcitivity : AppCompatActivity(),AutoLoginView {
     override fun onValidateSuccess(response: ResponseRefreshTokenBody) {
         response.let { it ->
             val accessToken = it!!.data.accessToken
+            Log.d("accessToken",accessToken)
             MainApplication.prefs.setData("accessToken",accessToken)
             MainApplication.prefs.setData("loginFlag","true")
         }
