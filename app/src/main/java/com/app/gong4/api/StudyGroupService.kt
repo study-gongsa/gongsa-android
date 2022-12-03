@@ -34,6 +34,10 @@ interface StudyGroupService {
     @GET("/api/study-group/my-group")
     fun getMyStudyGroup() : Call<ResponseGroupItemBody>
 
+    //스터디 그룹 내 멤버 정보 조회
+    @GET("/api//group-member/{groupUID}")
+    fun getStudyMembers(@Path("groupUID")groupUID:Int) : Call<ResponseStudyMembers>
+
     @Multipart
     @Headers("accept: application/json")
     @POST("/api/study-group")

@@ -156,7 +156,7 @@ class MyStudyGroupAdapter(private val context: MyStudyGroupFragment, val dataSet
         } else {
             holder.group_cam_button.setImageResource(R.drawable.ic_baseline_photo_camera_24)
         }
-        //누르면 입장으로 변경
+
         holder.group_info_button.setOnClickListener {
             val action = MyStudyGroupFragmentDirections.actionMyStudyGroupFragmentToStudyGroupFragment(dataSet[position].studyGroupUID)
             it.findNavController().navigate(action)
