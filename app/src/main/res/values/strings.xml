@@ -106,12 +106,13 @@
     <string name="main_study_make_study_period">스터디 기간</string>
 
     <!-- 스터디 그룹 text -->
+    <string name="my_study_title">가입한 스터디그룹 내역</string>
     <string name="study_info">스터디 정보</string>
-    <string name="study_name">스터디 명:</string>
-    <string name="study_term">기간:</string>
-    <string name="study_cam">캠 여부:</string>
-    <string name="study_penalty">벌점:</string>
-    <string name="study_min_time">최소 시간:</string>
+    <string name="study_name">스터디 명: </string>
+    <string name="study_term">기간: </string>
+    <string name="study_cam">캠 여부: </string>
+    <string name="study_penalty">벌점: 최대 10점 이상 강퇴</string>
+    <string name="study_min_time">최소 시간: </string>
     <string name="study_category">카테고리</string>
     <string name="study_qna">Q<![CDATA[&]]>A</string>
 

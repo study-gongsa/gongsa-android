@@ -3,23 +3,32 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/drawable/custom_button.xml" value="0.1395" />
+        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/drawable/custom_input.xml" value="0.1395" />
+        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/layout/activity_main.xml" value="0.23554242296327565" />
+        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/layout/category_recycler_item.xml" value="0.72" />
+        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/layout/fragment_create_studygroup.xml" value="0.23856348867037194" />
+        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/layout/fragment_login.xml" value="0.23856348867037194" />
+        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/layout/fragment_main.xml" value="0.23856348867037194" />
+        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/layout/fragment_my_study_group.xml" value="0.23856348867037194" />
+        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/layout/fragment_study_group.xml" value="0.2159406858202039" />
+        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/layout/member_recycler_item.xml" value="0.2377084224027362" />
+        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/layout/studygroup_row_item.xml" value="0.23856348867037194" />
+        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/layout/studygroupinfo_dialog.xml" value="0.23856348867037194" />
+        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/layout/usercategory_dialog.xml" value="0.1735784523300556" />
+        <entry key="..\:/Users/kkw27/AndroidStudioProjects/gongsa-android/app/src/main/res/menu/menu_bottom_nav.xml" value="0.23856348867037194" />
         <entry key="app/src/main/res/drawable/bg_custom_button.xml" value="0.215" />
         <entry key="app/src/main/res/drawable/bg_custom_button_notenable.xml" value="0.215" />
-        <entry key="app/src/main/res/drawable/bg_dialog_radius.xml" value="0.165" />
+        <entry key="app/src/main/res/drawable/bg_dialog_radius.xml" value="0.108" />
         <entry key="app/src/main/res/drawable/button.xml" value="0.215" />
-        <entry key="app/src/main/res/drawable/category_radius.xml" value="0.1685" />
-        <entry key="app/src/main/res/drawable/chip_hashta.xml" value="0.2565" />
         <entry key="app/src/main/res/drawable/custom_button.xml" value="0.124" />
         <entry key="app/src/main/res/drawable/custom_cancel_button.xml" value="0.199" />
         <entry key="app/src/main/res/drawable/custom_error_input.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable/custom_input.xml" value="0.1025" />
-        <entry key="app/src/main/res/drawable/green_border_button.xml" value="0.1525" />
         <entry key="app/src/main/res/drawable/ic_baseline_check_circle_24.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/ic_baseline_check_circle_outline.xml" value="0.18" />
-        <entry key="app/src/main/res/drawable/ic_baseline_lock_24.xml" value="0.2565" />
         <entry key="app/src/main/res/drawable/ic_baseline_photo_camera_24.xml" value="0.146" />
         <entry key="app/src/main/res/drawable/ic_camera_off_22.xml" value="0.144" />
-        <entry key="app/src/main/res/drawable/ic_camera_on_22.xml" value="0.2535" />
         <entry key="app/src/main/res/drawable/ic_icon_filter.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/ic_icon_home_mono.xml" value="0.1225" />
         <entry key="app/src/main/res/drawable/ic_icon_line_three_mono.xml" value="0.1225" />
@@ -29,25 +38,21 @@
         <entry key="app/src/main/res/drawable/splash_background.xml" value="0.165" />
         <entry key="app/src/main/res/drawable/studygroup_row_item.xml" value="0.1215" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/category_recycler_item.xml" value="0.24453125" />
         <entry key="app/src/main/res/layout/fragment_certify_email.xml" value="0.1315592203898051" />
         <entry key="app/src/main/res/layout/fragment_complete_studygroup.xml" value="0.23333333333333334" />
         <entry key="app/src/main/res/layout/fragment_create_studygroup.xml" value="0.2533632286995516" />
         <entry key="app/src/main/res/layout/fragment_findpassword.xml" value="0.375" />
-        <entry key="app/src/main/res/layout/fragment_group_qna_list.xml" value="0.2515625" />
-        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.330120849609375" />
-        <entry key="app/src/main/res/layout/fragment_main.xml" value="0.521505376344086" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.171875" />
+        <entry key="app/src/main/res/layout/fragment_main.xml" value="0.4421875" />
         <entry key="app/src/main/res/layout/fragment_signup.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/fragment_study_group.xml" value="0.2390625" />
         <entry key="app/src/main/res/layout/groupenter_dialog.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/groupfilter_dialog.xml" value="0.32216494845360827" />
+        <entry key="app/src/main/res/layout/groupfilter_dialog.xml" value="0.3731958762886598" />
         <entry key="app/src/main/res/layout/item_chip_category.xml" value="0.2452956989247312" />
         <entry key="app/src/main/res/layout/layout_group_filter_dialog.xml" value="0.45" />
         <entry key="app/src/main/res/layout/layout_studygroup_info_dialog.xml" value="0.15053763440860216" />
         <entry key="app/src/main/res/layout/studygroup_row_item.xml" value="0.5052264808362369" />
         <entry key="app/src/main/res/layout/studygroupinfo_dialog.xml" value="0.1825726141078838" />
-        <entry key="app/src/main/res/layout/usercategory_dialog.xml" value="0.5413528442382813" />
-        <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.29899902343749996" />
+        <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.1" />
       </map>
     </option>
   </component>
