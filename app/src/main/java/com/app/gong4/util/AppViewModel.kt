@@ -9,12 +9,10 @@ class AppViewModel:ViewModel() {
     private val categoryList = arrayListOf<StudyCategory>()
 
     fun getCategoryList() : ArrayList<StudyCategory>{
-        Log.d("getCategoryList",categoryList.toString());
         return categoryList
     }
 
     fun initCategoryList(category : ArrayList<StudyCategory>){
         categoryList.addAll(category)
-        Log.d("initCategoryList",categoryList.toString());
     }
 }
