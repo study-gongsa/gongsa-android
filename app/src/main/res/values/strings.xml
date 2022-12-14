@@ -118,6 +118,7 @@
 
     <!-- qna text -->
     <string name="qna_title">그룹 내 질문 모아보기</string>
+    <string name="qna_category">질문</string>
 
     <!-- 공통 text -->
     <string name="save">저장</string>

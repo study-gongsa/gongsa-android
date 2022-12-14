@@ -35,7 +35,7 @@ interface StudyGroupService {
     fun getMyStudyGroup() : Call<ResponseGroupItemBody>
 
     //스터디 그룹 내 멤버 정보 조회
-    @GET("/api//group-member/{groupUID}")
+    @GET("/api/group-member/{groupUID}")
     fun getStudyMembers(@Path("groupUID")groupUID:Int) : Call<ResponseStudyMembers>
 
     @Multipart
@@ -45,4 +45,8 @@ interface StudyGroupService {
         @Part image:MultipartBody.Part,
         @Part("json") body: Any
     ) : Call<ResponseCreateStudyGroup>
+
+    //스터디그룹 질문 모아보기
+    @GET("/api/question/group-question/{groupUID}")
+    fun getQnaList(@Path("groupUID")groupUID:Int) : Call<ResponseQnaList>
 }

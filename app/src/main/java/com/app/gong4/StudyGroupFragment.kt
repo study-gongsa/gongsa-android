@@ -1,11 +1,13 @@
 package com.app.gong4
 
+import android.annotation.SuppressLint
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -17,10 +19,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.gong4.DTO.*
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentStudyGroupBinding
+import com.app.gong4.util.MainApplication
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
 import com.google.android.material.card.MaterialCardView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,8 +44,11 @@ class StudyGroupFragment : Fragment(){
 
         getStudyGroupInfo(args.pid)
 
+        getPeopleInfo(args.pid)
+
         binding.qnaButton.setOnClickListener {
-            it.findNavController().navigate(R.id.action_studyGroupFragment_to_groupQnaListFragment)
+            val action = StudyGroupFragmentDirections.actionStudyGroupFragmentToGroupQnaListFragment(args.pid)
+            it.findNavController().navigate(action)
         }
         return binding.root
     }
@@ -66,7 +71,6 @@ class StudyGroupFragment : Fragment(){
                     binding.studyCamTextView.text = binding.studyCamTextView.text.toString() + " 필수 아님"
                 }
                 //벌점 기준 전송 안됨
-//                binding.studyPenaltyTextView.text
                 binding.studyMinTimeTextView.text = binding.studyMinTimeTextView.text.toString() +
                         " 주 ${data.minStudyHour.substring(0, 2)}시간 ${data.minStudyHour.substring(3, 5)}분 이상"
 
@@ -88,9 +92,8 @@ class StudyGroupFragment : Fragment(){
                 call: Call<ResponseStudyMembers>,
                 response: Response<ResponseStudyMembers>
             ) {
-                val data = response.body()!!.data
-                setPeopleAdapter(data.members)
-                Log.d("테스트", data.members.toString())
+                val members = response.body()!!.data.members
+                setPeopleAdapter(members)
             }
 
             override fun onFailure(call: Call<ResponseStudyMembers>, t: Throwable) {
@@ -121,8 +124,7 @@ class StudyGroupFragment : Fragment(){
         pAdapter = PeopleAdapter(this, list as ArrayList<Member>)
         binding.peopleRecyclerView.adapter = pAdapter
         binding.peopleRecyclerView.layoutManager = GridLayoutManager(context, 3)
-        val spaceDecoration = VerticalSpaceItemDecoration(8)
-        binding.peopleRecyclerView.addItemDecoration(spaceDecoration)
+        binding.peopleRecyclerView.addItemDecoration(GridSpacingItemDecoration(3,12,18))
         binding.peopleRecyclerView.setHasFixedSize(true)
     }
 
@@ -134,7 +136,27 @@ class StudyGroupFragment : Fragment(){
             outRect: Rect, view: View, parent: RecyclerView,
             state: RecyclerView.State
         ) {
+            super.getItemOffsets(outRect, view, parent, state)
             outRect.right = verticalSpaceWidth
+        }
+    }
+
+    inner class GridSpacingItemDecoration(val spanCount: Int, val widthSpacing: Int,val heightSpacing: Int): RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            val position: Int = parent.getChildAdapterPosition(view)
+            val column = position % spanCount + 1
+
+            //첫번째 행이 아닌 행은 여백 추가
+            Log.d("position","${position}")
+            if(position >= spanCount){
+                outRect.top = heightSpacing
+            }
+            outRect.right = widthSpacing
         }
     }
 }
@@ -172,13 +194,16 @@ class PeopleAdapter(private val context: StudyGroupFragment, private val dataSet
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val timeTextView: TextView = view.findViewById(R.id.timeTextView)
         private val memberCard: MaterialCardView = view.findViewById(R.id.memberCard)
+        private val mamberImage : ImageView = view.findViewById(R.id.personImageView)
 
-        fun bind(time: String, context: StudyGroupFragment) {
-            timeTextView.text = "${time.substring(0,2)}시간 ${time.substring(3,5)}분"
+        fun bind(member: Member, context: StudyGroupFragment) {
+            timeTextView.text = "${member.totalStudyTime.substring(0,2)}시간 ${member.totalStudyTime.substring(3,5)}분"
+            Glide.with(context).load(getImageGlide(member.imgPath)).into(mamberImage)
         }
 
-        fun changeLayout(status: String, context: StudyGroupFragment) {
-            if (status != "study") {
+        @SuppressLint("ResourceAsColor")
+        fun changeLayout(status: String) {
+            if (status=="inactivate") {
                 memberCard.strokeColor = R.color.black01
                 timeTextView.setBackgroundColor(R.color.black01)
                 timeTextView.setTextColor(R.color.black)
@@ -187,6 +212,13 @@ class PeopleAdapter(private val context: StudyGroupFragment, private val dataSet
                 timeTextView.setBackgroundColor(R.color.green_03_main)
                 timeTextView.setTextColor(R.color.white)
             }
+        }
+
+        fun getImageGlide(imagePath: String): GlideUrl {
+            val USER_TOKEN = MainApplication.prefs.getData("accessToken", "")
+            val IMAGE_URL = "${RequestServer.BASE_URL}/api/image/" + imagePath
+            val glideUrl = GlideUrl(IMAGE_URL) { mapOf(Pair("Authorization", "Bearer $USER_TOKEN")) }
+            return glideUrl
         }
     }
 
@@ -198,8 +230,8 @@ class PeopleAdapter(private val context: StudyGroupFragment, private val dataSet
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.changeLayout(dataSet[position].studyStatus, context)
-        holder.bind(dataSet[position].totalStudyTime, context)
+        holder.changeLayout(dataSet[position].studyStatus)
+        holder.bind(dataSet[position], context)
     }
 
     override fun getItemCount(): Int {

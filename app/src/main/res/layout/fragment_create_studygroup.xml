@@ -302,7 +302,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView23">
 
                 <RadioButton
-                    android:id="@+id/panelty_true"
+                    android:id="@+id/panelty_false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
@@ -310,7 +310,7 @@
                     android:theme="@style/CustomRadioButton" />
 
                 <RadioButton
-                    android:id="@+id/panelty_false"
+                    android:id="@+id/panelty_true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/main_study_make_penel_true"
@@ -326,6 +326,7 @@
                 android:background="@drawable/custom_input"
                 android:hint="@string/main_study_make_penel_opt"
                 android:inputType="number"
+                android:focusableInTouchMode="true"
                 android:padding="4dp"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/penalty_radioGroup"
@@ -382,6 +383,7 @@
                 android:background="@drawable/custom_input"
                 android:hint="@string/main_study_make_study_opt"
                 android:inputType="number"
+                android:focusableInTouchMode="true"
                 android:padding="4dp"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/input_radioGroup"
@@ -548,6 +550,8 @@
                 android:background="@drawable/custom_input"
                 android:clickable="false"
                 android:padding="4dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:text="@string/main_study_make_study_image_select"
                 app:layout_constraintStart_toEndOf="@+id/background_radioGroup"
                 app:layout_constraintTop_toBottomOf="@+id/textView31" />

@@ -68,4 +68,5 @@ class MainActivity : AppCompatActivity(){
             binding.toolbar.visibility = View.VISIBLE
         }
     }
+
 }

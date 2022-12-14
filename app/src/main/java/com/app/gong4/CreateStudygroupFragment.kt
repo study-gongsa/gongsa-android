@@ -5,24 +5,30 @@ import android.R
 import android.app.Activity.RESULT_OK
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.app.TimePickerDialog.OnTimeSetListener
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.NumberPicker
+import android.widget.TimePicker
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.app.gong4.DTO.RequestCreateStudyGroup
@@ -41,6 +47,7 @@ import retrofit2.Response
 import java.io.File
 import java.util.*
 
+
 class CreateStudygroupFragment : Fragment() {
 
     private lateinit var binding: FragmentCreateStudygroupBinding
@@ -48,6 +55,7 @@ class CreateStudygroupFragment : Fragment() {
     private val viewModel : AppViewModel by activityViewModels()
 
     private var imageFile : File? = null
+    private var imm : InputMethodManager?=null
 
     companion object{
         const val REQ_GALLERY = 1
@@ -56,6 +64,7 @@ class CreateStudygroupFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         categories = viewModel.getCategoryList()
     }
 
@@ -74,6 +83,13 @@ class CreateStudygroupFragment : Fragment() {
         selectGallery()
 
         return binding.root
+    }
+
+    //키보드 내리기
+    fun hideKeyboard(v:View){
+        if(v!=null){
+            imm?.hideSoftInputFromWindow(v.windowToken,0)
+        }
     }
 
     private fun createStudyGroup(){
@@ -100,12 +116,13 @@ class CreateStudygroupFragment : Fragment() {
             when(checkedId){
                 binding.paneltyTrue.id -> {
                     checkedPanelty = true
-                    binding.paneltyEdittext.isFocusableInTouchMode = true
-
+                    binding.paneltyEdittext.isFocusable = true
                 }
                 binding.paneltyFalse.id -> {
                     checkedPanelty = false
-                    binding.paneltyEdittext.isFocusableInTouchMode = false
+                    binding.paneltyEdittext.text.clear()
+                    binding.paneltyEdittext.isFocusable = false
+                    view?.let { hideKeyboard(it) }
                 }
             }
         }//벌점
@@ -114,18 +131,20 @@ class CreateStudygroupFragment : Fragment() {
             when(checkedId){
                 binding.inputTrue.id -> {
                     checkedInput = true
-                    binding.inputEdittext.isFocusableInTouchMode = true
+                    binding.inputEdittext.isFocusable = true
                 }
                 binding.inputFalse.id -> {
                     checkedInput = false
-                    binding.inputEdittext.isFocusableInTouchMode = false
+                    binding.inputEdittext.text.clear()
+                    binding.inputEdittext.isFocusable = false
+                    view?.let { hideKeyboard(it) }
                 }
             }
         }//스터디 재진입
 
         //배경이미지
         var checkedImage = false
-        binding.inputRadioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
+        binding.backgroundRadioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
             when(checkedId){
                 binding.imageTrue.id -> {
                     checkedImage = true
@@ -249,14 +268,17 @@ class CreateStudygroupFragment : Fragment() {
     }
 
     private fun showTimePicker(){
-        binding.timeTextView.text = "1"
+        binding.timeTextView.text = "1 : 00"
         binding.timeTextView.setOnClickListener {
             val cal = Calendar.getInstance()
-            val time = TimePickerDialog.OnTimeSetListener { view, hour, minute ->
-                binding.timeTextView.text = "${hour}"
+            val time = OnTimeSetListener { view, hour, minute ->
+                binding.timeTextView.text = if(hour<=9) "0${hour}:00" else "${hour}:00"
             }
-            TimePickerDialog(requireContext(),time,cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE),false)
-                .show()
+
+            val picker = TimePickerDialog(requireContext(),time,cal.get(Calendar.HOUR_OF_DAY), 0,true)
+
+            picker.show()
+            picker.findViewById<View>(Resources.getSystem().getIdentifier("minutes","id","android")).visibility = View.GONE
         }
     }
 
@@ -287,3 +309,4 @@ class CreateStudygroupFragment : Fragment() {
     }
 
 }
+
