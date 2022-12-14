@@ -84,7 +84,12 @@
         android:id="@+id/groupQnaListFragment"
         android:name="com.app.gong4.GroupQnaListFragment"
         android:label="fragment_group_qna_list"
-        tools:layout="@layout/fragment_group_qna_list" />
+        tools:layout="@layout/fragment_group_qna_list">
+        <argument
+            android:name="pid"
+            app:argType="integer" />
+
+    </fragment>
     <fragment
         android:id="@+id/myStudyGroupFragment"
         android:name="com.app.gong4.MyStudyGroupFragment"
