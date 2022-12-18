@@ -1,6 +1,6 @@
 package com.app.gong4.DTO
 
-data class ResponseQnaList(
+data class ResponseQnaListBody(
     val location: String,
     val msg: String,
     val data: QnaList,

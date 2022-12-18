@@ -8,16 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.gong4.DTO.QnaItem
-import com.app.gong4.DTO.ResponseQnaList
-import com.app.gong4.DTO.StduyGroupItem
+import com.app.gong4.DTO.ResponseQnaListBody
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentGroupQnaListBinding
-import com.app.gong4.databinding.FragmentMainBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,6 +25,7 @@ import java.text.SimpleDateFormat
 class GroupQnaListFragment : Fragment() {
     private lateinit var binding: FragmentGroupQnaListBinding
     private val args by navArgs<GroupQnaListFragmentArgs>()
+    private var list : ArrayList<QnaItem> = arrayListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,21 +37,23 @@ class GroupQnaListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        getQnaList(args.pid)//args.pid)
+        getQnaList(args.pid)
     }
 
     private fun getQnaList(groupUID:Int){
-        RequestServer.studyGroupService.getQnaList(groupUID).enqueue(object :
-            Callback<ResponseQnaList> {
+        RequestServer.qnaService.getQnaList(groupUID).enqueue(object :
+            Callback<ResponseQnaListBody> {
             override fun onResponse(
-                call: Call<ResponseQnaList>,
-                response: Response<ResponseQnaList>
+                call: Call<ResponseQnaListBody>,
+                response: Response<ResponseQnaListBody>
             ) {
-                val list = response.body()!!.data!!.questionList
+                list.clear()
+                Log.d("list-item",response.body()!!.data!!.questionList.toString())
+                list.addAll(response.body()!!.data!!.questionList)
                 setAdapter(list)
             }
 
-            override fun onFailure(call: Call<ResponseQnaList>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseQnaListBody>, t: Throwable) {
 
             }
 
@@ -103,7 +105,8 @@ class GroupQnaListFragment : Fragment() {
                 holder.qna_status_textView.setTextColor(R.color.black03)
             }
             holder.itemView.setOnClickListener {
-
+                val id = dataSet[position].questionUID
+                findNavController().navigate(GroupQnaListFragmentDirections.actionGroupQnaListFragmentToGroupQnaDetailFragment(id))
             }
         }
 

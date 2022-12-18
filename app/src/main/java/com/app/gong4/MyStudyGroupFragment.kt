@@ -172,4 +172,4 @@ class MyStudyGroupAdapter(private val context: MyStudyGroupFragment, val dataSet
         val date = sdf.format(time).toString()
         return date
     }
-    }
+}

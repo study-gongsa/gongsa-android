@@ -20,7 +20,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class GroupenterDialog() : DialogFragment() {
+class GroupenterDialog : DialogFragment() {
 
     private var _binding: GroupenterDialogBinding? = null
     private val binding get() = _binding!!
