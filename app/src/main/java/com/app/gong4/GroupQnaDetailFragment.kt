@@ -134,7 +134,8 @@ class GroupQnaDetailFragment : Fragment() ,CommentAdapter.CommentListener{
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if(response.isSuccessful){
                     Toast.makeText(context,"삭제가 완료되었습니다",Toast.LENGTH_SHORT).show()
-
+                    getQnaDetail(questionUID)
+                    removeDialog.dismiss()
                 }
             }
 
