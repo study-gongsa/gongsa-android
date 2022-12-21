@@ -88,6 +88,9 @@
         <argument
             android:name="pid"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_groupQnaListFragment_to_groupQnaDetailFragment"
+            app:destination="@id/groupQnaDetailFragment" />
 
     </fragment>
     <fragment
@@ -99,4 +102,18 @@
             android:id="@+id/action_myStudyGroupFragment_to_studyGroupFragment"
             app:destination="@id/studyGroupFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/groupQnaDetailFragment"
+        android:name="com.app.gong4.GroupQnaDetailFragment"
+        android:label="fragment_group_qna_detail"
+        tools:layout="@layout/fragment_group_qna_detail" >
+        <argument
+            android:name="questionID"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/myPageFragment"
+        android:name="com.app.gong4.MyPageFragment"
+        android:label="fragment_my_page"
+        tools:layout="@layout/fragment_my_page" />
 </navigation>

@@ -5,6 +5,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 object RequestServer {
     val BASE_URL = "http://3.36.170.161:8080"
@@ -36,4 +37,7 @@ object RequestServer {
 
     // 스터디 그룹 관련 함수
     val userCategoryService : UserCategoryService = retrofit.create(UserCategoryService::class.java)
+
+    //큐엔에이 관련 서비스
+    val qnaService : QnaService = retrofit.create(QnaService::class.java)
 }

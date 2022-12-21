@@ -5,7 +5,7 @@
     android:layout_width="100dp"
     android:layout_height="100dp"
     app:cardCornerRadius="10dp"
-    app:strokeColor="@color/green_03_main"
+    android:theme="@style/Theme.MaterialComponents.Light"
     app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,12 +28,11 @@
             android:id="@+id/timeTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/green_03_main"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
             android:textAlignment="center"
             android:text="00:00"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

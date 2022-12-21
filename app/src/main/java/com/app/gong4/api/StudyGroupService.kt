@@ -45,8 +45,4 @@ interface StudyGroupService {
         @Part image:MultipartBody.Part,
         @Part("json") body: Any
     ) : Call<ResponseCreateStudyGroup>
-
-    //스터디그룹 질문 모아보기
-    @GET("/api/question/group-question/{groupUID}")
-    fun getQnaList(@Path("groupUID")groupUID:Int) : Call<ResponseQnaList>
 }

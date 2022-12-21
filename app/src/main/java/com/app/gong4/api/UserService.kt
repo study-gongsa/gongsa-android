@@ -3,6 +3,7 @@ package com.app.gong4.api
 import com.app.gong4.DTO.*
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 
@@ -28,4 +29,12 @@ interface UserService {
     /* 비밀번호 찾기 */
     @PATCH("/api/user/mail/passwd")
     fun findPwd(@Body body: RequestFindPwdBody) : Call<ResponseFindPwdBody>
+
+    /* 환경설정 - 유저정보조회 */
+    @GET("/api/user/mypage")
+    fun userMyPage() : Call<ResponseMyPageInfoBody>
+
+    /* 내 스터디그룹 랭킹 조회 */
+    @GET("/api/study-group/my-ranking")
+    fun myStudyGroupRanking() : Call<ResponseMyStudyGroupRankingBody>
 }

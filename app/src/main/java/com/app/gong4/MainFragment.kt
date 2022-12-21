@@ -18,6 +18,7 @@ import com.app.gong4.DTO.*
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMainBinding
 import com.app.gong4.util.AppViewModel
+import com.app.gong4.util.CommonService
 import com.app.gong4.util.MainApplication
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
@@ -346,13 +347,6 @@ class StudyGroupListAdapter(private val context: MainFragment, val dataSet: Arra
         return ViewHolder(view)
     }
 
-    fun getImageGlide(imagePath: String): GlideUrl {
-        val USER_TOKEN = MainApplication.prefs.getData("accessToken", "")
-        val IMAGE_URL = "${RequestServer.BASE_URL}/api/image/" + imagePath
-        val glideUrl = GlideUrl(IMAGE_URL) { mapOf(Pair("Authorization", "Bearer $USER_TOKEN")) }
-        return glideUrl
-    }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.group_title_textView.text = dataSet[position].name
         holder.group_date_textView.text =
@@ -360,7 +354,7 @@ class StudyGroupListAdapter(private val context: MainFragment, val dataSet: Arra
                 convertTimestampToDate(dataSet[position].expiredAt)
             }"
 
-        val url = getImageGlide(dataSet[position].imgPath)
+        val url = CommonService().getImageGlide(dataSet[position].imgPath)
         Glide.with(context).load(url).into(holder.group_image_imageView)
         if (!dataSet[position].isCam) {
             holder.group_cam_button.setImageResource(R.drawable.ic_camera_off_22)

@@ -272,13 +272,14 @@ class CreateStudygroupFragment : Fragment() {
         binding.timeTextView.setOnClickListener {
             val cal = Calendar.getInstance()
             val time = OnTimeSetListener { view, hour, minute ->
+
                 binding.timeTextView.text = if(hour<=9) "0${hour}:00" else "${hour}:00"
             }
 
-            val picker = TimePickerDialog(requireContext(),time,cal.get(Calendar.HOUR_OF_DAY), 0,true)
+            val picker = TimePickerDialog(requireContext(),android.R.style.Theme_Holo_Light_Dialog_NoActionBar,time,cal.get(Calendar.HOUR_OF_DAY), 0,true)
 
+            picker.window!!.setBackgroundDrawableResource(android.R.color.transparent)
             picker.show()
-            picker.findViewById<View>(Resources.getSystem().getIdentifier("minutes","id","android")).visibility = View.GONE
         }
     }
 

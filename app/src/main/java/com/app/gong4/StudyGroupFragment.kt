@@ -1,6 +1,7 @@
 package com.app.gong4
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.gong4.DTO.*
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentStudyGroupBinding
+import com.app.gong4.util.CommonService
 import com.app.gong4.util.MainApplication
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
@@ -93,6 +95,7 @@ class StudyGroupFragment : Fragment(){
                 response: Response<ResponseStudyMembers>
             ) {
                 val members = response.body()!!.data.members
+                Log.d("member",members.toString())
                 setPeopleAdapter(members)
             }
 
@@ -196,29 +199,24 @@ class PeopleAdapter(private val context: StudyGroupFragment, private val dataSet
         private val memberCard: MaterialCardView = view.findViewById(R.id.memberCard)
         private val mamberImage : ImageView = view.findViewById(R.id.personImageView)
 
-        fun bind(member: Member, context: StudyGroupFragment) {
+        fun bind(member: Member) {
             timeTextView.text = "${member.totalStudyTime.substring(0,2)}시간 ${member.totalStudyTime.substring(3,5)}분"
-            Glide.with(context).load(getImageGlide(member.imgPath)).into(mamberImage)
+            val imgPath = CommonService().getImageGlide(member.imgPath)
+            Glide.with(mamberImage.context).load(imgPath).into(mamberImage)
+            changeLayout(member.studyStatus)
         }
 
         @SuppressLint("ResourceAsColor")
         fun changeLayout(status: String) {
-            if (status=="inactivate") {
+            if (status=="inactive") {
                 memberCard.strokeColor = R.color.black01
-                timeTextView.setBackgroundColor(R.color.black01)
-                timeTextView.setTextColor(R.color.black)
+                timeTextView.setBackgroundResource(R.color.black01)
+                timeTextView.setTextColor(Color.BLACK)
             } else {
                 memberCard.strokeColor = R.color.green_03_main
-                timeTextView.setBackgroundColor(R.color.green_03_main)
-                timeTextView.setTextColor(R.color.white)
+                timeTextView.setBackgroundResource(R.color.green_03_main)
+                timeTextView.setTextColor(Color.WHITE)
             }
-        }
-
-        fun getImageGlide(imagePath: String): GlideUrl {
-            val USER_TOKEN = MainApplication.prefs.getData("accessToken", "")
-            val IMAGE_URL = "${RequestServer.BASE_URL}/api/image/" + imagePath
-            val glideUrl = GlideUrl(IMAGE_URL) { mapOf(Pair("Authorization", "Bearer $USER_TOKEN")) }
-            return glideUrl
         }
     }
 
@@ -230,8 +228,7 @@ class PeopleAdapter(private val context: StudyGroupFragment, private val dataSet
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.changeLayout(dataSet[position].studyStatus)
-        holder.bind(dataSet[position], context)
+        holder.bind(dataSet[position])
     }
 
     override fun getItemCount(): Int {
