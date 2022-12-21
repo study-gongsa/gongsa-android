@@ -132,4 +132,10 @@
 
     <string name="comment_update_dialog_title">댓글을 수정하시겠습니까?</string>
     <string name="comment_update_dialog_content">수정할 댓글을 입력해 주세요</string>
+
+    <string name="mypage_study_status">스터디 중</string>
+    <string name="mypage_study_level">Lv.%d</string>
+    <string name="mypage_study_percentage">상위 %d%%</string>
+    <string name="mypage_study_time">%sh %sm</string>
+    <string name="mypage_study_rank_item">%d위: %s</string>
 </resources>

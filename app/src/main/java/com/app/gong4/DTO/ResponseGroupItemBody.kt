@@ -13,10 +13,10 @@ data class RequestGroupItemBody(
 data class ResponseGroupItemBody(
     var location : String,
     var msg : String,
-    var data : Data
+    var data : StudyGroupList
 )
 
-data class Data(
+data class StudyGroupList(
     val studyGroupList: List<StduyGroupItem>
 )
 

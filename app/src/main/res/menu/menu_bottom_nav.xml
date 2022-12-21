@@ -13,7 +13,7 @@
         android:icon="@drawable/ic_icon_plus_mono"
         android:title="스터디룸 생성"/>
     <item
-        android:id="@+id/mypageFragment"
+        android:id="@+id/myPageFragment"
         android:icon="@drawable/ic_icon_user_mono"
         android:title="마이페이지"/>
 </menu>

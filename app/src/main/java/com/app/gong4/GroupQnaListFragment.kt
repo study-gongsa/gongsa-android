@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -99,10 +100,11 @@ class GroupQnaListFragment : Fragment() {
             holder.qna_content_textView.text = dataSet[position].content
             holder.qna_date_textView.text = convertTimestampToDate(dataSet[position].createdAt)
             holder.qna_status_textView.text = dataSet[position].answerStatus
+
             if(dataSet[position].answerStatus == "응답 완료"){
-                holder.qna_status_textView.setTextColor(R.color.green_03_main)
+                holder.qna_status_textView.setTextColor(ContextCompat.getColor(requireContext(),R.color.green_03_main))
             }else{
-                holder.qna_status_textView.setTextColor(R.color.black03)
+                holder.qna_status_textView.setTextColor(ContextCompat.getColor(requireContext(),R.color.black03))
             }
             holder.itemView.setOnClickListener {
                 val id = dataSet[position].questionUID
