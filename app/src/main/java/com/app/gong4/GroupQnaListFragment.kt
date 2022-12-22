@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.gong4.DTO.QnaItem
 import com.app.gong4.DTO.ResponseQnaListBody
+import com.app.gong4.adapter.QnaListAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentGroupQnaListBinding
 import retrofit2.Call
@@ -51,8 +52,8 @@ class GroupQnaListFragment : Fragment() {
                 response: Response<ResponseQnaListBody>
             ) {
                 list.clear()
-                Log.d("list-item",response.body()!!.data!!.questionList.toString())
-                list.addAll(response.body()!!.data!!.questionList)
+
+                list.addAll(response.body()!!.data.questionList)
                 setAdapter(list)
             }
 
@@ -64,7 +65,7 @@ class GroupQnaListFragment : Fragment() {
     }
 
     fun setAdapter(list: List<QnaItem>) {
-        val adapter = QnaListApdater(list as ArrayList<QnaItem>, object : onMoveAdapterListener {
+        val adapter = QnaListAdapter(list as ArrayList<QnaItem>, object : onMoveAdapterListener {
             override fun onMoveQnaDetail(id: Int): NavDirections {
                 return GroupQnaListFragmentDirections.actionGroupQnaListFragmentToGroupQnaDetailFragment(id)
             }
@@ -77,56 +78,5 @@ class GroupQnaListFragment : Fragment() {
     }
 
 }
-class QnaListApdater(val dataSet: ArrayList<QnaItem>,val listener: onMoveAdapterListener)
-    : RecyclerView.Adapter<QnaListApdater.ViewHolder>() {
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val qna_title_textView: TextView
-        val qna_content_textView: TextView
-        val qna_date_textView: TextView
-        val qna_status_textView: TextView
-
-        init {
-            qna_title_textView = view.findViewById(R.id.title_textview)
-            qna_content_textView = view.findViewById(R.id.content_textview)
-            qna_date_textView = view.findViewById(R.id.date_textview)
-            qna_status_textView = view.findViewById(R.id.status_textview)
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.qna_list_item, parent, false)
-
-        return ViewHolder(view)
-    }
-
-    @SuppressLint("ResourceAsColor")
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.qna_title_textView.text = dataSet[position].title
-        holder.qna_content_textView.text = dataSet[position].content
-        holder.qna_date_textView.text = convertTimestampToDate(dataSet[position].createdAt)
-        holder.qna_status_textView.text = dataSet[position].answerStatus
-
-        if(dataSet[position].answerStatus == "응답 완료"){
-            holder.qna_status_textView.setTextColor(ContextCompat.getColor(holder.qna_status_textView.context,R.color.green_03_main))
-        }else{
-            holder.qna_status_textView.setTextColor(ContextCompat.getColor(holder.qna_status_textView.context,R.color.black03))
-        }
-        holder.itemView.setOnClickListener { view ->
-            val id = dataSet[position].questionUID
-            view.findNavController().navigate(listener.onMoveQnaDetail(id))
-        }
-    }
-
-    override fun getItemCount(): Int {
-        return dataSet.size
-    }
-
-    private fun convertTimestampToDate(time: Long): String {
-        val sdf = SimpleDateFormat("yy.MM.dd")
-        val date = sdf.format(time).toString()
-        return date
-    }
-}
 

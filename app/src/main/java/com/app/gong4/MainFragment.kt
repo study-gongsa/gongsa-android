@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.gong4.DTO.*
+import com.app.gong4.adapter.StudyGroupListAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMainBinding
 import com.app.gong4.util.AppViewModel
@@ -78,7 +79,7 @@ class MainFragment : Fragment() {
                 call: Call<ResponseUserCategory>,
                 response: Response<ResponseUserCategory>
             ) {
-                userCategory = response.body()!!.data!!
+                userCategory = response.body()!!.data
                 if(userCategory.isEmpty()){
                     UsercategoryDialog(viewModel.getCategoryList()).show(parentFragmentManager,"UserCategoryDialog")
                 }
@@ -310,70 +311,4 @@ class MainFragment : Fragment() {
         mAdapter.notifyDataSetChanged()
         binding.recyclerView.setHasFixedSize(true)
     }
-}
-
-class StudyGroupListAdapter(private val context: MainFragment, val dataSet: ArrayList<StduyGroupItem>)
-    : RecyclerView.Adapter<StudyGroupListAdapter.ViewHolder>() {
-
-    var searchList = ArrayList<StduyGroupItem>()
-    var searchAllList = ArrayList<StduyGroupItem>()
-
-    init {
-        Log.d("searchList", dataSet.toString())
-        searchList.addAll(dataSet)
-        searchAllList.addAll(dataSet)
-    }
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val group_title_textView: TextView
-        val group_date_textView: TextView
-        val group_image_imageView: ImageView
-        val group_cam_button: ImageButton
-        val group_info_button: ImageButton
-
-        init {
-            group_title_textView = view.findViewById(R.id.group_item_title_textView)
-            group_date_textView = view.findViewById(R.id.group_item_date_textView)
-            group_image_imageView = view.findViewById(R.id.group_item_image_imageView)
-            group_cam_button = view.findViewById(R.id.group_cam_button)
-            group_info_button = view.findViewById(R.id.group_info_button)
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.studygroup_row_item, parent, false)
-
-        return ViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.group_title_textView.text = dataSet[position].name
-        holder.group_date_textView.text =
-            "${convertTimestampToDate(dataSet[position].createdAt)} ~ ${
-                convertTimestampToDate(dataSet[position].expiredAt)
-            }"
-
-        val url = CommonService().getImageGlide(dataSet[position].imgPath)
-        Glide.with(context).load(url).into(holder.group_image_imageView)
-        if (!dataSet[position].isCam) {
-            holder.group_cam_button.setImageResource(R.drawable.ic_camera_off_22)
-        } else {
-            holder.group_cam_button.setImageResource(R.drawable.ic_baseline_photo_camera_24)
-        }
-        holder.group_info_button.setOnClickListener {
-            context.showStudyInfoDialog(dataSet[position].studyGroupUID)
-        }
-    }
-
-    override fun getItemCount(): Int {
-        return dataSet.size
-    }
-
-    private fun convertTimestampToDate(time: Long): String {
-        val sdf = SimpleDateFormat("yy.MM.dd")
-        val date = sdf.format(time).toString()
-        return date
-    }
-
 }

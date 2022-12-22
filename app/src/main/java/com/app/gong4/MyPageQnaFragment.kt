@@ -1,19 +1,18 @@
 package com.app.gong4
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.gong4.DTO.QnaItem
 import com.app.gong4.DTO.ResponseQnaListBody
 import com.app.gong4.DTO.UserInfo
+import com.app.gong4.adapter.QnaListAdapter
 import com.app.gong4.api.RequestServer
-import com.app.gong4.databinding.FragmentMyPageBinding
 import com.app.gong4.databinding.FragmentMyPageQnaBinding
 import com.app.gong4.util.CommonService
 import com.bumptech.glide.Glide
@@ -83,7 +82,7 @@ class MyPageQnaFragment : Fragment() {
     }
 
     fun setAdapter(list: List<QnaItem>) {
-        val adapter = QnaListApdater(list as ArrayList<QnaItem>, object : onMoveAdapterListener {
+        val adapter = QnaListAdapter(list as ArrayList<QnaItem>, object : onMoveAdapterListener {
             override fun onMoveQnaDetail(id: Int): NavDirections {
                 return MyPageQnaFragmentDirections.actionMyPageQnaFragmentToGroupQnaDetailFragment(id)
             }
