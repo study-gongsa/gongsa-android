@@ -2,37 +2,22 @@ package com.app.gong4
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.app.gong4.DTO.ResponseGroupItemBody
 import com.app.gong4.DTO.ResponseStudygroupinfoBody
 import com.app.gong4.DTO.StduyGroupItem
-import com.app.gong4.R
+import com.app.gong4.adapter.MyStudyGroupAdapter
 import com.app.gong4.api.RequestServer
-import com.app.gong4.databinding.FragmentMainBinding
 import com.app.gong4.databinding.FragmentMyStudyGroupBinding
-import com.app.gong4.util.CommonService
-import com.app.gong4.util.MainApplication
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.model.GlideUrl
 import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.SimpleDateFormat
 
 class MyStudyGroupFragment : Fragment() {
 
@@ -107,63 +92,5 @@ class MyStudyGroupFragment : Fragment() {
         binding.myStudyRecyclerView.layoutManager = LinearLayoutManager(context)
         mAdapter.notifyDataSetChanged()
         binding.myStudyRecyclerView.setHasFixedSize(true)
-    }
-}
-
-class MyStudyGroupAdapter(private val context: MyStudyGroupFragment, val dataSet: ArrayList<StduyGroupItem>)
-    :RecyclerView.Adapter<MyStudyGroupAdapter.ViewHolder>() {
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val group_title_textView: TextView
-        val group_date_textView: TextView
-        val group_image_imageView: ImageView
-        val group_cam_button: ImageButton
-        val group_info_button: ImageButton
-
-        init {
-            group_title_textView = view.findViewById(R.id.group_item_title_textView)
-            group_date_textView = view.findViewById(R.id.group_item_date_textView)
-            group_image_imageView = view.findViewById(R.id.group_item_image_imageView)
-            group_cam_button = view.findViewById(R.id.group_cam_button)
-            group_info_button = view.findViewById(R.id.group_info_button)
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.studygroup_row_item, parent, false)
-
-        return ViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.group_title_textView.text = dataSet[position].name
-        holder.group_date_textView.text =
-            "${convertTimestampToDate(dataSet[position].createdAt)} ~ ${
-                convertTimestampToDate(dataSet[position].expiredAt)
-            }"
-
-        val url = CommonService().getImageGlide(dataSet[position].imgPath)
-        Glide.with(context).load(url).into(holder.group_image_imageView)
-        if (!dataSet[position].isCam) {
-            holder.group_cam_button.setImageResource(R.drawable.ic_camera_off_22)
-        } else {
-            holder.group_cam_button.setImageResource(R.drawable.ic_baseline_photo_camera_24)
-        }
-
-        holder.group_info_button.setOnClickListener {
-            val action = MyStudyGroupFragmentDirections.actionMyStudyGroupFragmentToStudyGroupFragment(dataSet[position].studyGroupUID)
-            it.findNavController().navigate(action)
-        }
-    }
-
-    override fun getItemCount(): Int {
-        return dataSet.size
-    }
-
-    private fun convertTimestampToDate(time: Long): String {
-        val sdf = SimpleDateFormat("yy.MM.dd")
-        val date = sdf.format(time).toString()
-        return date
     }
 }

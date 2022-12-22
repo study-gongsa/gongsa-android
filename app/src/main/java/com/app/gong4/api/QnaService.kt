@@ -24,4 +24,8 @@ interface QnaService {
     //답변 수정
     @PATCH("/api/answer")
     fun patchAnswer(@Body body:RequestUpdateAnswer) : Call<ResponseUpdateAnswerBody>
+
+    //내 질문 모아보기
+    @GET("/api/question/my-question")
+    fun getMyQnaList():Call<ResponseQnaListBody>
 }

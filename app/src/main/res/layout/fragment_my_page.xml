@@ -108,9 +108,12 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/profile_rank_recyclerview"
-                android:layout_width="358dp"
-                android:layout_height="525dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="40dp"
+                android:layout_marginEnd="24dp"
+                android:overScrollMode="never"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/profile_level_textview" />
