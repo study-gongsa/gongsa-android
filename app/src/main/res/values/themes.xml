@@ -17,6 +17,13 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="searchViewStyle">@style/AppTheme.SearchView</item>
+
+        <!-- font 적용 -->
+        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
+        <item name="android:buttonStyle">@style/customButtonFontStyle</item>
+        <item name="android:editTextStyle">@style/customEditTextFontStyle</item>
+        <item name="android:radioButtonStyle">@style/customRadioButtonFontStyle</item>
+        <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
     </style>
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_background</item>
@@ -31,4 +38,5 @@
         <item name="colorAccent">@color/green_03_main</item>
         <item name="colorControlNormal">@color/black02</item>
     </style>
+
 </resources>
