@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MyPageQnaFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_imageview"
+            android:layout_width="84dp"
+            android:layout_height="84dp"
+
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
+        <TextView
+            android:id="@+id/profile_name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="24dp"
+            android:text="TextView"
+            android:textColor="@color/black_06_main"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/profile_imageview"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/profile_time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="18dp"
+            android:text="TextView"
+            android:textColor="@color/green_03_main"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/profile_imageview"
+            app:layout_constraintTop_toBottomOf="@+id/profile_name_textview" />
+
+        <TextView
+            android:id="@+id/profile_level_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="4dp"
+            android:text="TextView"
+            android:textColor="@color/green_03_main"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/profile_imageview"
+            app:layout_constraintTop_toBottomOf="@+id/profile_time_textview" />
+
+        <TextView
+            android:id="@+id/profile_status_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="18dp"
+            android:text="@string/mypage_study_status"
+            android:textColor="@color/black_06_main"
+            app:layout_constraintStart_toEndOf="@+id/profile_time_textview"
+            app:layout_constraintTop_toBottomOf="@+id/profile_name_textview" />
+
+        <TextView
+            android:id="@+id/profile_percentage_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="4dp"
+            android:text="TextView"
+            android:textColor="@color/black_06_main"
+            app:layout_constraintStart_toEndOf="@+id/profile_level_textview"
+            app:layout_constraintTop_toBottomOf="@+id/profile_status_textview" />
+
+        <ImageView
+            android:id="@+id/profile_setting_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="24dp"
+            android:src="@drawable/ic_setting_vector"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/squre_border"
+            android:paddingStart="24dp"
+            android:paddingBottom="20dp"
+            android:text="@string/mypage_qna_title"
+            android:textColor="@color/black_06_main"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/qna_recylcerview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_imageview" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/profile_qna_button"
+            android:layout_width="49dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/green_border_button"
+            android:enabled="false"
+            android:text="@string/study_qna"
+            android:textSize="12sp"
+            android:textColor="@color/white02"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_setting_button" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/qna_recylcerview"
+            android:layout_width="358dp"
+            android:layout_height="451dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView19" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

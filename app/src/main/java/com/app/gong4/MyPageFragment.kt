@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,15 +22,27 @@ import retrofit2.Response
 
 class MyPageFragment : Fragment() {
     private lateinit var binding: FragmentMyPageBinding
+    private lateinit var userInfo : UserInfo
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMyPageBinding.inflate(inflater, container, false)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         serverMyPageInfo()
         myRankInfo()
-        return binding.root
+
+        binding.profileQnaButton.setOnClickListener {
+            val action = MyPageFragmentDirections.actionMyPageFragmentToMyPageQnaFragment(userInfo = userInfo)
+            findNavController().navigate(action)
+        }
     }
 
     fun myRankInfo(){
@@ -62,9 +75,8 @@ class MyPageFragment : Fragment() {
                 call: Call<ResponseMyPageInfoBody>,
                 response: Response<ResponseMyPageInfoBody>
             ) {
-                val data = response.body()!!.data
-                Log.d("data",data.toString())
-                getMyPageInfo(data)
+                userInfo = response.body()!!.data
+                getMyPageInfo(userInfo)
             }
 
             override fun onFailure(call: Call<ResponseMyPageInfoBody>, t: Throwable) {

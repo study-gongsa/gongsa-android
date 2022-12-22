@@ -115,5 +115,21 @@
         android:id="@+id/myPageFragment"
         android:name="com.app.gong4.MyPageFragment"
         android:label="fragment_my_page"
-        tools:layout="@layout/fragment_my_page" />
+        tools:layout="@layout/fragment_my_page" >
+        <action
+            android:id="@+id/action_myPageFragment_to_myPageQnaFragment"
+            app:destination="@id/myPageQnaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myPageQnaFragment"
+        android:name="com.app.gong4.MyPageQnaFragment"
+        android:label="@string/study_qna"
+        tools:layout="@layout/fragment_my_page_qna" >
+        <argument
+            android:name="userInfo"
+            app:argType="com.app.gong4.DTO.UserInfo" />
+        <action
+            android:id="@+id/action_myPageQnaFragment_to_groupQnaDetailFragment"
+            app:destination="@id/groupQnaDetailFragment" />
+    </fragment>
 </navigation>
