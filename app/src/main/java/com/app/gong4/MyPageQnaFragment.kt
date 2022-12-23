@@ -21,27 +21,17 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class MyPageQnaFragment : Fragment() {
-    private lateinit var binding: FragmentMyPageQnaBinding
-
+class MyPageQnaFragment : BaseFragment<FragmentMyPageQnaBinding>(FragmentMyPageQnaBinding::inflate) {
     private val args by navArgs<MyPageQnaFragmentArgs>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentMyPageQnaBinding.inflate(inflater, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         val mainActivity = activity as MainActivity
         mainActivity.hideToolbar(false)
-
-        return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun initView() {
         getMyPageInfo(args.userInfo)
-
         getQnaList()
     }
 
@@ -92,5 +82,4 @@ class MyPageQnaFragment : Fragment() {
         adapter.notifyDataSetChanged()
         binding.qnaRecylcerview.setHasFixedSize(true)
     }
-
 }

@@ -1,13 +1,8 @@
 package com.app.gong4
 
-import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.app.gong4.DTO.RequestSignupBody
 import com.app.gong4.DTO.ResponseLoginBody
@@ -21,9 +16,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.regex.Pattern
 
-class SignupFragment : Fragment() {
+class SignupFragment : BaseFragment<FragmentSignupBinding>(FragmentSignupBinding::inflate) {
 
-    lateinit var binding:FragmentSignupBinding
     var email: String = ""
     var password: String = ""
     var passwordCheck: String = ""
@@ -32,12 +26,7 @@ class SignupFragment : Fragment() {
     var button2: Boolean = false
     var button3: Boolean = false
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentSignupBinding.inflate(inflater, container, false)
-
+    override fun initView() {
         checkEmail()
         checkPassword()
         confirmPassword()
@@ -76,7 +65,6 @@ class SignupFragment : Fragment() {
         }
 
         goSignup()
-        return binding.root
     }
 
     // 이메일 형식 확인

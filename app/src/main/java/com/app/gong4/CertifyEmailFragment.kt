@@ -26,26 +26,18 @@ import retrofit2.Response
 import java.util.regex.Pattern
 import javax.security.auth.callback.Callback
 
-class CertifyEmailFragment : Fragment() {
+class CertifyEmailFragment : BaseFragment<FragmentCertifyEmailBinding>(FragmentCertifyEmailBinding::inflate) {
 
-    lateinit var binding: FragmentCertifyEmailBinding
     private val args by navArgs<CertifyEmailFragmentArgs>()
     private val requestServer = RequestServer
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        binding = FragmentCertifyEmailBinding.inflate(inflater, container, false)
+    override fun initView() {
         binding.emailTextView.text = args.email
 
         sendEmail()
         checkCode()
         goNext()
         goLogin()
-
-        return binding.root
     }
 
     private fun sendEmail() {
@@ -122,5 +114,7 @@ class CertifyEmailFragment : Fragment() {
             it.findNavController().navigate(R.id.action_certifyEmailFragment_to_loginFragment)
         }
     }
+
+
 
 }

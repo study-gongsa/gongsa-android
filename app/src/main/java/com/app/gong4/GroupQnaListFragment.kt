@@ -26,21 +26,12 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 
-class GroupQnaListFragment : Fragment() {
-    private lateinit var binding: FragmentGroupQnaListBinding
+class GroupQnaListFragment : BaseFragment<FragmentGroupQnaListBinding>(FragmentGroupQnaListBinding::inflate) {
+
     private val args by navArgs<GroupQnaListFragmentArgs>()
     private var list : ArrayList<QnaItem> = arrayListOf()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentGroupQnaListBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
+    override fun initView() {
         getQnaList(args.pid)
     }
 

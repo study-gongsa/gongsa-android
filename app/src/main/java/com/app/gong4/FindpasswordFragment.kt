@@ -1,32 +1,22 @@
 package com.app.gong4
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import com.app.gong4.DTO.RequestFindPwdBody
-import com.app.gong4.DTO.RequestLoginBody
 import com.app.gong4.DTO.ResponseFindPwdBody
-import com.app.gong4.DTO.ResponseLoginBody
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentFindpasswordBinding
-import com.app.gong4.databinding.FragmentLoginBinding
 import com.app.gong4.util.CommonTextWatcher
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FindpasswordFragment : Fragment() {
+class FindpasswordFragment : BaseFragment<FragmentFindpasswordBinding>(FragmentFindpasswordBinding::inflate) {
 
-    private lateinit var binding: FragmentFindpasswordBinding
     val requestServer = RequestServer
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,18 +25,12 @@ class FindpasswordFragment : Fragment() {
         mainActivity.hideBottomNavigationBar(true)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentFindpasswordBinding.inflate(inflater, container, false)
+    override fun initView() {
         //확인 버튼 비활성화
         binding.confirmButton.isEnabled = false
 
         checkInput()
         goConfirm()
-
-        return binding.root
     }
 
     fun checkInput() {

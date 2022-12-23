@@ -20,25 +20,16 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MyPageFragment : Fragment() {
-    private lateinit var binding: FragmentMyPageBinding
+class MyPageFragment : BaseFragment<FragmentMyPageBinding>(FragmentMyPageBinding::inflate) {
     private lateinit var userInfo : UserInfo
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentMyPageBinding.inflate(inflater, container, false)
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun initView() {
         serverMyPageInfo()
         myRankInfo()
+        clickQnaButton()
+    }
 
+    fun clickQnaButton(){
         binding.profileQnaButton.setOnClickListener {
             val action = MyPageFragmentDirections.actionMyPageFragmentToMyPageQnaFragment(userInfo = userInfo)
             findNavController().navigate(action)

@@ -1,13 +1,9 @@
 package com.app.gong4
 
 import android.graphics.Rect
-import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
@@ -22,33 +18,26 @@ import com.app.gong4.util.CommonService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.SimpleDateFormat
 
 
-class StudyGroupFragment : Fragment(){
+class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>(FragmentStudyGroupBinding::inflate){
 
-    lateinit var binding : FragmentStudyGroupBinding
     private val args by navArgs<StudyGroupFragmentArgs>()
     private lateinit var cAdapter : CategoryAdapter
     private lateinit var pAdapter : PeopleAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentStudyGroupBinding.inflate(inflater, container, false)
-
+    override fun initView() {
         getStudyGroupInfo(args.pid)
-
         getPeopleInfo(args.pid)
+        clickQnaButton()
+    }
 
+    fun clickQnaButton(){
         binding.qnaButton.setOnClickListener {
             val action = StudyGroupFragmentDirections.actionStudyGroupFragmentToGroupQnaListFragment(args.pid)
             it.findNavController().navigate(action)
         }
-        return binding.root
     }
-
     private fun getStudyGroupInfo(pid: Int) {
         RequestServer.studyGroupService.getStudygroupInfo(pid).enqueue(object :
             Callback<ResponseStudygroupinfoBody> {

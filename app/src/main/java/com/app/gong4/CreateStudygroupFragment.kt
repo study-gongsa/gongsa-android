@@ -10,25 +10,17 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
-import android.content.res.Resources
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.NumberPicker
-import android.widget.TimePicker
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.app.gong4.DTO.RequestCreateStudyGroup
@@ -48,9 +40,8 @@ import java.io.File
 import java.util.*
 
 
-class CreateStudygroupFragment : Fragment() {
+class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(FragmentCreateStudygroupBinding::inflate) {
 
-    private lateinit var binding: FragmentCreateStudygroupBinding
     private lateinit var categories : List<StudyCategory>
     private val viewModel : AppViewModel by activityViewModels()
 
@@ -68,13 +59,9 @@ class CreateStudygroupFragment : Fragment() {
         categories = viewModel.getCategoryList()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun initView() {
         val mainActivity = activity as MainActivity
         mainActivity.hideToolbar(true)
-        binding = FragmentCreateStudygroupBinding.inflate(inflater, container, false)
 
         showCategories()
         showDatePicker()
@@ -82,14 +69,6 @@ class CreateStudygroupFragment : Fragment() {
         createStudyGroup()
         selectGallery()
 
-        return binding.root
-    }
-
-    //키보드 내리기
-    fun hideKeyboard(v:View){
-        if(v!=null){
-            imm?.hideSoftInputFromWindow(v.windowToken,0)
-        }
     }
 
     private fun createStudyGroup(){
@@ -276,9 +255,10 @@ class CreateStudygroupFragment : Fragment() {
                 binding.timeTextView.text = if(hour<=9) "0${hour}:00" else "${hour}:00"
             }
 
-            val picker = TimePickerDialog(requireContext(),android.R.style.Theme_Holo_Light_Dialog_NoActionBar,time,cal.get(Calendar.HOUR_OF_DAY), 0,true)
+            val picker = TimePickerDialog(requireContext(),
+                R.style.Theme_Holo_Light_Dialog_NoActionBar,time,cal.get(Calendar.HOUR_OF_DAY), 0,true)
 
-            picker.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+            picker.window!!.setBackgroundDrawableResource(R.color.transparent)
             picker.show()
         }
     }

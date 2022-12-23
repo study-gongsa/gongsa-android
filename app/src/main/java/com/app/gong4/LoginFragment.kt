@@ -29,20 +29,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.regex.Pattern
 
-class LoginFragment : Fragment() {
-
-    private lateinit var binding: FragmentLoginBinding
+class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate) {
 
     val requestServer = RequestServer
-    private var imm : InputMethodManager ?=null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentLoginBinding.inflate(inflater, container, false)
-        imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-
+    override fun initView() {
         val mainActivity = activity as MainActivity
         mainActivity.hideBottomNavigationBar(true)
 
@@ -50,21 +41,12 @@ class LoginFragment : Fragment() {
         goLogin()
         goSignupScreen()
         goFindPasswordScreen()
-
-        return binding.root
     }
 
     override fun onStop() {
         super.onStop()
         val mainActivity = activity as MainActivity
         mainActivity.hideBottomNavigationBar(false)
-    }
-
-    //키보드 내리기
-    fun hideKeyboard(v:View){
-        if(v!=null){
-            imm?.hideSoftInputFromWindow(v.windowToken,0)
-        }
     }
 
     //회원가입으로 이동
@@ -82,7 +64,6 @@ class LoginFragment : Fragment() {
     }
 
     // 로그인
-    // TODO : Log 지우기
     fun goLogin(){
         binding.loginButton.setOnClickListener {
             hideKeyboard(it)
@@ -94,11 +75,9 @@ class LoginFragment : Fragment() {
                     call: Call<ResponseLoginBody>,
                     response: Response<ResponseLoginBody>
                 ) {
-                    Log.d("로그인 코드", response.code().toString())
-
                     if(response.isSuccessful()){
                         var repos: ResponseLoginBody? = response.body()
-                        Log.d("로그인 결과 - 성공", repos.toString())
+
                         repos.let { it ->
                             val accessToken = it!!.data.accessToken
                             val refreshToken = it!!.data.refreshToken
@@ -109,7 +88,7 @@ class LoginFragment : Fragment() {
                         it.findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
                     }else{
                         val error = response.errorBody()!!.string().trimIndent()
-                        Log.d("로그인 결과 - tostring", error)
+
                         val result = Gson().fromJson(error, ResponseLoginBody::class.java)
                         resetLoginErrorMsg()
                         showLoginErrorMsg(result.location,result.msg)
@@ -117,7 +96,6 @@ class LoginFragment : Fragment() {
                 }
 
                 override fun onFailure(call: Call<ResponseLoginBody>, t: Throwable) {
-                    Log.d("로그인 결과", t.toString())
                     Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.",Toast.LENGTH_SHORT)
                 }
             }
@@ -212,5 +190,4 @@ class LoginFragment : Fragment() {
 
         })
     }
-
 }

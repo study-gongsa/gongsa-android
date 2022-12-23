@@ -33,9 +33,8 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 
-class MainFragment : Fragment() {
+class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::inflate) {
 
-    private lateinit var binding: FragmentMainBinding
     private lateinit var category: ArrayList<StudyCategory>
     private lateinit var dataList : ArrayList<StduyGroupItem>
     private lateinit var dataAllList : ArrayList<StduyGroupItem>
@@ -52,12 +51,7 @@ class MainFragment : Fragment() {
         getCategories()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentMainBinding.inflate(inflater, container, false)
-
+    override fun initView() {
         CoroutineScope(Dispatchers.IO).launch {
             goRecommendStudygroup()
             getUserCategory()
@@ -67,8 +61,6 @@ class MainFragment : Fragment() {
         showStudyRoomDialog()
         searchKeyword()
         cameraToogle()
-
-        return binding.root
     }
 
     private fun getUserCategory() : ArrayList<UserCategory>{

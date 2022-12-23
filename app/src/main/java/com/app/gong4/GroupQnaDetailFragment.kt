@@ -9,13 +9,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.gong4.DTO.*
+import com.app.gong4.adapter.CommentAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentGroupQnaDetailBinding
 import retrofit2.Call
@@ -23,34 +22,20 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class GroupQnaDetailFragment : Fragment() ,CommentAdapter.CommentListener{
+class GroupQnaDetailFragment : BaseFragment<FragmentGroupQnaDetailBinding>(FragmentGroupQnaDetailBinding::inflate) , CommentAdapter.CommentListener{
 
-    private lateinit var binding: FragmentGroupQnaDetailBinding
     private lateinit var mAdapter : CommentAdapter
     private val args by navArgs<GroupQnaDetailFragmentArgs>()
-
-    private var imm : InputMethodManager?=null
 
     var questionUID : Int = 0
     private lateinit var removeDialog : AlertCustomDialog
     private lateinit var editDialog : AlertEditCustomDialog
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentGroupQnaDetailBinding.inflate(inflater, container, false)
-
+    override fun initView() {
         questionUID = args.questionID
         getQnaDetail(questionUID)
 
         registerComment()
-        return binding.root
     }
 
     private fun getQnaDetail(questionUID:Int){
@@ -84,13 +69,6 @@ class GroupQnaDetailFragment : Fragment() ,CommentAdapter.CommentListener{
                 flag = true
             }
             flag
-        }
-    }
-
-    //키보드 내리기
-    fun hideKeyboard(v:View){
-        if(v!=null){
-            imm?.hideSoftInputFromWindow(v.windowToken,0)
         }
     }
 
