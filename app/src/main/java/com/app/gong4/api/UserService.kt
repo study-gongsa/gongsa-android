@@ -2,10 +2,7 @@ package com.app.gong4.api
 
 import com.app.gong4.DTO.*
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.PATCH
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface UserService {
     /* 로그인 */
@@ -37,4 +34,8 @@ interface UserService {
     /* 내 스터디그룹 랭킹 조회 */
     @GET("/api/study-group/my-ranking")
     fun myStudyGroupRanking() : Call<ResponseMyStudyGroupRankingBody>
+
+    /* 특정 기기로 푸시 알림 전송되는지 테스트 */
+    @GET("/api/push")
+    fun userPushMessage(@Query("targetToken") targetToken:String) : Call<BaseResponse>
 }
