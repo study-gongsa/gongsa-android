@@ -20,6 +20,7 @@ import com.app.gong4.DTO.RequestLoginBody
 import com.app.gong4.DTO.ResponseLoginBody
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentLoginBinding
+import com.app.gong4.util.CommonTextWatcher
 import com.app.gong4.util.MainApplication
 import com.google.gson.Gson
 import okhttp3.ResponseBody
@@ -99,9 +100,9 @@ class LoginFragment : Fragment() {
                         var repos: ResponseLoginBody? = response.body()
                         Log.d("로그인 결과 - 성공", repos.toString())
                         repos.let { it ->
-                           val accessToken = it!!.data.accessToken
+                            val accessToken = it!!.data.accessToken
                             val refreshToken = it!!.data.refreshToken
-                            Log.d("로그인 결과 - refreshToken", accessToken.toString())
+
                             MainApplication.prefs.setData("accessToken",accessToken)
                             MainApplication.prefs.setData("refreshToken",refreshToken)
                         }
@@ -142,37 +143,22 @@ class LoginFragment : Fragment() {
 
     // 입력값 체크
     fun checkInput(){
-        binding.emailEditText.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        binding.emailEditText.addTextChangedListener(CommonTextWatcher(
+            onChanged = { _,_,_,_ ->
                 binding.validEmailTextView.text = ""
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
+            },
+            afterChanged = {
                 binding.loginButton.isEnabled = true
             }
-
-        })
-        binding.passwordEditText.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        ))
+        binding.passwordEditText.addTextChangedListener(CommonTextWatcher(
+            onChanged = { _, _, _, _ ->
                 binding.validPasswordTextView.text = ""
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
+            },
+            afterChanged = {
                 binding.loginButton.isEnabled = true
             }
-
-        })
-
+        ))
     }
 
     fun checkEmail(){
