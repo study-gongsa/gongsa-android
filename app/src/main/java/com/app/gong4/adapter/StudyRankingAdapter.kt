@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.gong4.DTO.Member
-import com.app.gong4.DTO.Ranking
+import com.app.gong4.model.Member
+import com.app.gong4.model.Ranking
 import com.app.gong4.R
 
 class StudyRankingAdapter(val data:ArrayList<Ranking>) :

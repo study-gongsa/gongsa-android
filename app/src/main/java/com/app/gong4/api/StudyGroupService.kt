@@ -1,8 +1,7 @@
 package com.app.gong4.api
 
-import com.app.gong4.DTO.*
+import com.app.gong4.model.*
 import okhttp3.MultipartBody
-import okhttp3.Request
 import retrofit2.Call
 import retrofit2.http.*
 

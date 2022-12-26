@@ -4,38 +4,25 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.app.gong4.DTO.*
+import com.app.gong4.model.*
 import com.app.gong4.adapter.StudyGroupListAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMainBinding
 import com.app.gong4.util.AppViewModel
-import com.app.gong4.util.CommonService
-import com.app.gong4.util.MainApplication
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.model.GlideUrl
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
 import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.IO
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 
-class MainFragment : Fragment() {
+class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::inflate) {
 
-    private lateinit var binding: FragmentMainBinding
     private lateinit var category: ArrayList<StudyCategory>
     private lateinit var dataList : ArrayList<StduyGroupItem>
     private lateinit var dataAllList : ArrayList<StduyGroupItem>
@@ -52,12 +39,7 @@ class MainFragment : Fragment() {
         getCategories()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentMainBinding.inflate(inflater, container, false)
-
+    override fun initView() {
         CoroutineScope(Dispatchers.IO).launch {
             goRecommendStudygroup()
             getUserCategory()
@@ -67,8 +49,6 @@ class MainFragment : Fragment() {
         showStudyRoomDialog()
         searchKeyword()
         cameraToogle()
-
-        return binding.root
     }
 
     private fun getUserCategory() : ArrayList<UserCategory>{
@@ -82,6 +62,8 @@ class MainFragment : Fragment() {
                 userCategory = response.body()!!.data
                 if(userCategory.isEmpty()){
                     UsercategoryDialog(viewModel.getCategoryList()).show(parentFragmentManager,"UserCategoryDialog")
+                }else{
+                    viewModel.initUserCategoryList(userCategory as ArrayList<UserCategory>)
                 }
             }
 

@@ -1,16 +1,12 @@
 package com.app.gong4
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.app.gong4.DTO.QnaItem
-import com.app.gong4.DTO.ResponseQnaListBody
-import com.app.gong4.DTO.UserInfo
+import com.app.gong4.model.QnaItem
+import com.app.gong4.model.ResponseQnaListBody
+import com.app.gong4.model.UserInfo
 import com.app.gong4.adapter.QnaListAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMyPageQnaBinding
@@ -21,27 +17,17 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class MyPageQnaFragment : Fragment() {
-    private lateinit var binding: FragmentMyPageQnaBinding
-
+class MyPageQnaFragment : BaseFragment<FragmentMyPageQnaBinding>(FragmentMyPageQnaBinding::inflate) {
     private val args by navArgs<MyPageQnaFragmentArgs>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentMyPageQnaBinding.inflate(inflater, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         val mainActivity = activity as MainActivity
         mainActivity.hideToolbar(false)
-
-        return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun initView() {
         getMyPageInfo(args.userInfo)
-
         getQnaList()
     }
 
@@ -52,7 +38,7 @@ class MyPageQnaFragment : Fragment() {
     }
 
     fun getMyPageInfo(info: UserInfo){
-        val imgPath = CommonService().getImageGlide(info.imgPath)
+        val imgPath = CommonService.getImageGlide(info.imgPath)
         Glide.with(requireContext()).load(imgPath).into(binding.profileImageview)
 
         val studyHour = info.totalStudyTime.substring(0,2)
@@ -92,5 +78,4 @@ class MyPageQnaFragment : Fragment() {
         adapter.notifyDataSetChanged()
         binding.qnaRecylcerview.setHasFixedSize(true)
     }
-
 }

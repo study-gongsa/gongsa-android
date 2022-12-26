@@ -8,12 +8,11 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.app.gong4.DTO.StduyGroupItem
+import com.app.gong4.model.StduyGroupItem
 import com.app.gong4.MainFragment
 import com.app.gong4.R
 import com.app.gong4.util.CommonService
 import com.bumptech.glide.Glide
-import java.text.SimpleDateFormat
 
 class StudyGroupListAdapter(private val context: MainFragment, val dataSet: ArrayList<StduyGroupItem>)
     : RecyclerView.Adapter<StudyGroupListAdapter.ViewHolder>() {
@@ -52,9 +51,9 @@ class StudyGroupListAdapter(private val context: MainFragment, val dataSet: Arra
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.group_title_textView.text = dataSet[position].name
-        holder.group_date_textView.text = "${CommonService().convertTimestampToDate(dataSet[position].createdAt)} ~ ${CommonService().convertTimestampToDate(dataSet[position].expiredAt)}"
+        holder.group_date_textView.text = "${CommonService.convertTimestampToDate(dataSet[position].createdAt)} ~ ${CommonService.convertTimestampToDate(dataSet[position].expiredAt)}"
 
-        val url = CommonService().getImageGlide(dataSet[position].imgPath)
+        val url = CommonService.getImageGlide(dataSet[position].imgPath)
         Glide.with(context).load(url).into(holder.group_image_imageView)
         if (!dataSet[position].isCam) {
             holder.group_cam_button.setImageResource(R.drawable.ic_camera_off_22)

@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.app.gong4.DTO.StduyGroupItem
+import com.app.gong4.model.StduyGroupItem
 import com.app.gong4.MyStudyGroupFragment
 import com.app.gong4.MyStudyGroupFragmentDirections
 import com.app.gong4.R
@@ -42,13 +42,13 @@ class MyStudyGroupAdapter(private val context: MyStudyGroupFragment, val dataSet
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val start_date = CommonService().convertTimestampToDate(dataSet[position].createdAt)
-        val end_date = CommonService().convertTimestampToDate(dataSet[position].expiredAt)
+        val start_date = CommonService.convertTimestampToDate(dataSet[position].createdAt)
+        val end_date = CommonService.convertTimestampToDate(dataSet[position].expiredAt)
 
         holder.group_title_textView.text = dataSet[position].name
         holder.group_date_textView.text = "$start_date ~ $end_date"
 
-        val url = CommonService().getImageGlide(dataSet[position].imgPath)
+        val url = CommonService.getImageGlide(dataSet[position].imgPath)
         Glide.with(context).load(url).into(holder.group_image_imageView)
         if (!dataSet[position].isCam) {
             holder.group_cam_button.setImageResource(R.drawable.ic_camera_off_22)

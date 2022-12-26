@@ -1,47 +1,26 @@
 package com.app.gong4
 
-import android.content.Context
-import android.os.Build
-import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.findNavController
-import com.app.gong4.DTO.RequestLoginBody
-import com.app.gong4.DTO.ResponseLoginBody
+import com.app.gong4.model.RequestLoginBody
+import com.app.gong4.model.ResponseLoginBody
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentLoginBinding
+import com.app.gong4.util.CommonTextWatcher
 import com.app.gong4.util.MainApplication
 import com.google.gson.Gson
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.regex.Pattern
 
-class LoginFragment : Fragment() {
-
-    private lateinit var binding: FragmentLoginBinding
+class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate) {
 
     val requestServer = RequestServer
-    private var imm : InputMethodManager ?=null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentLoginBinding.inflate(inflater, container, false)
-        imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-
+    override fun initView() {
         val mainActivity = activity as MainActivity
         mainActivity.hideBottomNavigationBar(true)
 
@@ -49,21 +28,12 @@ class LoginFragment : Fragment() {
         goLogin()
         goSignupScreen()
         goFindPasswordScreen()
-
-        return binding.root
     }
 
     override fun onStop() {
         super.onStop()
         val mainActivity = activity as MainActivity
         mainActivity.hideBottomNavigationBar(false)
-    }
-
-    //키보드 내리기
-    fun hideKeyboard(v:View){
-        if(v!=null){
-            imm?.hideSoftInputFromWindow(v.windowToken,0)
-        }
     }
 
     //회원가입으로 이동
@@ -81,7 +51,6 @@ class LoginFragment : Fragment() {
     }
 
     // 로그인
-    // TODO : Log 지우기
     fun goLogin(){
         binding.loginButton.setOnClickListener {
             hideKeyboard(it)
@@ -93,22 +62,20 @@ class LoginFragment : Fragment() {
                     call: Call<ResponseLoginBody>,
                     response: Response<ResponseLoginBody>
                 ) {
-                    Log.d("로그인 코드", response.code().toString())
-
                     if(response.isSuccessful()){
                         var repos: ResponseLoginBody? = response.body()
-                        Log.d("로그인 결과 - 성공", repos.toString())
+
                         repos.let { it ->
-                           val accessToken = it!!.data.accessToken
+                            val accessToken = it!!.data.accessToken
                             val refreshToken = it!!.data.refreshToken
-                            Log.d("로그인 결과 - refreshToken", accessToken.toString())
+
                             MainApplication.prefs.setData("accessToken",accessToken)
                             MainApplication.prefs.setData("refreshToken",refreshToken)
                         }
                         it.findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
                     }else{
                         val error = response.errorBody()!!.string().trimIndent()
-                        Log.d("로그인 결과 - tostring", error)
+
                         val result = Gson().fromJson(error, ResponseLoginBody::class.java)
                         resetLoginErrorMsg()
                         showLoginErrorMsg(result.location,result.msg)
@@ -116,7 +83,6 @@ class LoginFragment : Fragment() {
                 }
 
                 override fun onFailure(call: Call<ResponseLoginBody>, t: Throwable) {
-                    Log.d("로그인 결과", t.toString())
                     Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.",Toast.LENGTH_SHORT)
                 }
             }
@@ -142,37 +108,22 @@ class LoginFragment : Fragment() {
 
     // 입력값 체크
     fun checkInput(){
-        binding.emailEditText.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        binding.emailEditText.addTextChangedListener(CommonTextWatcher(
+            onChanged = { _,_,_,_ ->
                 binding.validEmailTextView.text = ""
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
+            },
+            afterChanged = {
                 binding.loginButton.isEnabled = true
             }
-
-        })
-        binding.passwordEditText.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        ))
+        binding.passwordEditText.addTextChangedListener(CommonTextWatcher(
+            onChanged = { _, _, _, _ ->
                 binding.validPasswordTextView.text = ""
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
+            },
+            afterChanged = {
                 binding.loginButton.isEnabled = true
             }
-
-        })
-
+        ))
     }
 
     fun checkEmail(){
@@ -226,5 +177,4 @@ class LoginFragment : Fragment() {
 
         })
     }
-
 }

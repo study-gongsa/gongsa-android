@@ -1,50 +1,33 @@
 package com.app.gong4
 
-import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
-import com.app.gong4.DTO.RequestAuthCodeBody
-import com.app.gong4.DTO.RequestCertifyEmailBody
-import com.app.gong4.DTO.ResponseAuthCodeBody
-import com.app.gong4.DTO.ResponseCertifyEmailBody
+import com.app.gong4.model.RequestAuthCodeBody
+import com.app.gong4.model.RequestCertifyEmailBody
+import com.app.gong4.model.ResponseAuthCodeBody
+import com.app.gong4.model.ResponseCertifyEmailBody
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentCertifyEmailBinding
-import com.app.gong4.databinding.FragmentSignupBinding
+import com.app.gong4.util.CommonTextWatcher
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Response
 import java.util.regex.Pattern
-import javax.security.auth.callback.Callback
 
-class CertifyEmailFragment : Fragment() {
+class CertifyEmailFragment : BaseFragment<FragmentCertifyEmailBinding>(FragmentCertifyEmailBinding::inflate) {
 
-    lateinit var binding: FragmentCertifyEmailBinding
     private val args by navArgs<CertifyEmailFragmentArgs>()
     private val requestServer = RequestServer
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        binding = FragmentCertifyEmailBinding.inflate(inflater, container, false)
+    override fun initView() {
         binding.emailTextView.text = args.email
 
         sendEmail()
         checkCode()
         goNext()
         goLogin()
-
-        return binding.root
     }
 
     private fun sendEmail() {
@@ -70,20 +53,15 @@ class CertifyEmailFragment : Fragment() {
     }
 
     private fun checkCode(){
-        binding.codeEditText.addTextChangedListener(object :TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        binding.codeEditText.addTextChangedListener(CommonTextWatcher(
+            beforeChanged = { _,_,_,_ ->
                 binding.validCodeTextView.text = ""
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            },
+            onChanged = { text,_,_,_ ->
                 binding.confirmButton.isEnabled =
-                    Pattern.matches("^[0-9].{5}$", p0.toString())
+                    Pattern.matches("^[0-9].{5}$", text.toString())
             }
-
-            override fun afterTextChanged(p0: Editable?) {
-            }
-
-        })
+        ))
     }
 
     private fun goNext(){
@@ -126,5 +104,7 @@ class CertifyEmailFragment : Fragment() {
             it.findNavController().navigate(R.id.action_certifyEmailFragment_to_loginFragment)
         }
     }
+
+
 
 }

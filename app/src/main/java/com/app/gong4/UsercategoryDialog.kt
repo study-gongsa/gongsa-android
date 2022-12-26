@@ -7,27 +7,19 @@ import android.graphics.Color
 import android.graphics.Insets
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.view.children
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModelProvider
-import com.app.gong4.DTO.ResponseStudygroupinfoBody
-import com.app.gong4.DTO.StudyCategory
+import com.app.gong4.model.StudyCategory
 import com.app.gong4.api.RequestServer
-import com.app.gong4.databinding.GroupenterDialogBinding
-import com.app.gong4.databinding.GroupfilterDialogBinding
 import com.app.gong4.databinding.UsercategoryDialogBinding
-import com.app.gong4.util.AppViewModel
 import com.google.android.material.chip.Chip
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 import kotlin.collections.ArrayList
 
 class UsercategoryDialog(val categories : ArrayList<StudyCategory>) : DialogFragment() {

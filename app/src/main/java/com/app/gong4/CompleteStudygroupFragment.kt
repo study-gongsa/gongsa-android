@@ -1,24 +1,11 @@
 package com.app.gong4
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import com.app.gong4.databinding.FragmentCompleteStudygroupBinding
 
-class CompleteStudygroupFragment : Fragment() {
+class CompleteStudygroupFragment : BaseFragment<FragmentCompleteStudygroupBinding>(FragmentCompleteStudygroupBinding::inflate) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_complete_studygroup, container, false)
+    override fun initView() {
+        TODO("Not yet implemented")
     }
 
 }
