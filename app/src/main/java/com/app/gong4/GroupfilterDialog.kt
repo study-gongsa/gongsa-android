@@ -1,7 +1,6 @@
 package com.app.gong4
 
 import android.R
-import android.app.Dialog
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -9,14 +8,13 @@ import android.graphics.Insets
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.core.view.children
 import androidx.fragment.app.DialogFragment
-import com.app.gong4.DTO.RequestGroupItemBody
-import com.app.gong4.DTO.ResponseGroupItemBody
-import com.app.gong4.DTO.StduyGroupItem
-import com.app.gong4.DTO.StudyCategory
+import com.app.gong4.model.RequestGroupItemBody
+import com.app.gong4.model.ResponseGroupItemBody
+import com.app.gong4.model.StduyGroupItem
+import com.app.gong4.model.StudyCategory
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.GroupfilterDialogBinding
 import com.google.android.material.chip.Chip

@@ -1,19 +1,12 @@
 package com.app.gong4
 
-import android.content.Context
-import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_ENTER
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.app.gong4.DTO.*
+import com.app.gong4.model.*
 import com.app.gong4.adapter.CommentAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentGroupQnaDetailBinding

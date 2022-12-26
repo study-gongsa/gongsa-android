@@ -1,8 +1,4 @@
-package com.app.gong4.DTO
-
-import retrofit2.http.Query
-import java.sql.Timestamp
-import java.util.*
+package com.app.gong4.model
 
 data class RequestGroupItemBody(
     var align:String?=null,

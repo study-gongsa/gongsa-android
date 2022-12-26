@@ -1,16 +1,12 @@
 package com.app.gong4
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.app.gong4.DTO.QnaItem
-import com.app.gong4.DTO.ResponseQnaListBody
-import com.app.gong4.DTO.UserInfo
+import com.app.gong4.model.QnaItem
+import com.app.gong4.model.ResponseQnaListBody
+import com.app.gong4.model.UserInfo
 import com.app.gong4.adapter.QnaListAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMyPageQnaBinding
@@ -42,7 +38,7 @@ class MyPageQnaFragment : BaseFragment<FragmentMyPageQnaBinding>(FragmentMyPageQ
     }
 
     fun getMyPageInfo(info: UserInfo){
-        val imgPath = CommonService().getImageGlide(info.imgPath)
+        val imgPath = CommonService.getImageGlide(info.imgPath)
         Glide.with(requireContext()).load(imgPath).into(binding.profileImageview)
 
         val studyHour = info.totalStudyTime.substring(0,2)

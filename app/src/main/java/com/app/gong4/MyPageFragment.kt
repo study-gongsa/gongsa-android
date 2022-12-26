@@ -1,16 +1,11 @@
 package com.app.gong4
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.app.gong4.DTO.Ranking
-import com.app.gong4.DTO.ResponseMyPageInfoBody
-import com.app.gong4.DTO.ResponseMyStudyGroupRankingBody
-import com.app.gong4.DTO.UserInfo
+import com.app.gong4.model.Ranking
+import com.app.gong4.model.ResponseMyPageInfoBody
+import com.app.gong4.model.ResponseMyStudyGroupRankingBody
+import com.app.gong4.model.UserInfo
 import com.app.gong4.adapter.StudyRankingAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMyPageBinding
@@ -27,12 +22,19 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(FragmentMyPageBinding
         serverMyPageInfo()
         myRankInfo()
         clickQnaButton()
+        clickSettingButton()
     }
 
     fun clickQnaButton(){
         binding.profileQnaButton.setOnClickListener {
             val action = MyPageFragmentDirections.actionMyPageFragmentToMyPageQnaFragment(userInfo = userInfo)
             findNavController().navigate(action)
+        }
+    }
+
+    fun clickSettingButton(){
+        binding.profileSettingButton.setOnClickListener {
+            findNavController().navigate(R.id.action_myPageFragment_to_settingFragment)
         }
     }
 
@@ -77,7 +79,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(FragmentMyPageBinding
     }
 
     fun getMyPageInfo(info:UserInfo){
-        val imgPath = CommonService().getImageGlide(info.imgPath)
+        val imgPath = CommonService.getImageGlide(info.imgPath)
         Glide.with(requireContext()).load(imgPath).into(binding.profileImageview)
 
         val studyHour = info.totalStudyTime.substring(0,2)

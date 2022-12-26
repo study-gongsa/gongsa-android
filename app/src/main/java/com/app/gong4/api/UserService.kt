@@ -1,6 +1,7 @@
 package com.app.gong4.api
 
-import com.app.gong4.DTO.*
+import com.app.gong4.model.*
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -38,4 +39,16 @@ interface UserService {
     /* 특정 기기로 푸시 알림 전송되는지 테스트 */
     @GET("/api/push")
     fun userPushMessage(@Query("targetToken") targetToken:String) : Call<BaseResponse>
+
+    /* 환경설정 기본 정보 조회*/
+    @GET("/api/user")
+    fun getuserInfo():Call<ResponseUserBody>
+
+    @Multipart
+    @Headers("accept: application/json")
+    @PATCH("/api/user")
+    fun patchUserInfo(
+        @Part image: MultipartBody.Part?=null,
+        @Part("json") body: Any
+    ):Call<BaseResponse>
 }

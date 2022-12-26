@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.app.gong4.DTO.Member
+import com.app.gong4.model.Member
 import com.app.gong4.R
 import com.app.gong4.StudyGroupFragment
 import com.app.gong4.util.CommonService
@@ -25,7 +25,7 @@ class PeopleAdapter(private val context: StudyGroupFragment, private val dataSet
 
         fun bind(member: Member) {
             timeTextView.text = "${member.totalStudyTime.substring(0,2)}시간 ${member.totalStudyTime.substring(3,5)}분"
-            val imgPath = CommonService().getImageGlide(member.imgPath)
+            val imgPath = CommonService.getImageGlide(member.imgPath)
             Glide.with(mamberImage.context).load(imgPath).into(mamberImage)
             changeLayout(member.studyStatus)
         }

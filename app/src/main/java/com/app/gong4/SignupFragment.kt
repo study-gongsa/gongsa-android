@@ -4,9 +4,9 @@ import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
-import com.app.gong4.DTO.RequestSignupBody
-import com.app.gong4.DTO.ResponseLoginBody
-import com.app.gong4.DTO.ResponseSignupBody
+import com.app.gong4.model.RequestSignupBody
+import com.app.gong4.model.ResponseLoginBody
+import com.app.gong4.model.ResponseSignupBody
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentSignupBinding
 import com.app.gong4.util.CommonTextWatcher

@@ -23,12 +23,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
-import com.app.gong4.DTO.RequestCreateStudyGroup
-import com.app.gong4.DTO.ResponseCreateStudyGroup
-import com.app.gong4.DTO.StudyCategory
+import com.app.gong4.model.RequestCreateStudyGroup
+import com.app.gong4.model.ResponseCreateStudyGroup
+import com.app.gong4.model.StudyCategory
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentCreateStudygroupBinding
 import com.app.gong4.util.AppViewModel
+import com.app.gong4.util.CommonService
 import com.google.android.material.chip.Chip
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -41,6 +42,17 @@ import java.util.*
 
 
 class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(FragmentCreateStudygroupBinding::inflate) {
+
+    val imageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            result ->
+        if(result.resultCode == RESULT_OK){
+            val imageUri = result.data?.data
+            imageUri?.let {
+                imageFile = File(CommonService.getRealPathFromURI(requireActivity(),it)) // 이미지 -> 파일형태로 변환
+                binding.imageSelectButton.text = imageFile?.name
+            }
+        }
+    }
 
     private lateinit var categories : List<StudyCategory>
     private val viewModel : AppViewModel by activityViewModels()
@@ -185,32 +197,7 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
 
     }
 
-    fun getRealPathFromURI(uri : Uri):String{
-        val buildName = Build.MANUFACTURER
-
-        var columnIndex = 0
-        val proj = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = activity?.contentResolver?.query(uri, proj, null, null, null)
-        if(cursor!!.moveToFirst()){
-            columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        }
-        val result = cursor.getString(columnIndex)
-        cursor.close()
-        return result
-    }
-
     private fun selectGallery(){
-        val imageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-                result ->
-            if(result.resultCode == RESULT_OK){
-                val imageUri = result.data?.data
-                imageUri?.let {
-                    imageFile = File(getRealPathFromURI(it)) // 이미지 -> 파일형태로 변환
-                    binding.imageSelectButton.text = imageFile?.name
-                }
-            }
-        }
-
         binding.imageSelectButton.setOnClickListener {
 
             val writePermission = ContextCompat.checkSelfPermission(requireActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE)

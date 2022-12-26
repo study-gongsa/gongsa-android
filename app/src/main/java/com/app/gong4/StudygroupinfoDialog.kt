@@ -1,28 +1,22 @@
 package com.app.gong4
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Insets
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
-import android.util.TypedValue
 import android.view.*
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
-import com.app.gong4.DTO.*
+import com.app.gong4.model.*
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.StudygroupinfoDialogBinding
-import com.google.android.material.chip.Chip
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.LocalDate
 
 class StudygroupinfoDialog(private val data: StduyGroupDetailItem) : DialogFragment() {
 

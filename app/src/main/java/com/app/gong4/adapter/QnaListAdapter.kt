@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.app.gong4.DTO.QnaItem
+import com.app.gong4.model.QnaItem
 import com.app.gong4.R
 import com.app.gong4.onMoveAdapterListener
 import java.text.SimpleDateFormat

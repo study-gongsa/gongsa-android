@@ -4,33 +4,21 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.app.gong4.DTO.*
+import com.app.gong4.model.*
 import com.app.gong4.adapter.StudyGroupListAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMainBinding
 import com.app.gong4.util.AppViewModel
-import com.app.gong4.util.CommonService
-import com.app.gong4.util.MainApplication
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.model.GlideUrl
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
 import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.IO
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 
 class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::inflate) {
@@ -74,6 +62,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                 userCategory = response.body()!!.data
                 if(userCategory.isEmpty()){
                     UsercategoryDialog(viewModel.getCategoryList()).show(parentFragmentManager,"UserCategoryDialog")
+                }else{
+                    viewModel.initUserCategoryList(userCategory as ArrayList<UserCategory>)
                 }
             }
 

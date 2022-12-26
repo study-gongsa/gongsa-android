@@ -5,8 +5,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.navigation.findNavController
-import com.app.gong4.DTO.RequestFindPwdBody
-import com.app.gong4.DTO.ResponseFindPwdBody
+import com.app.gong4.model.RequestFindPwdBody
+import com.app.gong4.model.ResponseFindPwdBody
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentFindpasswordBinding
 import com.app.gong4.util.CommonTextWatcher

@@ -1,4 +1,4 @@
-package com.app.gong4.DTO
+package com.app.gong4.model
 
 data class ResponseMyStudyGroupRankingBody(
     val location: String,

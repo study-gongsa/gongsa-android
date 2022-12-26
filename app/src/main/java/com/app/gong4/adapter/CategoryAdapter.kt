@@ -5,9 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.app.gong4.DTO.StudyCategory
+import com.app.gong4.model.StudyCategory
 import com.app.gong4.R
-import com.app.gong4.StudyGroupFragment
 
 class CategoryAdapter(private val dataSet: ArrayList<StudyCategory>)
     : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {

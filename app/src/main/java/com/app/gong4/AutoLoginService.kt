@@ -1,8 +1,8 @@
 package com.app.gong4
 
 import android.util.Log
-import com.app.gong4.DTO.RequestRefreshTokenBody
-import com.app.gong4.DTO.ResponseRefreshTokenBody
+import com.app.gong4.model.RequestRefreshTokenBody
+import com.app.gong4.model.ResponseRefreshTokenBody
 import com.app.gong4.api.RequestServer
 import com.app.gong4.util.MainApplication
 import retrofit2.Call

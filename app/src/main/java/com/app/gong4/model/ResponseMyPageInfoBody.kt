@@ -1,4 +1,4 @@
-package com.app.gong4.DTO
+package com.app.gong4.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

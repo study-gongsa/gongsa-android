@@ -9,7 +9,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.gong4.DTO.*
+import com.app.gong4.model.*
 import com.app.gong4.adapter.CategoryAdapter
 import com.app.gong4.adapter.PeopleAdapter
 import com.app.gong4.api.RequestServer
@@ -49,7 +49,7 @@ class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>(FragmentStudy
 
                 binding.studyNameTextView.text = binding.studyNameTextView.text.toString() + " ${data.name}"
                 binding.studyTermTextView.text = binding.studyTermTextView.text.toString() +
-                        " ${CommonService().convertTimestampToDate(data.createdAt)} ~ ${CommonService().convertTimestampToDate(data.expiredAt)}"
+                        " ${CommonService.convertTimestampToDate(data.createdAt)} ~ ${CommonService.convertTimestampToDate(data.expiredAt)}"
                 if (data.isCam) {
                     binding.studyCamTextView.text = binding.studyCamTextView.text.toString() + " 필수"
                 } else {
