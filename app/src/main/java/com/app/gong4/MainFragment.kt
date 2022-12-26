@@ -95,32 +95,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                     val sIsCam = mRequest?.isCam
                     val sCategory = mRequest?.categoryUIDs
 
-                    // api 호출
-                    RequestServer.studyGroupService.getStudygroupfilterInfo(align = sAlign, isCam = sIsCam, categoryUIDs = sCategory, word = s).enqueue(object :
-                        Callback<ResponseGroupItemBody>{
-                        override fun onResponse(
-                            call: Call<ResponseGroupItemBody>,
-                            response: Response<ResponseGroupItemBody>
-                        ) {
-                            if (response.isSuccessful) {
-                                val data: ResponseGroupItemBody? = response.body()
-                                data.let { it ->
-                                    dataAllList = it!!.data.studyGroupList as ArrayList<StduyGroupItem>
-                                    dataList = dataAllList
-                                    setAdapter(dataList)
-                                }
-                            } else {
-                                val error = response.errorBody()!!.string().trimIndent()
-                                val result = Gson().fromJson(error, ResponseGroupItemBody::class.java)
-                                Log.d("응답 값 결과 - tostring", result.toString())
-                            }
+                    searchWordApiCall(sAlign,sIsCam,sCategory,s)
 
-                        }
-
-                        override fun onFailure(call: Call<ResponseGroupItemBody>, t: Throwable) {
-                            TODO("Not yet implemented")
-                        }
-                    })
                     return false
                 }
 
@@ -130,6 +106,35 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                 }
             }
         binding.searchView.setOnQueryTextListener(searchViewTextListener)
+    }
+
+    private fun searchWordApiCall(sAlign:String?,sIsCam:Boolean?,sCategory:List<Int>?,s:String?){
+        // api 호출
+        RequestServer.studyGroupService.getStudygroupfilterInfo(align = sAlign, isCam = sIsCam, categoryUIDs = sCategory, word = s).enqueue(object :
+            Callback<ResponseGroupItemBody>{
+            override fun onResponse(
+                call: Call<ResponseGroupItemBody>,
+                response: Response<ResponseGroupItemBody>
+            ) {
+                if (response.isSuccessful) {
+                    val data: ResponseGroupItemBody? = response.body()
+                    data.let { it ->
+                        dataAllList = it!!.data.studyGroupList as ArrayList<StduyGroupItem>
+                        dataList = dataAllList
+                        setAdapter(dataList)
+                    }
+                } else {
+                    val error = response.errorBody()!!.string().trimIndent()
+                    val result = Gson().fromJson(error, ResponseGroupItemBody::class.java)
+                    Log.d("응답 값 결과 - tostring", result.toString())
+                }
+
+            }
+
+            override fun onFailure(call: Call<ResponseGroupItemBody>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
     private fun showEnterDialog(){

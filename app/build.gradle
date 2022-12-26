@@ -77,6 +77,7 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxkotlin:3.0.0"
     // rx 바인딩
     implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
+    implementation 'com.jakewharton.rxbinding4:rxbinding-appcompat:4.0.0'
     // rx 안드로이드 - 스레드 - 스케쥴러
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 }
