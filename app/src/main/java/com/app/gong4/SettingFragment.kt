@@ -232,7 +232,9 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBind
 
     fun initUserInfo(user: ResponseUserBody.UserData){
         binding.nicknameEditText.setText(user.nickname)
-        CommonService.getImageGlide(user.imgPath)
+
+        val url = CommonService.getImageGlide(user.imgPath)
+        Glide.with(requireContext()).load(url).into(binding.settingProfileImageView)
     }
 
     fun showCategories(){

@@ -80,7 +80,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(FragmentMyPageBinding
 
     fun getMyPageInfo(info:UserInfo){
         val imgPath = CommonService.getImageGlide(info.imgPath)
-        Glide.with(requireContext()).load(imgPath).into(binding.profileImageview)
+        Glide.with(requireContext()).load(imgPath).error(R.drawable.error_image).into(binding.profileImageview)
 
         val studyHour = info.totalStudyTime.substring(0,2)
         val studyMinute = info.totalStudyTime.substring(3,5)

@@ -10,18 +10,17 @@ import com.app.gong4.model.req.RequestLoginBody
 import com.app.gong4.utils.CommonTextWatcher
 import com.app.gong4.utils.TokenManager
 import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.regex.Pattern
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate) {
 
     val requestServer = RequestServer
-
-    @Inject
-    lateinit var tokenManager: TokenManager
 
     override fun initView() {
         val mainActivity = activity as MainActivity
@@ -72,8 +71,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                             val accessToken = it!!.data.accessToken
                             val refreshToken = it!!.data.refreshToken
 
-                            tokenManager.saveAccessToken(accessToken)
-                            tokenManager.saveRefreshToken(refreshToken)
+                            MainApplication.tokenManager.saveAccessToken(accessToken)
+                            MainApplication.tokenManager.saveRefreshToken(refreshToken)
                         }
                         it.findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
                     }else{

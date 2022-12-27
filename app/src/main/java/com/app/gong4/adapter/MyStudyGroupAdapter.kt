@@ -49,7 +49,7 @@ class MyStudyGroupAdapter(private val context: MyStudyGroupFragment, val dataSet
         holder.group_date_textView.text = "$start_date ~ $end_date"
 
         val url = CommonService.getImageGlide(dataSet[position].imgPath)
-        Glide.with(context).load(url).into(holder.group_image_imageView)
+        Glide.with(context).load(url).error(R.drawable.error_image).into(holder.group_image_imageView)
         if (!dataSet[position].isCam) {
             holder.group_cam_button.setImageResource(R.drawable.ic_camera_off_22)
         } else {

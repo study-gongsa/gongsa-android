@@ -33,7 +33,7 @@ class RankItemAdapter(val data:ArrayList<Member>) : RecyclerView.Adapter<RankIte
     }
 
     override fun getItemCount(): Int {
-        return data.size
+        return if(data.size >=4) 4 else data.size
     }
 
 }

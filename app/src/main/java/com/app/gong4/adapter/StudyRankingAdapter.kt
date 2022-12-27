@@ -22,7 +22,7 @@ class StudyRankingAdapter(val data:ArrayList<Ranking>) :
         }
 
         fun bind(ranking: Ranking){
-            groupNameTextview.text = "${ranking.name} 스터디 그룹 내 랭킹 정보"
+            groupNameTextview.text = "${ranking.name} 그룹 내 랭킹 정보"
             groupRecyclerView.apply {
                 adapter = RankItemAdapter(ranking.members as ArrayList<Member>)
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

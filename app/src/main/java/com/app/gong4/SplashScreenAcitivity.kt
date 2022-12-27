@@ -2,23 +2,26 @@ package com.app.gong4
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.app.gong4.model.res.ResponseRefreshTokenBody
 import com.app.gong4.utils.TokenManager
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class SplashScreenAcitivity : AppCompatActivity(),AutoLoginView {
 
     private lateinit var mService: AutoLoginService
 
-    @Inject
     lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mService = AutoLoginService(this)
+        tokenManager = TokenManager(applicationContext)
+        mService = AutoLoginService(this,tokenManager)
         mService.goServerAutoLogin()
     }
 

@@ -26,7 +26,7 @@ class PeopleAdapter(private val context: StudyGroupFragment, private val dataSet
         fun bind(member: Member) {
             timeTextView.text = "${member.totalStudyTime.substring(0,2)}시간 ${member.totalStudyTime.substring(3,5)}분"
             val imgPath = CommonService.getImageGlide(member.imgPath)
-            Glide.with(mamberImage.context).load(imgPath).into(mamberImage)
+            Glide.with(mamberImage.context).load(imgPath).error(R.drawable.error_image).into(mamberImage)
             changeLayout(member.studyStatus)
         }
 

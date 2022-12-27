@@ -1,19 +1,22 @@
 package com.app.gong4.api
 
-import com.app.gong4.utils.TokenManager
+import android.util.Log
+import com.app.gong4.MainApplication
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Inject
 
+@Module
+@InstallIn(SingletonComponent::class)
 object RequestServer {
     val BASE_URL = "http://3.36.170.161:8080"
 
-    @Inject
-    lateinit var tokenManager : TokenManager
     val networkInterceptor = Interceptor{ chain ->
-        val USER_TOKEN = tokenManager.getAccessToken()!!
+        val USER_TOKEN = MainApplication.tokenManager.getAccessToken()!!
         val newRequest = chain.request().newBuilder()
             .addHeader("Authorization","Bearer $USER_TOKEN")
             .build()
