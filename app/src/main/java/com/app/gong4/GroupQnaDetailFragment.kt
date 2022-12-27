@@ -3,13 +3,17 @@ package com.app.gong4
 import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_ENTER
-import android.widget.Toast
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.gong4.model.*
 import com.app.gong4.adapter.CommentAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentGroupQnaDetailBinding
+import com.app.gong4.model.req.RequestRegisterAnswer
+import com.app.gong4.model.req.RequestUpdateAnswer
+import com.app.gong4.model.res.ResponseQuestionBody
+import com.app.gong4.model.res.ResponseRegisterAnswerBody
+import com.app.gong4.model.res.ResponseUpdateAnswerBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -76,8 +80,9 @@ class GroupQnaDetailFragment : BaseFragment<FragmentGroupQnaDetailBinding>(Fragm
             ) {
                 if(response.isSuccessful){
                     val questionUID = response.body()!!.data.questionUID
-                    Log.d("complete - questionUID","${questionUID}")
-                    Toast.makeText(context,resources.getString(R.string.comment_save_complete),Toast.LENGTH_SHORT).show()
+
+                    showToastMessage(getString(R.string.comment_save_complete))
+
                     getQnaDetail(questionUID)
                     binding.commentEdittext.setText("")
                     hideKeyboard(binding.commentEdittext)
@@ -104,7 +109,8 @@ class GroupQnaDetailFragment : BaseFragment<FragmentGroupQnaDetailBinding>(Fragm
         RequestServer.qnaService.deleteAnswer(answerID).enqueue(object : Callback<Void>{
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if(response.isSuccessful){
-                    Toast.makeText(context,"삭제가 완료되었습니다",Toast.LENGTH_SHORT).show()
+                    showToastMessage(getString(R.string.comment_remove_complete))
+
                     getQnaDetail(questionUID)
                     removeDialog.dismiss()
                 }
@@ -126,7 +132,7 @@ class GroupQnaDetailFragment : BaseFragment<FragmentGroupQnaDetailBinding>(Fragm
                 response: Response<ResponseUpdateAnswerBody>
             ) {
                 if(response.isSuccessful){
-                    Toast.makeText(context,"수정이 완료되었습니다.",Toast.LENGTH_SHORT).show()
+                    showToastMessage(getString(R.string.comment_update_complete))
                     editDialog.dismiss()
                     getQnaDetail(questionUID)
                 }

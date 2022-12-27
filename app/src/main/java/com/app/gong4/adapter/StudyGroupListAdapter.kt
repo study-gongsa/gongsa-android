@@ -8,17 +8,17 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.app.gong4.model.StduyGroupItem
+import com.app.gong4.model.StudyGroupItem
 import com.app.gong4.MainFragment
 import com.app.gong4.R
-import com.app.gong4.util.CommonService
+import com.app.gong4.utils.CommonService
 import com.bumptech.glide.Glide
 
-class StudyGroupListAdapter(private val context: MainFragment, val dataSet: ArrayList<StduyGroupItem>)
+class StudyGroupListAdapter(private val context: MainFragment, val dataSet: ArrayList<StudyGroupItem>)
     : RecyclerView.Adapter<StudyGroupListAdapter.ViewHolder>() {
 
-    var searchList = ArrayList<StduyGroupItem>()
-    var searchAllList = ArrayList<StduyGroupItem>()
+    var searchList = ArrayList<StudyGroupItem>()
+    var searchAllList = ArrayList<StudyGroupItem>()
 
     init {
         Log.d("searchList", dataSet.toString())

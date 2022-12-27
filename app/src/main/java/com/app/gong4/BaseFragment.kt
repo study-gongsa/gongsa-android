@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.inflate
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.app.gong4.databinding.ActivityMainBinding.inflate
@@ -48,5 +49,10 @@ abstract class BaseFragment<T: ViewBinding>(private val inflate: Inflate<T>) : F
         if(v!=null){
             imm?.hideSoftInputFromWindow(v.windowToken,0)
         }
+    }
+
+    //Toast Message show
+    fun showToastMessage(text:String){
+        Toast.makeText(context,text,Toast.LENGTH_SHORT).show()
     }
 }

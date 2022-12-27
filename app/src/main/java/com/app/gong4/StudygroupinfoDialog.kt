@@ -13,12 +13,15 @@ import androidx.fragment.app.DialogFragment
 import com.app.gong4.model.*
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.StudygroupinfoDialogBinding
+import com.app.gong4.model.req.RequestEnterMember
+import com.app.gong4.model.res.ResponseEnterMember
+import com.app.gong4.model.res.ResponseStudygroupinfoBody
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class StudygroupinfoDialog(private val data: StduyGroupDetailItem) : DialogFragment() {
+class StudygroupinfoDialog(private val data: ResponseStudygroupinfoBody.StduyGroupDetailItem) : DialogFragment() {
 
     private var _binding: StudygroupinfoDialogBinding? = null
     private val binding get() = _binding!!

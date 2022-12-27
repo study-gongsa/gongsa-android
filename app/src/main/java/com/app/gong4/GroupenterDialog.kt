@@ -9,7 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.DialogFragment
-import com.app.gong4.model.ResponseStudygroupinfoBody
+import com.app.gong4.model.res.ResponseStudygroupinfoBody
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.GroupenterDialogBinding
 import retrofit2.Call

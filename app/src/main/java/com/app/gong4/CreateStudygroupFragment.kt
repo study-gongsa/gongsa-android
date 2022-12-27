@@ -11,8 +11,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.inputmethod.InputMethodManager
@@ -23,13 +21,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
-import com.app.gong4.model.RequestCreateStudyGroup
-import com.app.gong4.model.ResponseCreateStudyGroup
+import com.app.gong4.model.res.ResponseCreateStudyGroup
 import com.app.gong4.model.StudyCategory
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentCreateStudygroupBinding
-import com.app.gong4.util.AppViewModel
-import com.app.gong4.util.CommonService
+import com.app.gong4.model.req.RequestCreateStudyGroup
+import com.app.gong4.utils.AppViewModel
+import com.app.gong4.utils.CommonService
 import com.google.android.material.chip.Chip
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -161,7 +159,7 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
             val expiredDate = binding.endDate.text.toString()//만료날짜
             val minStudyHour = binding.timeTextView.text.toString().toInt()//스터디목표시간
 
-            val requestBody :RequestCreateStudyGroup = RequestCreateStudyGroup(
+            val requestBody : RequestCreateStudyGroup = RequestCreateStudyGroup(
                 checkedChipList,expiredDate,isCam,isPenalty,isPrivate,maxPenalty,
                 maxMember,maxTodayStudy,minStudyHour,roomName)
 
@@ -181,7 +179,7 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
                         if(response.body()!!.msg != null){
                             msg = response.body()!!.msg
                         }
-                        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show()
+                        showToastMessage(msg)
                     }
                 }
 

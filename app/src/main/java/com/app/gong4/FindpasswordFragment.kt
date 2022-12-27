@@ -3,13 +3,12 @@ package com.app.gong4
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.navigation.findNavController
-import com.app.gong4.model.RequestFindPwdBody
-import com.app.gong4.model.ResponseFindPwdBody
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentFindpasswordBinding
-import com.app.gong4.util.CommonTextWatcher
+import com.app.gong4.model.req.RequestFindPwdBody
+import com.app.gong4.model.res.BaseResponse
+import com.app.gong4.utils.CommonTextWatcher
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
@@ -48,27 +47,27 @@ class FindpasswordFragment : BaseFragment<FragmentFindpasswordBinding>(FragmentF
             binding.validEmailTextView.text = ""
             binding.waitingView.visibility = View.VISIBLE
             requestServer.userService.findPwd(RequestFindPwdBody(email)).enqueue(object :
-                Callback<ResponseFindPwdBody>{
+                Callback<BaseResponse>{
                 override fun onResponse(
-                    call: Call<ResponseFindPwdBody>,
-                    response: Response<ResponseFindPwdBody>
+                    call: Call<BaseResponse>,
+                    response: Response<BaseResponse>
                 ) {
                     binding.waitingView.visibility = View.INVISIBLE
                     if(response.isSuccessful){
-                        var repos: ResponseFindPwdBody? = response.body()
+                        var repos: BaseResponse? = response.body()
                         it.findNavController().navigate(R.id.action_findpasswordFragment_to_loginFragment)
                     }else{
                         val error = response.errorBody()!!.string().trimIndent()
-                        val result = Gson().fromJson(error, ResponseFindPwdBody::class.java)
+                        val result = Gson().fromJson(error, BaseResponse::class.java)
                         binding.validEmailTextView.text = result.msg
                         binding.confirmButton.isEnabled = false
                     }
                 }
 
-                override fun onFailure(call: Call<ResponseFindPwdBody>, t: Throwable) {
+                override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                     Log.d("결과 - 통신 실패", t.toString())
                     binding.waitingView.visibility = View.INVISIBLE
-                    Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.",Toast.LENGTH_SHORT)
+                    showToastMessage(getString(R.string.server_error_msg))
                 }
 
             })

@@ -2,15 +2,18 @@ package com.app.gong4
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.app.gong4.model.ResponseRefreshTokenBody
-import com.app.gong4.util.MainApplication
+import com.app.gong4.model.res.ResponseRefreshTokenBody
+import com.app.gong4.utils.TokenManager
+import javax.inject.Inject
 
 class SplashScreenAcitivity : AppCompatActivity(),AutoLoginView {
 
     private lateinit var mService: AutoLoginService
+
+    @Inject
+    lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,14 +23,14 @@ class SplashScreenAcitivity : AppCompatActivity(),AutoLoginView {
     }
 
     override fun onValidateSuccess(response: ResponseRefreshTokenBody) {
-        response.let { it ->
+        response.let {
             val accessToken = it!!.data.accessToken
-            Log.d("accessToken",accessToken)
-            MainApplication.prefs.setData("accessToken",accessToken)
-            MainApplication.prefs.setData("loginFlag","true")
+
+            tokenManager.saveAccessToken(accessToken)
+            tokenManager.saveLoginFlag("true")
         }
 
-        goIntent(true)
+        goIntent()
     }
 
     override fun onValidateFail(code: Int) {
@@ -35,13 +38,13 @@ class SplashScreenAcitivity : AppCompatActivity(),AutoLoginView {
             404 -> Toast.makeText(applicationContext,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT).show()
             400 -> {
                 Thread.sleep(2000)
-                MainApplication.prefs.setData("loginFlag","false")
-                goIntent(false)
+                tokenManager.saveLoginFlag("false")
+                goIntent()
             }
         }
     }
 
-    private fun goIntent(flag : Boolean){
+    private fun goIntent(){
         val intent = Intent(this@SplashScreenAcitivity,MainActivity::class.java)
         startActivity(intent)
         finish()

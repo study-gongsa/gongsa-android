@@ -16,6 +16,8 @@ import androidx.fragment.app.DialogFragment
 import com.app.gong4.model.StudyCategory
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.UsercategoryDialogBinding
+import com.app.gong4.model.req.RequestSaveUserCateogry
+import com.app.gong4.model.res.BaseResponse
 import com.google.android.material.chip.Chip
 import retrofit2.Call
 import retrofit2.Callback
@@ -85,10 +87,10 @@ class UsercategoryDialog(val categories : ArrayList<StudyCategory>) : DialogFrag
             val requestSaveUserCateogry = RequestSaveUserCateogry(checkedChipList)
             Log.d("request",requestSaveUserCateogry.toString())
             RequestServer.userCategoryService.putUserCategory(requestSaveUserCateogry).enqueue(object :
-                Callback<ResponseSaveUserCategory>{
+                Callback<BaseResponse>{
                 override fun onResponse(
-                    call: Call<ResponseSaveUserCategory>,
-                    response: Response<ResponseSaveUserCategory>
+                    call: Call<BaseResponse>,
+                    response: Response<BaseResponse>
                 ) {
                     if(response.isSuccessful){
                         val successMsg = resources.getString(com.app.gong4.R.string.main_save_success)
@@ -97,7 +99,7 @@ class UsercategoryDialog(val categories : ArrayList<StudyCategory>) : DialogFrag
                     }
                 }
 
-                override fun onFailure(call: Call<ResponseSaveUserCategory>, t: Throwable) {
+                override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                     Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.",Toast.LENGTH_SHORT)
                 }
             })

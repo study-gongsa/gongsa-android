@@ -3,13 +3,13 @@ package com.app.gong4
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.gong4.model.Ranking
-import com.app.gong4.model.ResponseMyPageInfoBody
+import com.app.gong4.model.res.ResponseMyPageInfoBody
 import com.app.gong4.model.ResponseMyStudyGroupRankingBody
 import com.app.gong4.model.UserInfo
 import com.app.gong4.adapter.StudyRankingAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMyPageBinding
-import com.app.gong4.util.CommonService
+import com.app.gong4.utils.CommonService
 import com.bumptech.glide.Glide
 import retrofit2.Call
 import retrofit2.Callback

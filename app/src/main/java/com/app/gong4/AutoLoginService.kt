@@ -1,26 +1,29 @@
 package com.app.gong4
 
-import android.util.Log
-import com.app.gong4.model.RequestRefreshTokenBody
-import com.app.gong4.model.ResponseRefreshTokenBody
+import com.app.gong4.model.res.ResponseRefreshTokenBody
 import com.app.gong4.api.RequestServer
-import com.app.gong4.util.MainApplication
+import com.app.gong4.model.req.RequestRefreshTokenBody
+import com.app.gong4.utils.TokenManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
 class AutoLoginService {
     private var mAutoLoinView: AutoLoginView
 
-    val USER_REFRESH_TOKEN = MainApplication.prefs.getData("refreshToken","")
+    @Inject
+    lateinit var tokenManager: TokenManager
+
+    private val RefreshToken = tokenManager.getRefreshToken()!!
 
     constructor(mAutoLoinView: AutoLoginView) {
         this.mAutoLoinView = mAutoLoinView
     }
 
     fun goServerAutoLogin(){
-        val refreshToken = RequestRefreshTokenBody(USER_REFRESH_TOKEN)
-        Log.d("refreshToken",USER_REFRESH_TOKEN)
+        val refreshToken = RequestRefreshTokenBody(RefreshToken)
+
         RequestServer.userService.refreshToken(refreshToken).enqueue(object :
             Callback<ResponseRefreshTokenBody>{
             override fun onResponse(

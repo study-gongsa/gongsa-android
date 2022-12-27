@@ -125,14 +125,17 @@
     <string name="cancel">취소</string>
     <string name="quit">나가기</string>
     <string name="setting">환경설정</string>
+    <string name="server_error_msg">서버와의 통신이 원활하지 않습니다.</string>
 
     <string name="comment_save_complete">댓글이 등록되었습니다</string>
 
     <string name="comment_remove_dialog_title">정말 삭제하시겠어요?</string>
     <string name="comment_remove_dialog_content">확인 버튼을 클릭 시 답변이 삭제됩니다</string>
+    <string name="comment_remove_complete">삭제가 완료되었습니다</string>
 
     <string name="comment_update_dialog_title">댓글을 수정하시겠습니까?</string>
     <string name="comment_update_dialog_content">수정할 댓글을 입력해 주세요</string>
+    <string name="comment_update_complete">수정이 완료되었습니다</string>
 
     <string name="mypage_study_status">스터디 중</string>
     <string name="mypage_study_level">Lv.%d</string>

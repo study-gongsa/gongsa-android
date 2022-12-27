@@ -4,12 +4,12 @@ import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
-import com.app.gong4.model.RequestSignupBody
-import com.app.gong4.model.ResponseLoginBody
-import com.app.gong4.model.ResponseSignupBody
+import com.app.gong4.model.res.ResponseLoginBody
+import com.app.gong4.model.res.ResponseSignupBody
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentSignupBinding
-import com.app.gong4.util.CommonTextWatcher
+import com.app.gong4.model.req.RequestSignupBody
+import com.app.gong4.utils.CommonTextWatcher
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback

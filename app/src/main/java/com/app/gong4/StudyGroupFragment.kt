@@ -14,7 +14,9 @@ import com.app.gong4.adapter.CategoryAdapter
 import com.app.gong4.adapter.PeopleAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentStudyGroupBinding
-import com.app.gong4.util.CommonService
+import com.app.gong4.model.res.ResponseStudyMembers
+import com.app.gong4.model.res.ResponseStudygroupinfoBody
+import com.app.gong4.utils.CommonService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,7 +47,7 @@ class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>(FragmentStudy
                 call: Call<ResponseStudygroupinfoBody>,
                 response: Response<ResponseStudygroupinfoBody>
             ) {
-                val data: StduyGroupDetailItem = response.body()!!.data
+                val data: ResponseStudygroupinfoBody.StduyGroupDetailItem = response.body()!!.data
 
                 binding.studyNameTextView.text = binding.studyNameTextView.text.toString() + " ${data.name}"
                 binding.studyTermTextView.text = binding.studyTermTextView.text.toString() +

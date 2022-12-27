@@ -11,12 +11,12 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.view.children
 import androidx.fragment.app.DialogFragment
-import com.app.gong4.model.RequestGroupItemBody
-import com.app.gong4.model.ResponseGroupItemBody
-import com.app.gong4.model.StduyGroupItem
+import com.app.gong4.model.res.ResponseGroupItemBody
+import com.app.gong4.model.StudyGroupItem
 import com.app.gong4.model.StudyCategory
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.GroupfilterDialogBinding
+import com.app.gong4.model.req.RequestGroupItemBody
 import com.google.android.material.chip.Chip
 import retrofit2.Call
 import retrofit2.Callback
@@ -218,5 +218,5 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
 }
 
 interface DialogResult{
-    fun result(request:RequestGroupItemBody,category:List<StudyCategory>,Data:List<StduyGroupItem>)
+    fun result(request:RequestGroupItemBody,category:List<StudyCategory>,Data:List<StudyGroupItem>)
 }

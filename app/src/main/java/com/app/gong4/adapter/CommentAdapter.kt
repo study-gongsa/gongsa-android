@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.gong4.model.Answer
 import com.app.gong4.R
-import com.app.gong4.util.CommonService
+import com.app.gong4.utils.CommonService
 
 class CommentAdapter(val list:ArrayList<Answer>, private var listener: CommentListener) : RecyclerView.Adapter<CommentAdapter.ViewHolder>(){
 

@@ -1,6 +1,7 @@
 package com.app.gong4.api
 
-import com.app.gong4.model.*
+import com.app.gong4.model.req.RequestEnterMember
+import com.app.gong4.model.res.*
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -27,7 +28,7 @@ interface StudyGroupService {
     fun getStudygroupCodeInfo(@Path("code")code:String) : Call<ResponseStudygroupinfoBody>
 
     @POST("/api/group-member")
-    fun getStudyEnter(@Body body:RequestEnterMember) : Call<ResponseEnterMember>
+    fun getStudyEnter(@Body body: RequestEnterMember) : Call<ResponseEnterMember>
 
     //나의 스터디 그룹 조회
     @GET("/api/study-group/my-group")

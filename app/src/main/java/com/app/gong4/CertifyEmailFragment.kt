@@ -4,13 +4,13 @@ import android.view.View
 import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
-import com.app.gong4.model.RequestAuthCodeBody
-import com.app.gong4.model.RequestCertifyEmailBody
 import com.app.gong4.model.ResponseAuthCodeBody
 import com.app.gong4.model.ResponseCertifyEmailBody
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentCertifyEmailBinding
-import com.app.gong4.util.CommonTextWatcher
+import com.app.gong4.model.req.RequestAuthCodeBody
+import com.app.gong4.model.req.RequestCertifyEmailBody
+import com.app.gong4.utils.CommonTextWatcher
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Response

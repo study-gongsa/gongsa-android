@@ -17,13 +17,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentSettingBinding
-import com.app.gong4.model.BaseResponse
-import com.app.gong4.model.RequestUserInfo
-import com.app.gong4.model.ResponseCertifyEmailBody
-import com.app.gong4.model.ResponseUserBody
-import com.app.gong4.util.AppViewModel
-import com.app.gong4.util.CommonService
-import com.app.gong4.util.CommonTextWatcher
+import com.app.gong4.model.res.BaseResponse
+import com.app.gong4.model.req.RequestUserInfo
+import com.app.gong4.model.res.ResponseUserBody
+import com.app.gong4.utils.AppViewModel
+import com.app.gong4.utils.CommonService
+import com.app.gong4.utils.CommonTextWatcher
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
@@ -231,7 +230,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBind
         })
     }
 
-    fun initUserInfo(user:ResponseUserBody.UserData){
+    fun initUserInfo(user: ResponseUserBody.UserData){
         binding.nicknameEditText.setText(user.nickname)
         CommonService.getImageGlide(user.imgPath)
     }

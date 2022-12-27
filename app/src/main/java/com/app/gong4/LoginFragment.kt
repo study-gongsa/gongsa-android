@@ -2,23 +2,26 @@ package com.app.gong4
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Toast
 import androidx.navigation.findNavController
-import com.app.gong4.model.RequestLoginBody
-import com.app.gong4.model.ResponseLoginBody
+import com.app.gong4.model.res.ResponseLoginBody
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentLoginBinding
-import com.app.gong4.util.CommonTextWatcher
-import com.app.gong4.util.MainApplication
+import com.app.gong4.model.req.RequestLoginBody
+import com.app.gong4.utils.CommonTextWatcher
+import com.app.gong4.utils.TokenManager
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.regex.Pattern
+import javax.inject.Inject
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate) {
 
     val requestServer = RequestServer
+
+    @Inject
+    lateinit var tokenManager: TokenManager
 
     override fun initView() {
         val mainActivity = activity as MainActivity
@@ -69,8 +72,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                             val accessToken = it!!.data.accessToken
                             val refreshToken = it!!.data.refreshToken
 
-                            MainApplication.prefs.setData("accessToken",accessToken)
-                            MainApplication.prefs.setData("refreshToken",refreshToken)
+                            tokenManager.saveAccessToken(accessToken)
+                            tokenManager.saveRefreshToken(refreshToken)
                         }
                         it.findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
                     }else{
@@ -83,7 +86,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                 }
 
                 override fun onFailure(call: Call<ResponseLoginBody>, t: Throwable) {
-                    Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.",Toast.LENGTH_SHORT)
+                    showToastMessage(getString(R.string.server_error_msg))
                 }
             }
             )

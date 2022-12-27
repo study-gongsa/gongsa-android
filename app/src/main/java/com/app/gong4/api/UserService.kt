@@ -1,6 +1,8 @@
 package com.app.gong4.api
 
 import com.app.gong4.model.*
+import com.app.gong4.model.req.*
+import com.app.gong4.model.res.*
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -26,7 +28,7 @@ interface UserService {
 
     /* 비밀번호 찾기 */
     @PATCH("/api/user/mail/passwd")
-    fun findPwd(@Body body: RequestFindPwdBody) : Call<ResponseFindPwdBody>
+    fun findPwd(@Body body: RequestFindPwdBody) : Call<BaseResponse>
 
     /* 환경설정 - 유저정보조회 */
     @GET("/api/user/mypage")

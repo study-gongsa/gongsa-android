@@ -3,8 +3,8 @@ package com.app.gong4
 import android.util.Log
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.app.gong4.model.ResponseGroupItemBody
-import com.app.gong4.model.StduyGroupItem
+import com.app.gong4.model.res.ResponseGroupItemBody
+import com.app.gong4.model.StudyGroupItem
 import com.app.gong4.adapter.MyStudyGroupAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMyStudyGroupBinding
@@ -15,8 +15,8 @@ import retrofit2.Response
 
 class MyStudyGroupFragment : BaseFragment<FragmentMyStudyGroupBinding>(FragmentMyStudyGroupBinding::inflate) {
 
-    private lateinit var dataList : ArrayList<StduyGroupItem>
-    private lateinit var dataAllList : ArrayList<StduyGroupItem>
+    private lateinit var dataList : ArrayList<StudyGroupItem>
+    private lateinit var dataAllList : ArrayList<StudyGroupItem>
     private lateinit var mAdapter : MyStudyGroupAdapter
 
     override fun initView() {
@@ -33,7 +33,7 @@ class MyStudyGroupFragment : BaseFragment<FragmentMyStudyGroupBinding>(FragmentM
                 if (response.isSuccessful) {
                     val data: ResponseGroupItemBody? = response.body()
                     data.let { it ->
-                        dataAllList = it!!.data.studyGroupList as ArrayList<StduyGroupItem>
+                        dataAllList = it!!.data.studyGroupList as ArrayList<StudyGroupItem>
                         dataList = dataAllList
                         setAdapter(dataList)
                     }
@@ -52,8 +52,8 @@ class MyStudyGroupFragment : BaseFragment<FragmentMyStudyGroupBinding>(FragmentM
         })
     }
 
-    fun setAdapter(list: List<StduyGroupItem>) {
-        mAdapter = MyStudyGroupAdapter(this, list as ArrayList<StduyGroupItem>)
+    fun setAdapter(list: List<StudyGroupItem>) {
+        mAdapter = MyStudyGroupAdapter(this, list as ArrayList<StudyGroupItem>)
         binding.myStudyRecyclerView.adapter = mAdapter
         binding.myStudyRecyclerView.layoutManager = LinearLayoutManager(context)
         mAdapter.notifyDataSetChanged()

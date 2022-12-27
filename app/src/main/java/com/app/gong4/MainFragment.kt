@@ -12,7 +12,12 @@ import com.app.gong4.model.*
 import com.app.gong4.adapter.StudyGroupListAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMainBinding
-import com.app.gong4.util.AppViewModel
+import com.app.gong4.model.req.RequestGroupItemBody
+import com.app.gong4.model.res.ResponseGroupItemBody
+import com.app.gong4.model.res.ResponseStudycategoryBody
+import com.app.gong4.model.res.ResponseStudygroupinfoBody
+import com.app.gong4.model.res.ResponseUserCategory
+import com.app.gong4.utils.AppViewModel
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
 import kotlinx.coroutines.*
@@ -24,8 +29,8 @@ import kotlin.collections.ArrayList
 class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::inflate) {
 
     private lateinit var category: ArrayList<StudyCategory>
-    private lateinit var dataList : ArrayList<StduyGroupItem>
-    private lateinit var dataAllList : ArrayList<StduyGroupItem>
+    private lateinit var dataList : ArrayList<StudyGroupItem>
+    private lateinit var dataAllList : ArrayList<StudyGroupItem>
     private lateinit var mAdapter : StudyGroupListAdapter
     private val viewModel : AppViewModel by activityViewModels()
     var mRequest : RequestGroupItemBody?= null
@@ -119,7 +124,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                 if (response.isSuccessful) {
                     val data: ResponseGroupItemBody? = response.body()
                     data.let { it ->
-                        dataAllList = it!!.data.studyGroupList as ArrayList<StduyGroupItem>
+                        dataAllList = it!!.data.studyGroupList as ArrayList<StudyGroupItem>
                         dataList = dataAllList
                         setAdapter(dataList)
                     }
@@ -159,7 +164,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
             override fun onFailure(call: Call<ResponseStudygroupinfoBody>, t: Throwable) {
                 Log.d("스터디 정보 결과 - onFailure", t.toString())
-                Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT)
+                showToastMessage(getString(R.string.server_error_msg))
             }
 
         })
@@ -176,10 +181,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                     override fun result(
                         request: RequestGroupItemBody,
                         category: List<StudyCategory>,
-                        Data: List<StduyGroupItem>
+                        Data: List<StudyGroupItem>
                     ) {
                         showCategoryChipList(category)
-                        refreshData(Data as ArrayList<StduyGroupItem>)
+                        refreshData(Data as ArrayList<StudyGroupItem>)
                         binding.cameraSegmentButton.visibility = View.VISIBLE
                     }
                 }
@@ -201,6 +206,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
             }
 
             override fun onFailure(call: Call<ResponseStudycategoryBody>, t: Throwable) {
+                showToastMessage(getString(R.string.server_error_msg))
                 Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT)
             }
 
@@ -241,7 +247,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
     }
 
     // 데이터 리스트 새로고침
-    private fun refreshData(data: ArrayList<StduyGroupItem>){
+    private fun refreshData(data: ArrayList<StudyGroupItem>){
         dataList.clear()
         dataList.addAll(data)
         mAdapter.notifyDataSetChanged()
@@ -251,10 +257,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
     fun filterListByTooggle(isCam : Boolean){
         when(isCam){
             true -> {
-                dataList = dataAllList.filter { it.isCam } as ArrayList<StduyGroupItem>
+                dataList = dataAllList.filter { it.isCam } as ArrayList<StudyGroupItem>
             }
             false -> {
-                dataList = dataAllList.filter { !it.isCam } as ArrayList<StduyGroupItem>
+                dataList = dataAllList.filter { !it.isCam } as ArrayList<StudyGroupItem>
             }
         }
         Log.d("dataList",dataList.toString())
@@ -272,7 +278,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                 if (response.isSuccessful) {
                     val data: ResponseGroupItemBody? = response.body()
                     data.let { it ->
-                        dataAllList = it!!.data.studyGroupList as ArrayList<StduyGroupItem>
+                        dataAllList = it!!.data.studyGroupList as ArrayList<StudyGroupItem>
                         dataList = dataAllList
                         setAdapter(dataList)
                     }
@@ -291,8 +297,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         })
     }
 
-    fun setAdapter(list: List<StduyGroupItem>) {
-        mAdapter = StudyGroupListAdapter(this, list as ArrayList<StduyGroupItem>)
+    fun setAdapter(list: List<StudyGroupItem>) {
+        mAdapter = StudyGroupListAdapter(this, list as ArrayList<StudyGroupItem>)
         binding.recyclerView.adapter = mAdapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         mAdapter.notifyDataSetChanged()
