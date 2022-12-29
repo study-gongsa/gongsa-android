@@ -34,6 +34,7 @@ class StudygroupinfoDialog(private val data: StduyGroupDetailItem) : DialogFragm
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+        binding.studyGroupNameTextview.text = data.name
         binding.iscamTextview.text = if(data.isCam) resources.getString(R.string.main_study_info_isCam_true) else resources.getString(R.string.main_study_info_isCam_false)
 
         binding.categoriesTextview.text = StringBuilder().apply {
