@@ -4,7 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.app.gong4.MainApplication
 import com.app.gong4.model.Member
 import com.app.gong4.R
 
@@ -17,7 +19,13 @@ class RankItemAdapter(val data:ArrayList<Member>) : RecyclerView.Adapter<RankIte
         }
 
         fun bind(item: Member){
+            val userName = MainApplication.tokenManager.getUserName()
             rankItemTextView.text = "${item.ranking}위 : ${item.nickname}"
+            if(userName == item.nickname){
+                rankItemTextView.setTextColor(
+                    ContextCompat.getColor(rankItemTextView.context,
+                        R.color.green_03_main))
+            }
         }
     }
 

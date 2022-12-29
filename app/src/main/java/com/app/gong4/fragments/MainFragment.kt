@@ -15,10 +15,7 @@ import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMainBinding
 import com.app.gong4.dialog.*
 import com.app.gong4.model.req.RequestGroupItemBody
-import com.app.gong4.model.res.ResponseGroupItemBody
-import com.app.gong4.model.res.ResponseStudycategoryBody
-import com.app.gong4.model.res.ResponseStudygroupinfoBody
-import com.app.gong4.model.res.ResponseUserCategory
+import com.app.gong4.model.res.*
 import com.app.gong4.utils.AppViewModel
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
@@ -56,6 +53,23 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         showStudyRoomDialog()
         searchKeyword()
         cameraToogle()
+        serverMyPageInfo()
+    }
+
+    fun serverMyPageInfo(){
+        RequestServer.userService.userMyPage().enqueue(object : Callback<ResponseMyPageInfoBody>{
+            override fun onResponse(
+                call: Call<ResponseMyPageInfoBody>,
+                response: Response<ResponseMyPageInfoBody>
+            ) {
+                val nickname = response.body()!!.data.nickname
+                MainApplication.tokenManager.saveUserName(nickname)
+            }
+
+            override fun onFailure(call: Call<ResponseMyPageInfoBody>, t: Throwable) {
+
+            }
+        })
     }
 
     private fun getUserCategory() : ArrayList<UserCategory>{

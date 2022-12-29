@@ -6,6 +6,7 @@ import android.util.Log
 import com.app.gong4.utils.Constants.LOGIN_FLAG
 import com.app.gong4.utils.Constants.PREFS_APP_FILE
 import com.app.gong4.utils.Constants.USER_ACCESS_TOKEN
+import com.app.gong4.utils.Constants.USER_NAME
 import com.app.gong4.utils.Constants.USER_REFRESH_TOKEN
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -36,5 +37,13 @@ class TokenManager @Inject constructor(@ApplicationContext private val context: 
 
     fun getLoginFlag():String{
         return prefs.getString(LOGIN_FLAG,"").toString()
+    }
+
+    fun saveUserName(name:String){
+        prefs.edit().putString(USER_NAME,name).apply()
+    }
+
+    fun getUserName():String{
+        return prefs.getString(USER_NAME,"").toString()
     }
 }
