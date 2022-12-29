@@ -9,6 +9,7 @@ import com.app.gong4.model.UserInfo
 import com.app.gong4.adapter.StudyRankingAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMyPageBinding
+import com.app.gong4.util.AppViewModel
 import com.app.gong4.util.CommonService
 import com.bumptech.glide.Glide
 import retrofit2.Call
@@ -63,7 +64,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(FragmentMyPageBinding
     }
 
     fun serverMyPageInfo(){
-        RequestServer.userService.userMyPage().enqueue(object : Callback<ResponseMyPageInfoBody>{
+       RequestServer.userService.userMyPage().enqueue(object : Callback<ResponseMyPageInfoBody>{
             override fun onResponse(
                 call: Call<ResponseMyPageInfoBody>,
                 response: Response<ResponseMyPageInfoBody>

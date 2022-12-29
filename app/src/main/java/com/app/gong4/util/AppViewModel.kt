@@ -3,6 +3,7 @@ package com.app.gong4.util
 import androidx.lifecycle.ViewModel
 import com.app.gong4.UserCategory
 import com.app.gong4.model.StudyCategory
+import com.app.gong4.model.UserInfo
 
 class AppViewModel:ViewModel() {
     private val categoryList = arrayListOf<StudyCategory>()

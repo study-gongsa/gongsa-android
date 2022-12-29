@@ -1,12 +1,15 @@
 package com.app.gong4.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.app.gong4.model.Member
 import com.app.gong4.R
+import com.app.gong4.util.MainApplication
 
 
 class RankItemAdapter(val data:ArrayList<Member>) : RecyclerView.Adapter<RankItemAdapter.ViewHolder>(){
@@ -16,8 +19,15 @@ class RankItemAdapter(val data:ArrayList<Member>) : RecyclerView.Adapter<RankIte
             rankItemTextView = view.findViewById(R.id.rank_item_info_textview)
         }
 
+        @SuppressLint("ResourceAsColor")
         fun bind(item: Member){
+            val userName = MainApplication.prefs.getData("userName","")
             rankItemTextView.text = "${item.ranking}위 : ${item.nickname}"
+            if(userName == item.nickname){
+                rankItemTextView.setTextColor(
+                    ContextCompat.getColor(rankItemTextView.context,
+                    R.color.green_03_main))
+            }
         }
     }
 
@@ -33,7 +43,7 @@ class RankItemAdapter(val data:ArrayList<Member>) : RecyclerView.Adapter<RankIte
     }
 
     override fun getItemCount(): Int {
-        return data.size
+        return if(data.size>=4) 4 else data.size
     }
 
 }
