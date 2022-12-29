@@ -15,13 +15,10 @@ class SplashScreenAcitivity : AppCompatActivity(),AutoLoginView {
 
     private lateinit var mService: AutoLoginService
 
-    lateinit var tokenManager: TokenManager
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        tokenManager = TokenManager(applicationContext)
-        mService = AutoLoginService(this,tokenManager)
+        mService = AutoLoginService(this)
         mService.goServerAutoLogin()
     }
 
@@ -29,8 +26,8 @@ class SplashScreenAcitivity : AppCompatActivity(),AutoLoginView {
         response.let {
             val accessToken = it!!.data.accessToken
 
-            tokenManager.saveAccessToken(accessToken)
-            tokenManager.saveLoginFlag("true")
+            MainApplication.tokenManager.saveAccessToken(accessToken)
+            MainApplication.tokenManager.saveLoginFlag("true")
         }
 
         goIntent()
@@ -41,7 +38,7 @@ class SplashScreenAcitivity : AppCompatActivity(),AutoLoginView {
             404 -> Toast.makeText(applicationContext,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT).show()
             400 -> {
                 Thread.sleep(2000)
-                tokenManager.saveLoginFlag("false")
+                MainApplication.tokenManager.saveLoginFlag("false")
                 goIntent()
             }
         }

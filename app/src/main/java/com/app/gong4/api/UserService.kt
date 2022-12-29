@@ -5,12 +5,13 @@ import com.app.gong4.model.req.*
 import com.app.gong4.model.res.*
 import okhttp3.MultipartBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface UserService {
     /* 로그인 */
     @POST("/api/user/login")
-    fun login(@Body body: RequestLoginBody) : Call<ResponseLoginBody>
+    suspend fun login(@Body body: RequestLoginBody) : Response<ResponseLoginBody>
 
     /* refresh token */
     @POST("/api/user/login/refresh")

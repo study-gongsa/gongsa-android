@@ -2,18 +2,19 @@ package com.app.gong4
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
-import com.app.gong4.model.res.ResponseLoginBody
+import androidx.navigation.fragment.findNavController
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentLoginBinding
 import com.app.gong4.model.req.RequestLoginBody
 import com.app.gong4.utils.CommonTextWatcher
+import com.app.gong4.utils.NetworkResult
 import com.app.gong4.utils.TokenManager
-import com.google.gson.Gson
+import com.app.gong4.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -21,6 +22,9 @@ import javax.inject.Inject
 class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate) {
 
     val requestServer = RequestServer
+    private val userViewModel :UserViewModel by viewModels()
+
+    @Inject lateinit var tokenManager: TokenManager
 
     override fun initView() {
         val mainActivity = activity as MainActivity
@@ -58,38 +62,25 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
             hideKeyboard(it)
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-            requestServer.userService.login(RequestLoginBody(email,password)).enqueue(object :
-                Callback<ResponseLoginBody>{
-                override fun onResponse(
-                    call: Call<ResponseLoginBody>,
-                    response: Response<ResponseLoginBody>
-                ) {
-                    if(response.isSuccessful()){
-                        var repos: ResponseLoginBody? = response.body()
 
-                        repos.let { it ->
-                            val accessToken = it!!.data.accessToken
-                            val refreshToken = it!!.data.refreshToken
-
-                            MainApplication.tokenManager.saveAccessToken(accessToken)
-                            MainApplication.tokenManager.saveRefreshToken(refreshToken)
-                        }
-                        it.findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
-                    }else{
-                        val error = response.errorBody()!!.string().trimIndent()
-
-                        val result = Gson().fromJson(error, ResponseLoginBody::class.java)
+            userViewModel.loginUser(RequestLoginBody(email,password))
+            userViewModel.loginRes.observe(viewLifecycleOwner, Observer { result ->
+                when(result){
+                    is NetworkResult.Success -> {
+                        Log.d("result",result.data.toString())
+                        MainApplication.tokenManager.saveAccessToken(result.data!!.data.accessToken)
+                        MainApplication.tokenManager.saveRefreshToken(result.data!!.data.refreshToken)
+                        findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+                    }
+                    is NetworkResult.Error -> {
                         resetLoginErrorMsg()
-                        showLoginErrorMsg(result.location,result.msg)
+                        //showLoginErrorMsg(data!!.location,data!!.msg)
+                    }
+                    is NetworkResult.Loading -> {
+                        showToastMessage(getString(R.string.server_error_msg))
                     }
                 }
-
-                override fun onFailure(call: Call<ResponseLoginBody>, t: Throwable) {
-                    showToastMessage(getString(R.string.server_error_msg))
-                }
-            }
-            )
-
+            })
         }
     }
 
@@ -105,7 +96,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         }else if(location == "email"){
             binding.validEmailTextView.text = msg
         }
-       binding.loginButton.isEnabled = false
+        binding.loginButton.isEnabled = false
     }
 
     // 입력값 체크

@@ -12,19 +12,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-@EntryPoint
-@InstallIn(SingletonComponent::class)
 class AutoLoginService {
     private var mAutoLoinView: AutoLoginView
-    var tokenManager: TokenManager
 
-    constructor(mAutoLoinView: AutoLoginView,tokenManager: TokenManager) {
+    constructor(mAutoLoinView: AutoLoginView) {
         this.mAutoLoinView = mAutoLoinView
-        this.tokenManager = tokenManager
     }
 
     fun goServerAutoLogin(){
-        val refreshToken = RequestRefreshTokenBody(tokenManager.getRefreshToken()!!)
+        val refreshToken = RequestRefreshTokenBody(MainApplication.tokenManager.getRefreshToken()!!)
 
         RequestServer.userService.refreshToken(refreshToken).enqueue(object :
             Callback<ResponseRefreshTokenBody>{
