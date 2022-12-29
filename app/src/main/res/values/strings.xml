@@ -125,6 +125,7 @@
     <string name="cancel">취소</string>
     <string name="quit">나가기</string>
     <string name="setting">환경설정</string>
+    <string name="my_notification_id">my_notification_id</string>
 
     <string name="comment_save_complete">댓글이 등록되었습니다</string>
 

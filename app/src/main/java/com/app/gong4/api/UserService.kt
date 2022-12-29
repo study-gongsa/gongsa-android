@@ -40,6 +40,10 @@ interface UserService {
     @GET("/api/push")
     fun userPushMessage(@Query("targetToken") targetToken:String) : Call<BaseResponse>
 
+    /* 내 토큰 저장 */
+    @PUT("/api/user/device-token")
+    fun saveUserDeviceToken(@Body body: RequestDeviceToken) : Call<BaseResponse>
+
     /* 환경설정 기본 정보 조회*/
     @GET("/api/user")
     fun getuserInfo():Call<ResponseUserBody>
