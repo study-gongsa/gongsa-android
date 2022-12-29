@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.gong4.model.Answer
 import com.app.gong4.R
 import com.app.gong4.util.CommonService
+import com.app.gong4.util.MainApplication
 
 class CommentAdapter(val list:ArrayList<Answer>, private var listener: CommentListener) : RecyclerView.Adapter<CommentAdapter.ViewHolder>(){
 
@@ -38,6 +39,11 @@ class CommentAdapter(val list:ArrayList<Answer>, private var listener: CommentLi
         holder.comment_content_textview.text = item.answer
         holder.comment_date_textview.text = CommonService.convertTimestampToDate(item.createdAt)
 
+        val userName = MainApplication.prefs.getData("userName","")
+        if(userName != item.nickname){
+            holder.comment_edit_button.visibility = View.INVISIBLE
+            holder.comment_remove_button.visibility = View.INVISIBLE
+        }
         //답변 수정 버튼
         holder.comment_edit_button.setOnClickListener {
             editCommentButton(item.answerUID)

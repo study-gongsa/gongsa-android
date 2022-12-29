@@ -3,6 +3,7 @@ package com.app.gong4.api
 import com.app.gong4.util.MainApplication
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
@@ -21,7 +22,12 @@ object RequestServer {
         response.newBuilder().build()
     }
 
-    val client = OkHttpClient.Builder().addNetworkInterceptor(networkInterceptor).build()
+    val httpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+
+    val client = OkHttpClient.Builder()
+        .addNetworkInterceptor(networkInterceptor)
+        .addInterceptor(httpLoggingInterceptor)
+        .build()
 
     val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)

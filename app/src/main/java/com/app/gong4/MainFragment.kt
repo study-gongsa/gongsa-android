@@ -13,6 +13,7 @@ import com.app.gong4.adapter.StudyGroupListAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMainBinding
 import com.app.gong4.util.AppViewModel
+import com.app.gong4.util.MainApplication
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
 import kotlinx.coroutines.*
@@ -49,6 +50,25 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         showStudyRoomDialog()
         searchKeyword()
         cameraToogle()
+        serverMyPageInfo()
+    }
+
+    fun serverMyPageInfo(){
+        RequestServer.userService.userMyPage().enqueue(object : Callback<ResponseMyPageInfoBody>{
+            override fun onResponse(
+                call: Call<ResponseMyPageInfoBody>,
+                response: Response<ResponseMyPageInfoBody>
+            ) {
+                val data = response.body()!!.data
+                val nickname = data.nickname
+                Log.d("data",data.toString())
+                MainApplication.prefs.setData("userName",nickname)
+            }
+
+            override fun onFailure(call: Call<ResponseMyPageInfoBody>, t: Throwable) {
+
+            }
+        })
     }
 
     private fun getUserCategory() : ArrayList<UserCategory>{
