@@ -1,10 +1,13 @@
-package com.app.gong4
+package com.app.gong4.fragments
 
 import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_ENTER
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.app.gong4.dialog.AlertCustomDialog
+import com.app.gong4.dialog.AlertEditCustomDialog
+import com.app.gong4.R
 import com.app.gong4.model.*
 import com.app.gong4.adapter.CommentAdapter
 import com.app.gong4.api.RequestServer
@@ -14,6 +17,7 @@ import com.app.gong4.model.req.RequestUpdateAnswer
 import com.app.gong4.model.res.ResponseQuestionBody
 import com.app.gong4.model.res.ResponseRegisterAnswerBody
 import com.app.gong4.model.res.ResponseUpdateAnswerBody
+import com.app.gong4.onActionListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -147,8 +151,10 @@ class GroupQnaDetailFragment : BaseFragment<FragmentGroupQnaDetailBinding>(Fragm
     override fun onEditComment(answerID: Int) {
         //dialog show
         editDialog = AlertEditCustomDialog()
-        editDialog.setData(resources.getString(R.string.comment_update_dialog_title),resources.getString(R.string.comment_update_dialog_content))
-        editDialog.setActionListener(object :onActionListener{
+        editDialog.setData(resources.getString(R.string.comment_update_dialog_title),resources.getString(
+            R.string.comment_update_dialog_content
+        ))
+        editDialog.setActionListener(object : onActionListener {
             override fun onAction() {
                 val content = editDialog.getCotent()
 
@@ -162,8 +168,10 @@ class GroupQnaDetailFragment : BaseFragment<FragmentGroupQnaDetailBinding>(Fragm
     override fun onRemoveComment(answerID: Int) {
         //dialog show
         removeDialog = AlertCustomDialog()
-        removeDialog.setData(resources.getString(R.string.comment_remove_dialog_title),resources.getString(R.string.comment_remove_dialog_content))
-        removeDialog.setActionListener(object :onActionListener{
+        removeDialog.setData(resources.getString(R.string.comment_remove_dialog_title),resources.getString(
+            R.string.comment_remove_dialog_content
+        ))
+        removeDialog.setActionListener(object : onActionListener {
             override fun onAction() {
                 deleteComment(answerID)
             }

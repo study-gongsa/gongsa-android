@@ -9,9 +9,9 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.app.gong4.model.StudyGroupItem
-import com.app.gong4.MyStudyGroupFragment
-import com.app.gong4.MyStudyGroupFragmentDirections
+import com.app.gong4.fragments.MyStudyGroupFragment
 import com.app.gong4.R
+import com.app.gong4.fragments.MyStudyGroupFragmentDirections
 import com.app.gong4.utils.CommonService
 import com.bumptech.glide.Glide
 

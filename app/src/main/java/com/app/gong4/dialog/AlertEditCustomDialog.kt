@@ -1,4 +1,4 @@
-package com.app.gong4
+package com.app.gong4.dialog
 
 import android.content.Context
 import android.graphics.Color
@@ -8,23 +8,24 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
-import com.app.gong4.databinding.AlertCustomDialogBinding
+import com.app.gong4.databinding.AlertEditCustomDialogBinding
+import com.app.gong4.onActionListener
 
-class AlertCustomDialog :DialogFragment(){
-    private var _binding : AlertCustomDialogBinding?=null
+class AlertEditCustomDialog :DialogFragment(){
+    private var _binding : AlertEditCustomDialogBinding?=null
     private val binding get() = _binding!!
 
     private lateinit var listener: onActionListener
 
     private lateinit var title:String //타이틀
-    private lateinit var content:String //내용
+    private lateinit var hint: String //hint
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = AlertCustomDialogBinding.inflate(inflater,container,false)
+        _binding = AlertEditCustomDialogBinding.inflate(inflater,container,false)
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         showDialogView()
@@ -34,7 +35,7 @@ class AlertCustomDialog :DialogFragment(){
 
     fun showDialogView(){
         binding.dialogTitleTextview.text = title
-        binding.dialogContentTextview.text = content
+        binding.dialogContentEditview.hint = hint
 
         //취소버튼
         binding.cancelButton.setOnClickListener {
@@ -90,12 +91,12 @@ class AlertCustomDialog :DialogFragment(){
         this.listener = listener
     }
 
-    fun setData(title:String,content:String){
+    fun setData(title:String,hint:String){
         this.title = title
-        this.content = content
+        this.hint = hint
     }
 
-    fun setActionButtonText(text:String){
-        binding.actionButton.text = text
+    fun getCotent():String{
+        return binding.dialogContentEditview.text.toString()
     }
 }

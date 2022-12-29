@@ -1,7 +1,8 @@
-package com.app.gong4
+package com.app.gong4.fragments
 
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.app.gong4.R
 import com.app.gong4.model.Ranking
 import com.app.gong4.model.res.ResponseMyPageInfoBody
 import com.app.gong4.model.ResponseMyStudyGroupRankingBody

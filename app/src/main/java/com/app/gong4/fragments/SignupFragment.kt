@@ -1,9 +1,10 @@
-package com.app.gong4
+package com.app.gong4.fragments
 
 import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.app.gong4.R
 import com.app.gong4.model.res.ResponseLoginBody
 import com.app.gong4.model.res.ResponseSignupBody
 import com.app.gong4.api.RequestServer
@@ -113,11 +114,13 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(FragmentSignupBinding
             onChanged = { text,_,_,_ ->
                 if(text.toString() == password){
                     binding.validPasswordCheckTextView.text = ""
-                    binding.passwordCheckEditText.background = requireContext().resources.getDrawable(R.drawable.custom_input, null)
+                    binding.passwordCheckEditText.background = requireContext().resources.getDrawable(
+                        R.drawable.custom_input, null)
 
                 } else {
                     binding.validPasswordCheckTextView.text = resources.getString(R.string.signup_wrong_password)
-                    binding.passwordCheckEditText.background = requireContext().resources.getDrawable(R.drawable.custom_error_input, null)
+                    binding.passwordCheckEditText.background = requireContext().resources.getDrawable(
+                        R.drawable.custom_error_input, null)
                 }
             },
             afterChanged = { text ->

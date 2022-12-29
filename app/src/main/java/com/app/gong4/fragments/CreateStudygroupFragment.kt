@@ -1,4 +1,4 @@
-package com.app.gong4
+package com.app.gong4.fragments
 
 import android.Manifest
 import android.R
@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
+import com.app.gong4.MainActivity
 import com.app.gong4.model.res.ResponseCreateStudyGroup
 import com.app.gong4.model.StudyCategory
 import com.app.gong4.api.RequestServer
@@ -203,7 +204,8 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
 
             if(writePermission == PackageManager.PERMISSION_DENIED || readPermission == PackageManager.PERMISSION_DENIED){
                 ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE),
-                    REQ_GALLERY)
+                    REQ_GALLERY
+                )
             }else{
                 val intent = Intent(Intent.ACTION_PICK)
                 intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*")

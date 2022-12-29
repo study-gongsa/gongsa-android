@@ -1,4 +1,4 @@
-package com.app.gong4
+package com.app.gong4.fragments
 
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -8,10 +8,12 @@ import android.view.View
 import android.widget.*
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.app.gong4.*
 import com.app.gong4.model.*
 import com.app.gong4.adapter.StudyGroupListAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMainBinding
+import com.app.gong4.dialog.*
 import com.app.gong4.model.req.RequestGroupItemBody
 import com.app.gong4.model.res.ResponseGroupItemBody
 import com.app.gong4.model.res.ResponseStudycategoryBody

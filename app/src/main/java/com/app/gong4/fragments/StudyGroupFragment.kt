@@ -1,4 +1,4 @@
-package com.app.gong4
+package com.app.gong4.fragments
 
 import android.graphics.Rect
 import android.util.Log

@@ -1,9 +1,10 @@
-package com.app.gong4
+package com.app.gong4.fragments
 
 import android.view.View
 import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import com.app.gong4.R
 import com.app.gong4.model.ResponseAuthCodeBody
 import com.app.gong4.model.ResponseCertifyEmailBody
 import com.app.gong4.api.RequestServer

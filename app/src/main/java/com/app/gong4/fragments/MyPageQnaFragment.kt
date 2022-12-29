@@ -1,15 +1,18 @@
-package com.app.gong4
+package com.app.gong4.fragments
 
 import android.os.Bundle
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.app.gong4.MainActivity
+import com.app.gong4.R
 import com.app.gong4.model.QnaItem
 import com.app.gong4.model.res.ResponseQnaListBody
 import com.app.gong4.model.UserInfo
 import com.app.gong4.adapter.QnaListAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMyPageQnaBinding
+import com.app.gong4.onMoveAdapterListener
 import com.app.gong4.utils.CommonService
 import com.bumptech.glide.Glide
 import retrofit2.Call

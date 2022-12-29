@@ -1,4 +1,4 @@
-package com.app.gong4
+package com.app.gong4.fragments
 
 import android.content.Context
 import android.os.Bundle

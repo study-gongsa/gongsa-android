@@ -1,4 +1,4 @@
-package com.app.gong4
+package com.app.gong4.dialog
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,7 +10,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.app.gong4.model.*
+import com.app.gong4.R
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.StudygroupinfoDialogBinding
 import com.app.gong4.model.req.RequestEnterMember
@@ -38,7 +38,9 @@ class StudygroupinfoDialog(private val data: ResponseStudygroupinfoBody.StduyGro
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         binding.studynameTextview.text = data.name
-        binding.iscamTextview.text = if(data.isCam) resources.getString(R.string.main_study_info_isCam_true) else resources.getString(R.string.main_study_info_isCam_false)
+        binding.iscamTextview.text = if(data.isCam) resources.getString(R.string.main_study_info_isCam_true) else resources.getString(
+            R.string.main_study_info_isCam_false
+        )
 
         binding.categoriesTextview.text = StringBuilder().apply {
             data.categories.forEach {

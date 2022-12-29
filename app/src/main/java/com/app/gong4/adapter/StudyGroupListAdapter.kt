@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.gong4.model.StudyGroupItem
-import com.app.gong4.MainFragment
+import com.app.gong4.fragments.MainFragment
 import com.app.gong4.R
 import com.app.gong4.utils.CommonService
 import com.bumptech.glide.Glide

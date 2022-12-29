@@ -1,9 +1,11 @@
-package com.app.gong4
+package com.app.gong4.fragments
 
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.navigation.findNavController
+import com.app.gong4.MainActivity
+import com.app.gong4.R
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentFindpasswordBinding
 import com.app.gong4.model.req.RequestFindPwdBody

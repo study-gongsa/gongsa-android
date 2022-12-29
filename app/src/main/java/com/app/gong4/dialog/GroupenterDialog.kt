@@ -1,4 +1,4 @@
-package com.app.gong4
+package com.app.gong4.dialog
 
 import android.content.Context
 import android.graphics.Color

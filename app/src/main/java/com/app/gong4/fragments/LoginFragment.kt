@@ -1,4 +1,4 @@
-package com.app.gong4
+package com.app.gong4.fragments
 
 import android.text.Editable
 import android.text.TextWatcher
@@ -7,6 +7,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.app.gong4.MainActivity
+import com.app.gong4.MainApplication
+import com.app.gong4.R
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentLoginBinding
 import com.app.gong4.model.req.RequestLoginBody

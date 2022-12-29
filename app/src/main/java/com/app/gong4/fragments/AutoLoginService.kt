@@ -1,13 +1,10 @@
-package com.app.gong4
+package com.app.gong4.fragments
 
-import android.util.Log
+import com.app.gong4.AutoLoginView
+import com.app.gong4.MainApplication
 import com.app.gong4.model.res.ResponseRefreshTokenBody
 import com.app.gong4.api.RequestServer
 import com.app.gong4.model.req.RequestRefreshTokenBody
-import com.app.gong4.utils.TokenManager
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

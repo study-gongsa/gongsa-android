@@ -1,4 +1,4 @@
-package com.app.gong4
+package com.app.gong4.dialog
 
 import android.R
 import android.content.Context

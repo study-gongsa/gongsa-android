@@ -1,4 +1,4 @@
-package com.app.gong4
+package com.app.gong4.dialog
 
 import android.content.Context
 import android.graphics.Color
@@ -8,23 +8,24 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
-import com.app.gong4.databinding.AlertEditCustomDialogBinding
+import com.app.gong4.databinding.AlertCustomDialogBinding
+import com.app.gong4.onActionListener
 
-class AlertEditCustomDialog :DialogFragment(){
-    private var _binding : AlertEditCustomDialogBinding?=null
+class AlertCustomDialog :DialogFragment(){
+    private var _binding : AlertCustomDialogBinding?=null
     private val binding get() = _binding!!
 
     private lateinit var listener: onActionListener
 
     private lateinit var title:String //타이틀
-    private lateinit var hint: String //hint
+    private lateinit var content:String //내용
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = AlertEditCustomDialogBinding.inflate(inflater,container,false)
+        _binding = AlertCustomDialogBinding.inflate(inflater,container,false)
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         showDialogView()
@@ -34,7 +35,7 @@ class AlertEditCustomDialog :DialogFragment(){
 
     fun showDialogView(){
         binding.dialogTitleTextview.text = title
-        binding.dialogContentEditview.hint = hint
+        binding.dialogContentTextview.text = content
 
         //취소버튼
         binding.cancelButton.setOnClickListener {
@@ -90,12 +91,12 @@ class AlertEditCustomDialog :DialogFragment(){
         this.listener = listener
     }
 
-    fun setData(title:String,hint:String){
+    fun setData(title:String,content:String){
         this.title = title
-        this.hint = hint
+        this.content = content
     }
 
-    fun getCotent():String{
-        return binding.dialogContentEditview.text.toString()
+    fun setActionButtonText(text:String){
+        binding.actionButton.text = text
     }
 }

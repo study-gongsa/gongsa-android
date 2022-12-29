@@ -1,4 +1,4 @@
-package com.app.gong4
+package com.app.gong4.fragments
 
 import android.Manifest
 import android.R
@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import com.app.gong4.MainActivity
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentSettingBinding
 import com.app.gong4.model.res.BaseResponse
@@ -184,12 +185,16 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBind
                 if(!Pattern.matches("^(?=.*\\d)(?=.*[~`!@#$%\\^&*()-])(?=.*[a-zA-Z]).{8,16}$", text.toString()))
                 {
                     binding.validPasswordChangeTextView.text = String.format(resources.getString(com.app.gong4.R.string.login_fragment_wrong_answer),"비밀번호")
-                    binding.passwordChangeEditText.background = requireContext().resources.getDrawable(com.app.gong4.R.drawable.custom_error_input)
+                    binding.passwordChangeEditText.background = requireContext().resources.getDrawable(
+                        com.app.gong4.R.drawable.custom_error_input
+                    )
                 }
                 else
                 {
                     binding.validPasswordChangeTextView.text = ""
-                    binding.passwordChangeEditText.background = requireContext().resources.getDrawable(com.app.gong4.R.drawable.custom_input)
+                    binding.passwordChangeEditText.background = requireContext().resources.getDrawable(
+                        com.app.gong4.R.drawable.custom_input
+                    )
 
                 }
             }
@@ -201,13 +206,19 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBind
             onChanged = { text,_,_,_ ->
                 if(!Pattern.matches("^(?=.*\\d)(?=.*[~`!@#$%\\^&*()-])(?=.*[a-zA-Z]).{8,16}$", text.toString()))
                 {
-                    binding.validPasswordChangeConfirmTextView.text = String.format(resources.getString(com.app.gong4.R.string.login_fragment_wrong_answer),"비밀번호")
-                    binding.passwordChangeConfirmEditText.background = requireContext().resources.getDrawable(com.app.gong4.R.drawable.custom_error_input)
+                    binding.validPasswordChangeConfirmTextView.text = String.format(resources.getString(
+                        com.app.gong4.R.string.login_fragment_wrong_answer
+                    ),"비밀번호")
+                    binding.passwordChangeConfirmEditText.background = requireContext().resources.getDrawable(
+                        com.app.gong4.R.drawable.custom_error_input
+                    )
                 }
                 else
                 {
                     binding.validPasswordChangeConfirmTextView.text = ""
-                    binding.passwordChangeConfirmEditText.background = requireContext().resources.getDrawable(com.app.gong4.R.drawable.custom_input)
+                    binding.passwordChangeConfirmEditText.background = requireContext().resources.getDrawable(
+                        com.app.gong4.R.drawable.custom_input
+                    )
 
                 }
             }

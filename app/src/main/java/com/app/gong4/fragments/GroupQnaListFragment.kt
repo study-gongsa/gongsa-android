@@ -1,4 +1,4 @@
-package com.app.gong4
+package com.app.gong4.fragments
 
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.navArgs
@@ -9,6 +9,7 @@ import com.app.gong4.model.res.ResponseQnaListBody
 import com.app.gong4.adapter.QnaListAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentGroupQnaListBinding
+import com.app.gong4.onMoveAdapterListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

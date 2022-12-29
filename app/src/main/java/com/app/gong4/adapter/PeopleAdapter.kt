@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.gong4.model.Member
 import com.app.gong4.R
-import com.app.gong4.StudyGroupFragment
+import com.app.gong4.fragments.StudyGroupFragment
 import com.app.gong4.utils.CommonService
 import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
