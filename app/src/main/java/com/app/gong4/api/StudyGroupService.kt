@@ -4,6 +4,7 @@ import com.app.gong4.model.req.RequestEnterMember
 import com.app.gong4.model.res.*
 import okhttp3.MultipartBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface StudyGroupService {
@@ -32,7 +33,7 @@ interface StudyGroupService {
 
     //나의 스터디 그룹 조회
     @GET("/api/study-group/my-group")
-    fun getMyStudyGroup() : Call<ResponseGroupItemBody>
+    suspend fun getMyStudyGroup() : Response<ResponseGroupItemBody>
 
     //스터디 그룹 내 멤버 정보 조회
     @GET("/api/group-member/{groupUID}")

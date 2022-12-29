@@ -2,57 +2,49 @@ package com.app.gong4.fragments
 
 import android.util.Log
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.gong4.model.res.ResponseGroupItemBody
 import com.app.gong4.model.StudyGroupItem
 import com.app.gong4.adapter.MyStudyGroupAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMyStudyGroupBinding
+import com.app.gong4.utils.NetworkResult
+import com.app.gong4.viewmodel.StudyGroupViewModel
 import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@AndroidEntryPoint
 class MyStudyGroupFragment : BaseFragment<FragmentMyStudyGroupBinding>(FragmentMyStudyGroupBinding::inflate) {
-
-    private lateinit var dataList : ArrayList<StudyGroupItem>
-    private lateinit var dataAllList : ArrayList<StudyGroupItem>
     private lateinit var mAdapter : MyStudyGroupAdapter
+
+    private val studyViewModel : StudyGroupViewModel by viewModels()
 
     override fun initView() {
         getMyStudyGroup()
     }
 
     private fun getMyStudyGroup() {
-        RequestServer.studyGroupService.getMyStudyGroup().enqueue(object :
-            Callback<ResponseGroupItemBody> {
-            override fun onResponse(
-                call: Call<ResponseGroupItemBody>,
-                response: Response<ResponseGroupItemBody>
-            ) {
-                if (response.isSuccessful) {
-                    val data: ResponseGroupItemBody? = response.body()
-                    data.let { it ->
-                        dataAllList = it!!.data.studyGroupList as ArrayList<StudyGroupItem>
-                        dataList = dataAllList
-                        setAdapter(dataList)
-                    }
-                } else {
-                    val error = response.errorBody()!!.string().trimIndent()
-                    val result = Gson().fromJson(error, ResponseGroupItemBody::class.java)
-                    Log.d("스터디그룹 응답- tostring", result.toString())
+        studyViewModel.myStudyGroupLiveData.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is NetworkResult.Success -> {
+                    setAdapter(it.data!!)
                 }
+                is NetworkResult.Error -> {
+                    showToastMessage(it.msg as String)
+                }
+                is NetworkResult.Loading -> TODO()
             }
-
-            override fun onFailure(call: Call<ResponseGroupItemBody>, t: Throwable) {
-                Log.d("결과 - onFailure", t.toString())
-                Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT)
-            }
-
         })
+
+        studyViewModel.getMyStudyGroup()
     }
 
-    fun setAdapter(list: List<StudyGroupItem>) {
+    private fun setAdapter(list: List<StudyGroupItem>) {
         mAdapter = MyStudyGroupAdapter(this, list as ArrayList<StudyGroupItem>)
         binding.myStudyRecyclerView.adapter = mAdapter
         binding.myStudyRecyclerView.layoutManager = LinearLayoutManager(context)

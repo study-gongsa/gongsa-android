@@ -77,11 +77,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                     }
                     is NetworkResult.Error -> {
                         resetLoginErrorMsg()
-                        //showLoginErrorMsg(data!!.location,data!!.msg)
+                        showLoginErrorMsg(result.data!!.location,result.data!!.msg)
                     }
-                    is NetworkResult.Loading -> {
-                        showToastMessage(getString(R.string.server_error_msg))
-                    }
+                    is NetworkResult.Loading -> TODO()
                 }
             })
         }
