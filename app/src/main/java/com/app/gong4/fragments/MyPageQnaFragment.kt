@@ -20,11 +20,12 @@ import com.app.gong4.utils.CommonService
 import com.app.gong4.utils.NetworkResult
 import com.app.gong4.viewmodel.QnaViewModel
 import com.bumptech.glide.Glide
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
+@AndroidEntryPoint
 class MyPageQnaFragment : BaseFragment<FragmentMyPageQnaBinding>(FragmentMyPageQnaBinding::inflate) {
     private val args by navArgs<MyPageQnaFragmentArgs>()
 

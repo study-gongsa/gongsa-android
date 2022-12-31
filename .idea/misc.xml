@@ -32,6 +32,7 @@
         <entry key="app/src/main/res/drawable/custom_gray_button.xml" value="0.1615" />
         <entry key="app/src/main/res/drawable/custom_input.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable/green_border_button.xml" value="0.2415" />
+        <entry key="app/src/main/res/drawable/ic_baseline_check_24.xml" value="0.146" />
         <entry key="app/src/main/res/drawable/ic_baseline_check_circle_24.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/ic_baseline_check_circle_outline.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.176" />
@@ -69,7 +70,7 @@
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.35" />
         <entry key="app/src/main/res/layout/fragment_main.xml" value="0.353125" />
         <entry key="app/src/main/res/layout/fragment_my_page.xml" value="0.375" />
-        <entry key="app/src/main/res/layout/fragment_my_page_qna.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/fragment_my_page_qna.xml" value="0.4079861111111111" />
         <entry key="app/src/main/res/layout/fragment_my_study_group.xml" value="0.29609375" />
         <entry key="app/src/main/res/layout/fragment_qna_register.xml" value="0.2614247311827957" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.384375" />
@@ -86,7 +87,8 @@
         <entry key="app/src/main/res/layout/studygroup_ranking_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/studygroup_ranking_member_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/studygroup_row_item.xml" value="0.19504643962848298" />
-        <entry key="app/src/main/res/layout/studygroupinfo_dialog.xml" value="0.1825726141078838" />
+        <entry key="app/src/main/res/layout/studygroupinfo_dialog.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/time_picker_custom_dialog.xml" value="0.22244623655913978" />
         <entry key="app/src/main/res/layout/usercategory_dialog.xml" value="0.29609375" />
         <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.1" />
       </map>

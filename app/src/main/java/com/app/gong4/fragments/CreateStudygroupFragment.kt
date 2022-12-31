@@ -27,7 +27,9 @@ import com.app.gong4.model.res.ResponseCreateStudyGroup
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentCreateStudygroupBinding
 import com.app.gong4.model.req.RequestCreateStudyGroup
+import com.app.gong4.onActionListener
 import com.app.gong4.utils.CommonService
+import com.app.gong4.utils.TimePickerCustomDialog
 import com.app.gong4.viewmodel.CategoryViewModel
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
@@ -101,6 +103,7 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
             }
         }//공개여부
 
+        binding.paneltyEdittext.isFocusable = false
         binding.penaltyRadioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
             when(checkedId){
                 binding.paneltyTrue.id -> {
@@ -116,6 +119,7 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
             }
         }//벌점
 
+        binding.inputEdittext.isFocusable = false
         binding.inputRadioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
             when(checkedId){
                 binding.inputTrue.id -> {
@@ -133,6 +137,7 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
 
         //배경이미지
         var checkedImage = false
+        binding.imageSelectButton.isClickable = false
         binding.backgroundRadioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
             when(checkedId){
                 binding.imageTrue.id -> {
@@ -230,6 +235,20 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
     }
 
     private fun showTimePicker(){
+        binding.timeTextView.text = "1 : 00"
+        binding.timeTextView.setOnClickListener {
+            val picker = TimePickerCustomDialog()
+            picker.setActionListener(object : onActionListener{
+                override fun onAction() {
+                    val hour = picker.getHour()
+                    binding.timeTextView.text = if(hour<=9) "0${hour}:00" else "${hour}:00"
+                }
+            })
+            picker.show(parentFragmentManager,"TimePickerDialog")
+        }
+    }
+
+    private fun showTimePicker1(){
         binding.timeTextView.text = "1 : 00"
         binding.timeTextView.setOnClickListener {
             val cal = Calendar.getInstance()
