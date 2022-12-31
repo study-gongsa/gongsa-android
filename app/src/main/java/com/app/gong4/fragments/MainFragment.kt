@@ -14,6 +14,7 @@ import com.app.gong4.model.*
 import com.app.gong4.adapter.StudyGroupListAdapter
 import com.app.gong4.databinding.FragmentMainBinding
 import com.app.gong4.dialog.*
+import com.app.gong4.dialog.StudygroupinfoDialog
 import com.app.gong4.model.req.RequestGroupItemBody
 import com.app.gong4.utils.NetworkResult
 import com.app.gong4.viewmodel.CategoryViewModel

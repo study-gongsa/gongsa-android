@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.app.gong4.MainApplication
 import com.app.gong4.model.Answer
 import com.app.gong4.R
 import com.app.gong4.utils.CommonService
+import com.app.gong4.MainApplication
 
 class CommentAdapter(val list:ArrayList<Answer>, private var listener: CommentListener) : RecyclerView.Adapter<CommentAdapter.ViewHolder>(){
 

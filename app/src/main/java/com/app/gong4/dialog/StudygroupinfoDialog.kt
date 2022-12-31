@@ -51,10 +51,10 @@ class StudygroupinfoDialog(private val data: ResponseStudygroupinfoBody.StudyGro
                         Toast.makeText(context,it.msg.toString(), Toast.LENGTH_SHORT).show()
                         dismiss()
                     }else ->{
-                        val successMsg = resources.getString(R.string.main_join_success)
-                        Toast.makeText(context,successMsg, Toast.LENGTH_SHORT).show()
-                        dismiss()
-                    }
+                    val successMsg = resources.getString(R.string.main_join_success)
+                    Toast.makeText(context,successMsg, Toast.LENGTH_SHORT).show()
+                    dismiss()
+                }
                 }
             })
             studyGroupViewModel.joinStudyGroup(RequestEnterMember(data.groupUID))
