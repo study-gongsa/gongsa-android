@@ -3,12 +3,11 @@ package com.app.gong4.utils
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Log
 import com.app.gong4.MainApplication
-import com.app.gong4.api.RequestServer
+import com.app.gong4.utils.Constants.BASE_URL
 import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import java.text.SimpleDateFormat
-import javax.inject.Inject
 
 class CommonService {
     companion object{
@@ -25,9 +24,10 @@ class CommonService {
         * 이미지 이름 -> url
         */
         fun getImageGlide(imagePath: String): GlideUrl {
-            val USER_TOKEN = MainApplication.tokenManager.getAccessToken()
-            val IMAGE_URL = "${RequestServer.BASE_URL}/api/image/" + imagePath
-            val glideUrl = GlideUrl(IMAGE_URL) { mapOf(Pair("Authorization", "Bearer $USER_TOKEN")) }
+            val USER_ACCESS_TOKEN = MainApplication.tokenManager.getAccessToken()
+            val IMAGE_URL = "${BASE_URL}/api/image/" + imagePath
+            val glideUrl = GlideUrl(IMAGE_URL,
+                LazyHeaders.Builder().addHeader("Authorization","Bearer $USER_ACCESS_TOKEN").build())
             return glideUrl
         }
 

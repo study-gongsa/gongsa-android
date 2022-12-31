@@ -1,30 +1,25 @@
 package com.app.gong4.dialog
 
 import android.R
-import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.Insets
-import android.graphics.Point
-import android.graphics.drawable.ColorDrawable
-import android.os.Bundle
-import android.util.Log
-import android.view.*
 import android.widget.Toast
 import androidx.core.view.children
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.app.gong4.model.StudyCategory
-import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.UsercategoryDialogBinding
 import com.app.gong4.model.req.RequestSaveUserCateogry
-import com.app.gong4.model.res.BaseResponse
+import com.app.gong4.utils.NetworkResult
+import com.app.gong4.viewmodel.CategoryViewModel
 import com.google.android.material.chip.Chip
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.collections.ArrayList
 
+@AndroidEntryPoint
 class UsercategoryDialog(val categories : ArrayList<StudyCategory>) : BaseDialog<UsercategoryDialogBinding>(UsercategoryDialogBinding::inflate) {
+
+    private val categoryViewModel : CategoryViewModel by viewModels()
 
     override fun initDialog() {
         showCategories()
@@ -71,26 +66,23 @@ class UsercategoryDialog(val categories : ArrayList<StudyCategory>) : BaseDialog
                 binding.categoryChipGroup.children?.filter { (it as Chip).isChecked }?.map { it.id }?.toList()!!
 
             val requestSaveUserCateogry = RequestSaveUserCateogry(checkedChipList)
-            Log.d("request",requestSaveUserCateogry.toString())
-            RequestServer.userCategoryService.putUserCategory(requestSaveUserCateogry).enqueue(object :
-                Callback<BaseResponse>{
-                override fun onResponse(
-                    call: Call<BaseResponse>,
-                    response: Response<BaseResponse>
-                ) {
-                    if(response.isSuccessful){
+
+            categoryViewModel.putCategoryLiveData.observe(viewLifecycleOwner, Observer {
+                when(it){
+                    is NetworkResult.Success -> {
                         val successMsg = resources.getString(com.app.gong4.R.string.main_save_success)
                         Toast.makeText(context,successMsg, Toast.LENGTH_SHORT).show()
                         dismiss()
                     }
-                }
-
-                override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                    Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.",Toast.LENGTH_SHORT)
+                    else -> {
+                        Toast.makeText(context,it.msg.toString(), Toast.LENGTH_SHORT)
+                    }
                 }
             })
+            categoryViewModel.putCategoryList(requestSaveUserCateogry)
         }
     }
+
 
 
 }

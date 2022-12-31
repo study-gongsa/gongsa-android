@@ -1,6 +1,5 @@
 package com.app.gong4.fragments
 
-import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_ENTER
 import androidx.fragment.app.viewModels
@@ -12,20 +11,13 @@ import com.app.gong4.dialog.AlertEditCustomDialog
 import com.app.gong4.R
 import com.app.gong4.model.*
 import com.app.gong4.adapter.CommentAdapter
-import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentGroupQnaDetailBinding
 import com.app.gong4.model.req.RequestRegisterAnswer
 import com.app.gong4.model.req.RequestUpdateAnswer
-import com.app.gong4.model.res.ResponseQuestionBody
-import com.app.gong4.model.res.ResponseRegisterAnswerBody
-import com.app.gong4.model.res.ResponseUpdateAnswerBody
 import com.app.gong4.onActionListener
 import com.app.gong4.utils.NetworkResult
 import com.app.gong4.viewmodel.QnaViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 @AndroidEntryPoint
 class GroupQnaDetailFragment : BaseFragment<FragmentGroupQnaDetailBinding>(FragmentGroupQnaDetailBinding::inflate) , CommentAdapter.CommentListener{

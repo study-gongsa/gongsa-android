@@ -23,10 +23,10 @@ interface StudyGroupService {
     ) : Call<ResponseGroupItemBody>
 
     @GET("/api/study-group/code/{code}")
-    fun getStudygroupCodeInfo(@Path("code")code:String) : Call<ResponseStudygroupinfoBody>
+    suspend fun getStudygroupCodeInfo(@Path("code")code:String) : Response<ResponseStudygroupinfoBody>
 
     @POST("/api/group-member")
-    fun getStudyEnter(@Body body: RequestEnterMember) : Call<ResponseEnterMember>
+    suspend fun getStudyEnter(@Body body: RequestEnterMember) : Response<ResponseEnterMember>
 
     //나의 스터디 그룹 조회
     @GET("/api/study-group/my-group")
@@ -34,7 +34,7 @@ interface StudyGroupService {
 
     //스터디 그룹 내 멤버 정보 조회
     @GET("/api/group-member/{groupUID}")
-    fun getStudyMembers(@Path("groupUID")groupUID:Int) : Call<ResponseStudyMembers>
+    suspend fun getStudyMembers(@Path("groupUID")groupUID:Int) : Response<ResponseStudyMembers>
 
     @Multipart
     @Headers("accept: application/json")

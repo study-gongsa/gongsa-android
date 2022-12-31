@@ -1,22 +1,14 @@
 package com.app.gong4.fragments
 
-import android.util.Log
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.app.gong4.model.res.ResponseGroupItemBody
 import com.app.gong4.model.StudyGroupItem
 import com.app.gong4.adapter.MyStudyGroupAdapter
-import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMyStudyGroupBinding
 import com.app.gong4.utils.NetworkResult
 import com.app.gong4.viewmodel.StudyGroupViewModel
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 @AndroidEntryPoint
 class MyStudyGroupFragment : BaseFragment<FragmentMyStudyGroupBinding>(FragmentMyStudyGroupBinding::inflate) {

@@ -3,6 +3,7 @@ package com.app.gong4.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.gong4.model.req.RequestSaveUserCateogry
 import com.app.gong4.model.res.ResponseLoginBody
 import com.app.gong4.repository.CategoryRepository
 import com.app.gong4.repository.StudyGroupRepository
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class CategoryViewModel @Inject constructor(private val categoryRepository: CategoryRepository):ViewModel(){
     val categoryLiveData get() = categoryRepository.categoryRes
     val myCategoryLiveData get() = categoryRepository.myCategoryRes
+    val putCategoryLiveData get() = categoryRepository.putCategoryRes
 
     fun getCategoryList(){
         viewModelScope.launch {
@@ -25,6 +27,12 @@ class CategoryViewModel @Inject constructor(private val categoryRepository: Cate
     fun getUserCategoryList(){
         viewModelScope.launch{
             categoryRepository.getUserCategory()
+        }
+    }
+
+    fun putCategoryList(saveUserCateogry: RequestSaveUserCateogry){
+        viewModelScope.launch {
+            categoryRepository.putUserCategory(saveUserCateogry)
         }
     }
 }

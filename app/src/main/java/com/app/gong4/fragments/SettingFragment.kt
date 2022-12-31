@@ -9,8 +9,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -18,9 +16,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.app.gong4.MainActivity
-import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentSettingBinding
-import com.app.gong4.model.res.BaseResponse
 import com.app.gong4.model.req.RequestUserInfo
 import com.app.gong4.model.res.ResponseUserBody
 import com.app.gong4.utils.CommonService
@@ -30,14 +26,10 @@ import com.app.gong4.viewmodel.CategoryViewModel
 import com.app.gong4.viewmodel.UserViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
 import java.util.regex.Pattern
 

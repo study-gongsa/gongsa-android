@@ -3,7 +3,6 @@ package com.app.gong4.fragments
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.activityViewModels
@@ -13,21 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.gong4.*
 import com.app.gong4.model.*
 import com.app.gong4.adapter.StudyGroupListAdapter
-import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMainBinding
 import com.app.gong4.dialog.*
 import com.app.gong4.model.req.RequestGroupItemBody
-import com.app.gong4.model.res.*
 import com.app.gong4.utils.NetworkResult
 import com.app.gong4.viewmodel.CategoryViewModel
 import com.app.gong4.viewmodel.StudyGroupViewModel
 import com.app.gong4.viewmodel.UserViewModel
 import com.google.android.material.chip.Chip
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
@@ -98,7 +91,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
     private fun cameraToogle(){
         binding.isCam.setOnClickListener{
-           // mAdapter.filter.filter(true.toString())
             filterListByTooggle(true)
         }
         binding.isFalseCam.setOnClickListener{
@@ -132,29 +124,20 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
     private fun searchWordApiCall(sAlign:String?,sIsCam:Boolean?,sCategory:List<Int>?,s:String?){
         // api 호출
-        RequestServer.studyGroupService.getStudygroupfilterInfo(align = sAlign, isCam = sIsCam, categoryUIDs = sCategory, word = s).enqueue(object :
-            Callback<ResponseGroupItemBody>{
-            override fun onResponse(
-                call: Call<ResponseGroupItemBody>,
-                response: Response<ResponseGroupItemBody>
-            ) {
-                if (response.isSuccessful) {
-                    val data: ResponseGroupItemBody? = response.body()
+        studyViewModel.getStudyGroupFilterInfo(align = sAlign, isCam = sIsCam, categoryUIDs = sCategory, word = s)
+        studyViewModel.recommendGroupLiveData.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is NetworkResult.Success -> {
+                    val data = it.data
                     data.let { it ->
-                        dataAllList = it!!.data.studyGroupList as ArrayList<StudyGroupItem>
+                        dataAllList = it!! as ArrayList<StudyGroupItem>
                         dataList = dataAllList
                         setAdapter(dataList)
                     }
-                } else {
-                    val error = response.errorBody()!!.string().trimIndent()
-                    val result = Gson().fromJson(error, ResponseGroupItemBody::class.java)
-                    Log.d("응답 값 결과 - tostring", result.toString())
                 }
-
-            }
-
-            override fun onFailure(call: Call<ResponseGroupItemBody>, t: Throwable) {
-                TODO("Not yet implemented")
+                else -> {
+                    showToastMessage(it.msg.toString())
+                }
             }
         })
     }
@@ -259,7 +242,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                 dataList = dataAllList.filter { !it.isCam } as ArrayList<StudyGroupItem>
             }
         }
-        Log.d("dataList",dataList.toString())
         setAdapter(dataList)
     }
 

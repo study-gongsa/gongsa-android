@@ -3,7 +3,6 @@ package com.app.gong4.fragments
 import android.graphics.Rect
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -16,20 +15,14 @@ import com.app.gong4.R
 import com.app.gong4.model.*
 import com.app.gong4.adapter.CategoryAdapter
 import com.app.gong4.adapter.PeopleAdapter
-import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentStudyGroupBinding
 import com.app.gong4.dialog.AlertCustomDialog
-import com.app.gong4.dialog.StudygroupinfoDialog
-import com.app.gong4.model.res.ResponseStudyMembers
 import com.app.gong4.model.res.ResponseStudygroupinfoBody
 import com.app.gong4.onActionListener
 import com.app.gong4.utils.CommonService
 import com.app.gong4.utils.NetworkResult
 import com.app.gong4.viewmodel.StudyGroupViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 @AndroidEntryPoint
 class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>(FragmentStudyGroupBinding::inflate){
@@ -120,22 +113,17 @@ class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>(FragmentStudy
 
     //사람 정보 불러와서 띄우는 작업 완료 안됨(리스폰스 바디 데이터를 가져올 때 null 포인터가 뜸)
     private fun getPeopleInfo(pid: Int) {
-        RequestServer.studyGroupService.getStudyMembers(pid).enqueue(object :
-            Callback<ResponseStudyMembers> {
-            override fun onResponse(
-                call: Call<ResponseStudyMembers>,
-                response: Response<ResponseStudyMembers>
-            ) {
-                val members = response.body()!!.data.members
-                Log.d("member",members.toString())
-                setPeopleAdapter(members)
+        studyViewModel.memberLiveData.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is NetworkResult.Success -> {
+                    setPeopleAdapter(it.data!!.members)
+                }
+                else -> {
+                    showToastMessage(it.msg.toString())
+                }
             }
-
-            override fun onFailure(call: Call<ResponseStudyMembers>, t: Throwable) {
-                Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT)
-            }
-
         })
+        studyViewModel.getStudyGroupMember(pid)
     }
 
     fun setCategoryAdapter(list: List<StudyCategory>) {

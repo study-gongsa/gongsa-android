@@ -1,27 +1,21 @@
 package com.app.gong4.dialog
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.Color
-import android.graphics.Insets
-import android.graphics.Point
-import android.graphics.drawable.ColorDrawable
-import android.os.Bundle
-import android.view.*
 import android.widget.Toast
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.app.gong4.R
-import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.StudygroupinfoDialogBinding
 import com.app.gong4.model.req.RequestEnterMember
-import com.app.gong4.model.res.ResponseEnterMember
 import com.app.gong4.model.res.ResponseStudygroupinfoBody
-import com.google.gson.Gson
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.app.gong4.utils.NetworkResult
+import com.app.gong4.viewmodel.StudyGroupViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StudygroupinfoDialog(private val data: ResponseStudygroupinfoBody.StudyGroupDetailItem) : BaseDialog<StudygroupinfoDialogBinding>(StudygroupinfoDialogBinding::inflate) {
+
+    private val studyGroupViewModel : StudyGroupViewModel by viewModels()
 
     @SuppressLint("ResourceAsColor")
     override fun initDialog() {
@@ -50,28 +44,20 @@ class StudygroupinfoDialog(private val data: ResponseStudygroupinfoBody.StudyGro
         }
 
         binding.joinButton.setOnClickListener{
-            RequestServer.studyGroupService.getStudyEnter(RequestEnterMember(data.groupUID)).enqueue(object :
-                Callback<ResponseEnterMember>{
-                override fun onResponse(
-                    call: Call<ResponseEnterMember>,
-                    response: Response<ResponseEnterMember>
-                ) {
-                    if(response.isSuccessful) {
+
+            studyGroupViewModel.joinLiveData.observe(viewLifecycleOwner, Observer {
+                when(it){
+                    is NetworkResult.Error -> {
+                        Toast.makeText(context,it.msg.toString(), Toast.LENGTH_SHORT).show()
+                        dismiss()
+                    }else ->{
                         val successMsg = resources.getString(R.string.main_join_success)
                         Toast.makeText(context,successMsg, Toast.LENGTH_SHORT).show()
                         dismiss()
-                    }else{
-                        val error = response.errorBody()!!.string().trimIndent()
-                        val msg = Gson().fromJson(error, ResponseEnterMember::class.java).msg
-                        Toast.makeText(context,msg, Toast.LENGTH_SHORT).show()
-                        dismiss()
                     }
                 }
-
-                override fun onFailure(call: Call<ResponseEnterMember>, t: Throwable) {
-                    Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT).show()
-                }
             })
+            studyGroupViewModel.joinStudyGroup(RequestEnterMember(data.groupUID))
         }
     }
 

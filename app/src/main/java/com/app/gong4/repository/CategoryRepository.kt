@@ -6,6 +6,7 @@ import com.app.gong4.R
 import com.app.gong4.api.UserCategoryService
 import com.app.gong4.model.StudyCategory
 import com.app.gong4.model.UserCategory
+import com.app.gong4.model.req.RequestSaveUserCateogry
 import com.app.gong4.model.res.ResponseStudycategoryBody
 import com.app.gong4.utils.NetworkResult
 import com.google.gson.Gson
@@ -19,6 +20,10 @@ class CategoryRepository @Inject constructor(private val userCategoryService: Us
     private val _myCategoryRes = MutableLiveData<NetworkResult<List<UserCategory>>>()
     val myCategoryRes : LiveData<NetworkResult<List<UserCategory>>>
         get() = _myCategoryRes
+
+    private val _putCategoryRes = MutableLiveData<NetworkResult<List<UserCategory>>>()
+    val putCategoryRes : LiveData<NetworkResult<List<UserCategory>>>
+        get() = _putCategoryRes
 
     suspend fun getCategoryList(){
         val response = userCategoryService.getCategory()
@@ -44,6 +49,16 @@ class CategoryRepository @Inject constructor(private val userCategoryService: Us
         }else{
             _myCategoryRes.value = NetworkResult.Error(null, R.string.server_error_msg)
         }
-
     }
+
+    suspend fun putUserCategory(saveUserCateogry: RequestSaveUserCateogry){
+        val response = userCategoryService.putUserCategory(saveUserCateogry)
+        if(response.isSuccessful){
+            _putCategoryRes.postValue(NetworkResult.ResultEmpty())
+        }else{
+            _putCategoryRes.value =NetworkResult.Error(response.body()!!.location,response.body()!!.msg)
+        }
+    }
+
+
 }

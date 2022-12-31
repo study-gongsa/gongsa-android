@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.gong4.model.req.RequestCreateStudyGroup
+import com.app.gong4.model.req.RequestEnterMember
 import com.app.gong4.model.res.ResponseLoginBody
 import com.app.gong4.repository.StudyGroupRepository
 import com.app.gong4.utils.NetworkResult
@@ -19,6 +20,8 @@ class StudyGroupViewModel @Inject constructor(private val studyRepository: Study
     val studyGroupInfoLiveData get() = studyRepository.studyGroupInfoRes
     val createStudyGroupLiveData get() = studyRepository.createStudyGroupRes
     val leaveStudyGroupLiveData get() = studyRepository.leaveStudyGroupRes
+    val joinLiveData get() = studyRepository.joinStudyGroupRes
+    val memberLiveData get() = studyRepository.studyMemberRes
 
     fun getMyStudyGroup(){
         viewModelScope.launch {
@@ -38,6 +41,12 @@ class StudyGroupViewModel @Inject constructor(private val studyRepository: Study
         }
     }
 
+    fun getStudyGroupCodeInfo(code:String){
+        viewModelScope.launch {
+            studyRepository.getStudyGroupCodeInfo(code)
+        }
+    }
+
     fun createStudygroup(image: MultipartBody.Part, requestBody: RequestCreateStudyGroup){
         viewModelScope.launch {
             studyRepository.createStudyGroup(image,requestBody)
@@ -47,6 +56,24 @@ class StudyGroupViewModel @Inject constructor(private val studyRepository: Study
     fun leaveStudyGroup(groupUID: Int){
         viewModelScope.launch {
             studyRepository.leaveGroup(groupUID)
+        }
+    }
+
+    fun joinStudyGroup(enterMemberReq: RequestEnterMember){
+        viewModelScope.launch {
+            studyRepository.joinStudyGroup(enterMemberReq)
+        }
+    }
+
+    fun getStudyGroupFilterInfo(align:String?=null,categoryUIDs: List<Int>? =null,isCam:Boolean?=null,word:String?=null){
+        viewModelScope.launch{
+            studyRepository.getStudyGroupFilterInfo(align,categoryUIDs,isCam,word)
+        }
+    }
+
+    fun getStudyGroupMember(groupUID: Int){
+        viewModelScope.launch {
+            studyRepository.getStudyGroupMember(groupUID)
         }
     }
 

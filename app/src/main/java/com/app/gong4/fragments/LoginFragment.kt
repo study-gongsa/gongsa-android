@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import com.app.gong4.MainActivity
 import com.app.gong4.MainApplication
 import com.app.gong4.R
-import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentLoginBinding
 import com.app.gong4.model.req.RequestLoginBody
 import com.app.gong4.utils.CommonTextWatcher
@@ -24,7 +23,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate) {
 
-    val requestServer = RequestServer
     private val userViewModel :UserViewModel by viewModels()
 
     @Inject lateinit var tokenManager: TokenManager

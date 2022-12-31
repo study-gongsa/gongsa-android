@@ -1,23 +1,22 @@
 package com.app.gong4.fragments
 
-import android.util.Log
 import android.util.Patterns
-import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.app.gong4.R
-import com.app.gong4.model.res.ResponseLoginBody
-import com.app.gong4.model.res.ResponseSignupBody
-import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentSignupBinding
 import com.app.gong4.model.req.RequestSignupBody
 import com.app.gong4.utils.CommonTextWatcher
-import com.google.gson.Gson
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.app.gong4.utils.NetworkResult
+import com.app.gong4.viewmodel.UserViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.regex.Pattern
 
+@AndroidEntryPoint
 class SignupFragment : BaseFragment<FragmentSignupBinding>(FragmentSignupBinding::inflate) {
+
+    private val userViewModel : UserViewModel by viewModels()
 
     var email: String = ""
     var password: String = ""
@@ -157,38 +156,22 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(FragmentSignupBinding
     // 회원가입
     private fun goSignup(){
         binding.signupButton.setOnClickListener {
-
-            val requestServer = RequestServer
-
-            requestServer.userService.signup(RequestSignupBody(email,nickname,password)).enqueue(object :
-                Callback<ResponseSignupBody> {
-                override fun onResponse(
-                    call: Call<ResponseSignupBody>,
-                    response: Response<ResponseSignupBody>
-                ) {
-                    Log.d("회원가입 코드", response.code().toString())
-
-                    if(response.isSuccessful){
-                        val repo: ResponseSignupBody? = response.body()
-                        Log.d("회원가입 성공", repo.toString())
-
+            userViewModel.signupRes.observe(viewLifecycleOwner, Observer {
+                when(it){
+                    is NetworkResult.Success -> {
                         // 이메일 인증 프레그먼트 이동
                         val action = SignupFragmentDirections.actionSignupFragmentToCertifyEmailFragment(email)
                         findNavController().navigate(action)
-
-                    }else{
-                        val error = response.errorBody()!!.string().trimIndent()
-                        val result = Gson().fromJson(error, ResponseLoginBody::class.java)
-                        showErrorMsg(result.location,result.msg)
+                    }
+                    is NetworkResult.Error -> {
+                        showErrorMsg(it.data!!.location,it.data!!.msg)
+                    }
+                    else -> {
+                        showToastMessage("회원가입 실패")
                     }
                 }
-
-                override fun onFailure(call: Call<ResponseSignupBody>, t: Throwable) {
-                    Toast.makeText(context,"회원가입 실패", Toast.LENGTH_SHORT)
-                }
-            }
-            )
-
+            })
+            userViewModel.signUp(RequestSignupBody(email,nickname,password))
         }
     }
 

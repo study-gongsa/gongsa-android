@@ -1,17 +1,13 @@
 package com.app.gong4.repository
 
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.findNavController
 import com.app.gong4.R
 import com.app.gong4.api.StudyGroupService
 import com.app.gong4.model.StudyGroupItem
 import com.app.gong4.model.req.RequestCreateStudyGroup
-import com.app.gong4.model.res.BaseResponse
-import com.app.gong4.model.res.ResponseCreateStudyGroup
-import com.app.gong4.model.res.ResponseGroupItemBody
-import com.app.gong4.model.res.ResponseStudygroupinfoBody
+import com.app.gong4.model.req.RequestEnterMember
+import com.app.gong4.model.res.*
 import com.app.gong4.utils.NetworkResult
 import com.app.gong4.utils.SingleLiveEvent
 import com.google.gson.Gson
@@ -41,6 +37,14 @@ class StudyGroupRepository @Inject constructor(private val studyGroupService: St
     private val _leaveStudyGroupRes = SingleLiveEvent<NetworkResult<BaseResponse>>()
     val leaveStudyGroupRes : LiveData<NetworkResult<BaseResponse>>
         get() = _leaveStudyGroupRes
+
+    private val _joinStudyGroupRes = SingleLiveEvent<NetworkResult<BaseResponse>>()
+    val joinStudyGroupRes : LiveData<NetworkResult<BaseResponse>>
+        get() = _joinStudyGroupRes
+
+    private val _studyMemberRes = SingleLiveEvent<NetworkResult<ResponseStudyMembers.StudyMembers>>()
+    val studyMemberRes : LiveData<NetworkResult<ResponseStudyMembers.StudyMembers>>
+        get() = _studyMemberRes
 
     suspend fun getMyStudyGroup(){
         val response = studyGroupService.getMyStudyGroup()
@@ -107,6 +111,55 @@ class StudyGroupRepository @Inject constructor(private val studyGroupService: St
             _leaveStudyGroupRes.postValue(NetworkResult.ResultEmpty())
         }else{
             _leaveStudyGroupRes.value = NetworkResult.Error(null)
+        }
+    }
+
+    suspend fun getStudyGroupCodeInfo(code:String){
+        val response = studyGroupService.getStudygroupCodeInfo(code)
+        if(response.isSuccessful){
+            _studyGroupInfoRes.postValue(NetworkResult.Success(response.body()!!.data))
+        }else{
+            val error = response.errorBody()!!.string().trimIndent()
+            val msg = Gson().fromJson(error, ResponseEnterMember::class.java).msg
+            _studyGroupInfoRes.value = NetworkResult.Error("",msg)
+        }
+    }
+
+    suspend fun joinStudyGroup(enterMemberReq: RequestEnterMember){
+        val response = studyGroupService.getStudyEnter(enterMemberReq)
+        if(response.isSuccessful){
+            _joinStudyGroupRes.postValue(NetworkResult.ResultEmpty())
+        }else{
+            _joinStudyGroupRes.value = NetworkResult.Error(response.body()!!.location,response.body()!!.msg)
+        }
+    }
+
+    fun getStudyGroupFilterInfo(align:String?=null,categoryUIDs: List<Int>? =null,isCam:Boolean?=null,word:String?=null){
+        studyGroupService.getStudygroupfilterInfo(align,categoryUIDs,isCam,word).enqueue(object :
+            Callback<ResponseGroupItemBody>{
+            override fun onResponse(
+                call: Call<ResponseGroupItemBody>,
+                response: Response<ResponseGroupItemBody>
+            ) {
+                if(response.isSuccessful){
+                    _recommendGroupRes.postValue(NetworkResult.Success(response.body()!!.data.studyGroupList))
+                }else{
+                    _recommendGroupRes.value = NetworkResult.Error(response.body()!!.location,response.body()!!.msg)
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseGroupItemBody>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+
+    suspend fun getStudyGroupMember(groupUID: Int){
+        val response = studyGroupService.getStudyMembers(groupUID)
+        if(response.isSuccessful){
+            _studyMemberRes.postValue(NetworkResult.Success(response.body()!!.data))
+        }else{
+            _studyMemberRes.value =NetworkResult.Error(response.body()!!.location,response.body()!!.msg)
         }
     }
 }

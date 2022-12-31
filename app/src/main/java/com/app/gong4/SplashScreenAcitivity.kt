@@ -3,24 +3,45 @@ package com.app.gong4
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.app.gong4.fragments.AutoLoginService
+import androidx.lifecycle.Observer
+import com.app.gong4.model.req.RequestRefreshTokenBody
 import com.app.gong4.model.res.ResponseRefreshTokenBody
+import com.app.gong4.utils.NetworkResult
+import com.app.gong4.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SplashScreenAcitivity : AppCompatActivity(),AutoLoginView {
+class SplashScreenAcitivity : AppCompatActivity() {
 
-    private lateinit var mService: AutoLoginService
+    private val userViewModel : UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mService = AutoLoginService(this)
-        mService.goServerAutoLogin()
+        goServerAutoLogin()
     }
 
-    override fun onValidateSuccess(response: ResponseRefreshTokenBody) {
+    fun goServerAutoLogin(){
+        val refreshToken = RequestRefreshTokenBody(MainApplication.tokenManager.getRefreshToken()!!)
+        userViewModel.loginRefreshRes.observe(this){
+            when(it){
+                is NetworkResult.Success -> {
+                    onValidateSuccess(it.data!!)
+                }
+                is NetworkResult.Error -> {
+                    onValidateFail(400)
+                }
+                else -> {
+                    onValidateFail(404)
+                }
+            }
+        }
+        userViewModel.refreshToken(refreshToken)
+    }
+
+    private fun onValidateSuccess(response: ResponseRefreshTokenBody) {
         response.let {
             val accessToken = it!!.data.accessToken
 
@@ -31,7 +52,7 @@ class SplashScreenAcitivity : AppCompatActivity(),AutoLoginView {
         goIntent()
     }
 
-    override fun onValidateFail(code: Int) {
+    private fun onValidateFail(code: Int) {
         when(code){
             404 -> Toast.makeText(applicationContext,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT).show()
             400 -> {

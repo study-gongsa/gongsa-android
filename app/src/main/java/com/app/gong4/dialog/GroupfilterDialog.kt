@@ -1,30 +1,27 @@
 package com.app.gong4.dialog
 
 import android.R
-import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.Insets
-import android.graphics.Point
-import android.graphics.drawable.ColorDrawable
-import android.os.Bundle
-import android.view.*
+import android.widget.Toast
 import androidx.core.view.children
-import androidx.fragment.app.DialogFragment
-import com.app.gong4.model.res.ResponseGroupItemBody
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.app.gong4.model.StudyGroupItem
 import com.app.gong4.model.StudyCategory
-import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.GroupfilterDialogBinding
 import com.app.gong4.model.req.RequestGroupItemBody
+import com.app.gong4.utils.NetworkResult
+import com.app.gong4.viewmodel.StudyGroupViewModel
 import com.google.android.material.chip.Chip
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class GroupfilterDialog(private val categories:List<StudyCategory>) : BaseDialog<GroupfilterDialogBinding>(GroupfilterDialogBinding::inflate) {
 
     internal lateinit var listener: DialogResult
+
+    private val studyGroupViewModel : StudyGroupViewModel by viewModels()
 
     override fun initDialog() {
         showCategories()
@@ -73,43 +70,22 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : BaseDialog
             //api 호출
             val request = RequestGroupItemBody(checkedAlign,checkedChipList,checkedIsCam,null)
             if(checkedCam == 1){
-                RequestServer.studyGroupService.getStudygroupfilterInfo(align = checkedAlign, categoryUIDs = checkedChipList).enqueue(object :
-                    Callback<ResponseGroupItemBody>{
-                    override fun onResponse(
-                        call: Call<ResponseGroupItemBody>,
-                        response: Response<ResponseGroupItemBody>
-                    ) {
-                        val data = response.body()!!.data.studyGroupList
-                        // mainfragment에 값 변경하기
-                        listener?.result(request,checkedCategory,data)
-                        dismiss()
-                    }
-
-                    override fun onFailure(call: Call<ResponseGroupItemBody>, t: Throwable) {
-                        TODO("Not yet implemented")
-                    }
-                })
+                studyGroupViewModel.getStudyGroupFilterInfo(align = checkedAlign, categoryUIDs = checkedChipList)
             }else{
-                RequestServer.studyGroupService.getStudygroupfilterInfo(
-                    align = checkedAlign, categoryUIDs = checkedChipList,
-                    isCam =checkedIsCam).enqueue(object :
-                    Callback<ResponseGroupItemBody>{
-                    override fun onResponse(
-                        call: Call<ResponseGroupItemBody>,
-                        response: Response<ResponseGroupItemBody>
-                    ) {
-                        val data = response.body()!!.data.studyGroupList
-                        // mainfragment에 값 변경하기
-                        listener?.result(request,checkedCategory,data)
-                        dismiss()
-                    }
-
-                    override fun onFailure(call: Call<ResponseGroupItemBody>, t: Throwable) {
-                        TODO("Not yet implemented")
-                    }
-                })
+                studyGroupViewModel.getStudyGroupFilterInfo(align = checkedAlign, categoryUIDs = checkedChipList, isCam =checkedIsCam)
             }
 
+            studyGroupViewModel.recommendGroupLiveData.observe(viewLifecycleOwner, Observer {
+                when(it){
+                    is NetworkResult.Success -> {
+                        listener?.result(request,checkedCategory,it.data!!)
+                    }
+                    else -> {
+                        Toast.makeText(context,it.msg.toString(),Toast.LENGTH_SHORT).show()
+                    }
+                }
+                dismiss()
+            })
         }
     }
 

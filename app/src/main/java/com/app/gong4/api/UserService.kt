@@ -15,17 +15,18 @@ interface UserService {
 
     /* refresh token */
     @POST("/api/user/login/refresh")
-    fun refreshToken(@Body body: RequestRefreshTokenBody) : Call<ResponseRefreshTokenBody>
+    suspend fun refreshToken(@Body body: RequestRefreshTokenBody) : Response<ResponseRefreshTokenBody>
 
     /* 회원가임 */
     @POST("/api/user/join")
-    fun signup(@Body body: RequestSignupBody) : Call<ResponseSignupBody>
+    suspend fun signup(@Body body: RequestSignupBody) : Response<BaseResponse>
 
     /* 이메일 인증 */
     @PATCH("/api/user/mail/join")
-    fun certifyEmail(@Body body: RequestCertifyEmailBody) : Call<ResponseCertifyEmailBody>
+    suspend fun certifyEmail(@Body body: RequestCertifyEmailBody) : Response<BaseResponse>
+
     @PATCH("api/user/code")
-    fun confirmCode(@Body body: RequestAuthCodeBody) : Call<ResponseAuthCodeBody>
+    suspend fun confirmCode(@Body body: RequestAuthCodeBody) : Response<BaseResponse>
 
     /* 비밀번호 찾기 */
     @PATCH("/api/user/mail/passwd")

@@ -1,26 +1,19 @@
 package com.app.gong4.fragments
 
-import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.gong4.model.QnaItem
-import com.app.gong4.model.res.ResponseQnaListBody
 import com.app.gong4.adapter.QnaListAdapter
-import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentGroupQnaListBinding
 import com.app.gong4.onMoveAdapterListener
 import com.app.gong4.utils.NetworkResult
 import com.app.gong4.viewmodel.QnaViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 @AndroidEntryPoint
 class GroupQnaListFragment : BaseFragment<FragmentGroupQnaListBinding>(FragmentGroupQnaListBinding::inflate) {

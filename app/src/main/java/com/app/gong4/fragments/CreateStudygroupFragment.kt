@@ -4,8 +4,6 @@ import android.Manifest
 import android.R
 import android.app.Activity.RESULT_OK
 import android.app.DatePickerDialog
-import android.app.TimePickerDialog
-import android.app.TimePickerDialog.OnTimeSetListener
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -15,18 +13,14 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.app.gong4.MainActivity
-import com.app.gong4.model.res.ResponseCreateStudyGroup
-import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentCreateStudygroupBinding
 import com.app.gong4.model.req.RequestCreateStudyGroup
 import com.app.gong4.onActionListener
@@ -40,9 +34,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
 import java.util.*
 

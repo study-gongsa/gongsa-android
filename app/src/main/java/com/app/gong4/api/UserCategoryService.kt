@@ -19,5 +19,5 @@ interface UserCategoryService {
 
     /* 사용자 카테고리 저장 */
     @PUT("/api/user-category")
-    fun putUserCategory(@Body requestSaveUserCateogry: RequestSaveUserCateogry) : Call<BaseResponse>
+    suspend fun putUserCategory(@Body requestSaveUserCateogry: RequestSaveUserCateogry) : Response<BaseResponse>
 }

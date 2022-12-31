@@ -1,24 +1,19 @@
 package com.app.gong4.fragments
 
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.gong4.R
 import com.app.gong4.model.Ranking
-import com.app.gong4.model.res.ResponseMyPageInfoBody
-import com.app.gong4.model.ResponseMyStudyGroupRankingBody
 import com.app.gong4.model.UserInfo
 import com.app.gong4.adapter.StudyRankingAdapter
-import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMyPageBinding
 import com.app.gong4.utils.CommonService
+import com.app.gong4.utils.NetworkResult
 import com.app.gong4.viewmodel.UserViewModel
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 @AndroidEntryPoint
 class MyPageFragment : BaseFragment<FragmentMyPageBinding>(FragmentMyPageBinding::inflate) {
@@ -46,19 +41,17 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(FragmentMyPageBinding
     }
 
     fun myRankInfo(){
-        RequestServer.userService.myStudyGroupRanking().enqueue(object :Callback<ResponseMyStudyGroupRankingBody>{
-            override fun onResponse(
-                call: Call<ResponseMyStudyGroupRankingBody>,
-                response: Response<ResponseMyStudyGroupRankingBody>
-            ) {
-                val data = response.body()!!.data
-                setAdapter(data.groupRankList)
-            }
-
-            override fun onFailure(call: Call<ResponseMyStudyGroupRankingBody>, t: Throwable) {
-
+        userViewModel.rankListLiveData.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is NetworkResult.Success -> {
+                    setAdapter(it.data!!)
+                }
+                else -> {
+                    showToastMessage(it.msg.toString())
+                }
             }
         })
+        userViewModel.myStudyGroupRanking()
     }
 
     fun setAdapter(list: List<Ranking>) {
