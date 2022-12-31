@@ -92,6 +92,9 @@
         <action
             android:id="@+id/action_groupQnaListFragment_to_groupQnaDetailFragment"
             app:destination="@id/groupQnaDetailFragment" />
+        <action
+            android:id="@+id/action_groupQnaListFragment_to_qnaRegisterFragment"
+            app:destination="@id/qnaRegisterFragment" />
 
     </fragment>
     <fragment
@@ -141,4 +144,16 @@
         android:name="com.app.gong4.fragments.SettingFragment"
         android:label="@string/setting"
         tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/qnaRegisterFragment"
+        android:name="com.app.gong4.fragments.QnaRegisterFragment"
+        android:label="@string/study_qna"
+        tools:layout="@layout/fragment_qna_register" >
+        <argument
+            android:name="groupUID"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_qnaRegisterFragment_to_groupQnaDetailFragment"
+            app:destination="@id/groupQnaDetailFragment" />
+    </fragment>
 </navigation>

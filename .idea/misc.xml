@@ -65,12 +65,13 @@
         <entry key="app/src/main/res/layout/fragment_create_studygroup.xml" value="0.2533632286995516" />
         <entry key="app/src/main/res/layout/fragment_findpassword.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_group_qna_detail.xml" value="0.2074074074074074" />
-        <entry key="app/src/main/res/layout/fragment_group_qna_list.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_group_qna_list.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.35" />
         <entry key="app/src/main/res/layout/fragment_main.xml" value="0.353125" />
         <entry key="app/src/main/res/layout/fragment_my_page.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_my_page_qna.xml" value="0.45" />
         <entry key="app/src/main/res/layout/fragment_my_study_group.xml" value="0.29609375" />
+        <entry key="app/src/main/res/layout/fragment_qna_register.xml" value="0.2614247311827957" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.384375" />
         <entry key="app/src/main/res/layout/fragment_signup.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_study_group.xml" value="0.29609375" />

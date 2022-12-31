@@ -8,6 +8,7 @@ import com.app.gong4.api.StudyGroupService
 import com.app.gong4.model.QnaItem
 import com.app.gong4.model.QuestionUID
 import com.app.gong4.model.StudyCategory
+import com.app.gong4.model.req.RequestQuestion
 import com.app.gong4.model.req.RequestRegisterAnswer
 import com.app.gong4.model.req.RequestUpdateAnswer
 import com.app.gong4.model.res.BaseResponse
@@ -44,6 +45,10 @@ class QnaRepository @Inject constructor(private val qnaService: QnaService){
     private val _patchAnswerRes = SingleLiveEvent<NetworkResult<QuestionUID>>()
     val patchAnswerRes : LiveData<NetworkResult<QuestionUID>>
         get() = _patchAnswerRes
+
+    private val _registerQuestionRes = SingleLiveEvent<NetworkResult<QuestionUID>>()
+    val registerQuestionRes : LiveData<NetworkResult<QuestionUID>>
+        get() = _registerQuestionRes
 
     suspend fun getQnaList(groupID:Int){
         val response = qnaService.getQnaList(groupID)
@@ -103,6 +108,15 @@ class QnaRepository @Inject constructor(private val qnaService: QnaService){
             _patchAnswerRes.postValue(NetworkResult.Success(response.body()!!.data))
         }else{
             _patchAnswerRes.value = NetworkResult.Error(response.body()!!.location,response.body()!!.msg)
+        }
+    }
+
+    suspend fun registerQuestion(requestQuestion: RequestQuestion){
+        val response = qnaService.saveQuestion(requestQuestion)
+        if(response.isSuccessful && response.body() !=null){
+            _registerQuestionRes.postValue(NetworkResult.Success(response.body()!!.data))
+        }else{
+            _registerQuestionRes.value = NetworkResult.Error(response.body()!!.location,response.body()!!.msg)
         }
     }
 }

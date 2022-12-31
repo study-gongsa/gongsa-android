@@ -114,6 +114,10 @@
     <string name="study_category">카테고리</string>
     <string name="study_qna">Q<![CDATA[&]]>A</string>
     <string name="study_qna_comment">댓글을 입력해주세요.</string>
+    <string name="study_qna_title">질문 제목</string>
+    <string name="study_qna_content">질문 내용</string>
+    <string name="study_qna_register">질문하기</string>
+    <string name="study_qna_register_complete">질문이 등록되었습니다</string>
 
     <!-- qna text -->
     <string name="qna_title">그룹 내 질문 모아보기</string>
@@ -126,6 +130,7 @@
     <string name="quit">나가기</string>
     <string name="setting">환경설정</string>
     <string name="server_error_msg">서버와의 통신이 원활하지 않습니다.</string>
+    <string name="password_alias">******</string>
 
     <string name="comment_save_complete">댓글이 등록되었습니다</string>
 
@@ -150,4 +155,5 @@
     <string name="setting_password_change">비밀번호 변경 확인</string>
     <string name="setting_nickname_confirm_msg">이미 사용되고 있는 닉네임입니다.</string>
     <string name="setting_confirm_msg">수정이 완료되었습니다.</string>
+
 </resources>

@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavDirections
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +30,7 @@ class GroupQnaListFragment : BaseFragment<FragmentGroupQnaListBinding>(FragmentG
 
     override fun initView() {
         getQnaList(args.pid)
+        goQnaButton()
     }
 
     private fun getQnaList(groupUID:Int){
@@ -56,6 +59,14 @@ class GroupQnaListFragment : BaseFragment<FragmentGroupQnaListBinding>(FragmentG
         binding.peopleRecyclerView.layoutManager = LinearLayoutManager(context)
         adapter.notifyDataSetChanged()
         binding.peopleRecyclerView.setHasFixedSize(true)
+    }
+
+    private fun goQnaButton(){
+        binding.qnaButton.isEnabled = true
+        binding.qnaButton.setOnClickListener {
+            val action = GroupQnaListFragmentDirections.actionGroupQnaListFragmentToQnaRegisterFragment(args.pid)
+            it.findNavController().navigate(action)
+        }
     }
 
 }

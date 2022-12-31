@@ -1,5 +1,6 @@
 package com.app.gong4.api
 
+import com.app.gong4.model.req.RequestQuestion
 import com.app.gong4.model.req.RequestRegisterAnswer
 import com.app.gong4.model.req.RequestUpdateAnswer
 import com.app.gong4.model.res.*
@@ -31,4 +32,8 @@ interface QnaService {
     //내 질문 모아보기
     @GET("/api/question/my-question")
     suspend fun getMyQnaList():Response<ResponseQnaListBody>
+
+    // 질문 등록
+    @POST("/api/question")
+    suspend fun saveQuestion(@Body body : RequestQuestion) : Response<ResponseQuestion>
 }

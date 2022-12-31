@@ -42,6 +42,4 @@ object RequestServer {
     // 스터디 그룹 관련 함수
     val userCategoryService : UserCategoryService = retrofit.create(UserCategoryService::class.java)
 
-    //큐엔에이 관련 서비스
-    val qnaService : QnaService = retrofit.create(QnaService::class.java)
 }

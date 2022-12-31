@@ -2,6 +2,7 @@ package com.app.gong4.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.gong4.model.req.RequestQuestion
 import com.app.gong4.model.req.RequestRegisterAnswer
 import com.app.gong4.model.req.RequestUpdateAnswer
 import com.app.gong4.repository.QnaRepository
@@ -17,6 +18,7 @@ class QnaViewModel @Inject constructor(private val qnaRepository: QnaRepository)
     val requestAnswerLiveData get() = qnaRepository.registerAnswerRes
     val deleteAnswerLiveData get() = qnaRepository.deleteAnswerRes
     val patchAnswerLiveData get() = qnaRepository.patchAnswerRes
+    val requestQuestionLiveData get() = qnaRepository.registerQuestionRes
 
     fun getQnaList(groupID:Int){
         viewModelScope.launch {
@@ -51,6 +53,12 @@ class QnaViewModel @Inject constructor(private val qnaRepository: QnaRepository)
     fun patchQnaAnswer(updateAnswerReq: RequestUpdateAnswer){
         viewModelScope.launch {
             qnaRepository.patchQnaAnswer(updateAnswerReq)
+        }
+    }
+
+    fun requestQuestion(questionRes: RequestQuestion){
+        viewModelScope.launch {
+            qnaRepository.registerQuestion(questionRes)
         }
     }
 }
