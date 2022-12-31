@@ -33,7 +33,7 @@ interface UserService {
 
     /* 환경설정 - 유저정보조회 */
     @GET("/api/user/mypage")
-    fun userMyPage() : Call<ResponseMyPageInfoBody>
+    suspend fun userMyPage() : Response<ResponseMyPageInfoBody>
 
     /* 내 스터디그룹 랭킹 조회 */
     @GET("/api/study-group/my-ranking")
@@ -45,13 +45,13 @@ interface UserService {
 
     /* 환경설정 기본 정보 조회*/
     @GET("/api/user")
-    fun getuserInfo():Call<ResponseUserBody>
+    suspend fun getuserInfo():Response<ResponseUserBody>
 
     @Multipart
     @Headers("accept: application/json")
     @PATCH("/api/user")
-    fun patchUserInfo(
+    suspend fun patchUserInfo(
         @Part image: MultipartBody.Part?=null,
         @Part("json") body: Any
-    ):Call<BaseResponse>
+    ):Response<BaseResponse>
 }

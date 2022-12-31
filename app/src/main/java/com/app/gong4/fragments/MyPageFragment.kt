@@ -1,5 +1,7 @@
 package com.app.gong4.fragments
 
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.gong4.R
@@ -11,16 +13,20 @@ import com.app.gong4.adapter.StudyRankingAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMyPageBinding
 import com.app.gong4.utils.CommonService
+import com.app.gong4.viewmodel.UserViewModel
 import com.bumptech.glide.Glide
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@AndroidEntryPoint
 class MyPageFragment : BaseFragment<FragmentMyPageBinding>(FragmentMyPageBinding::inflate) {
     private lateinit var userInfo : UserInfo
+    private val userViewModel : UserViewModel by activityViewModels()
 
     override fun initView() {
-        serverMyPageInfo()
+        getMyPageInfo()
         myRankInfo()
         clickQnaButton()
         clickSettingButton()
@@ -63,32 +69,18 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(FragmentMyPageBinding
         binding.profileRankRecyclerview.setHasFixedSize(true)
     }
 
-    fun serverMyPageInfo(){
-        RequestServer.userService.userMyPage().enqueue(object : Callback<ResponseMyPageInfoBody>{
-            override fun onResponse(
-                call: Call<ResponseMyPageInfoBody>,
-                response: Response<ResponseMyPageInfoBody>
-            ) {
-                userInfo = response.body()!!.data
-                getMyPageInfo(userInfo)
-            }
+    fun getMyPageInfo(){
+        userInfo = userViewModel.userInfoRes.value!!.data!!
 
-            override fun onFailure(call: Call<ResponseMyPageInfoBody>, t: Throwable) {
-
-            }
-        })
-    }
-
-    fun getMyPageInfo(info:UserInfo){
-        val imgPath = CommonService.getImageGlide(info.imgPath)
+        val imgPath = CommonService.getImageGlide(userInfo.imgPath)
         Glide.with(requireContext()).load(imgPath).error(R.drawable.error_image).into(binding.profileImageview)
 
-        val studyHour = info.totalStudyTime.substring(0,2)
-        val studyMinute = info.totalStudyTime.substring(3,5)
-        binding.profileNameTextview.text = info.nickname
+        val studyHour = userInfo.totalStudyTime.substring(0,2)
+        val studyMinute = userInfo.totalStudyTime.substring(3,5)
+        binding.profileNameTextview.text = userInfo.nickname
         binding.profileTimeTextview.text = String.format(resources.getString(R.string.mypage_study_time),studyHour,studyMinute)
-        binding.profileLevelTextview.text = String.format(resources.getString(R.string.mypage_study_level),info.level)
-        binding.profilePercentageTextview.text = String.format(resources.getString(R.string.mypage_study_percentage),info.percentage.toInt())
+        binding.profileLevelTextview.text = String.format(resources.getString(R.string.mypage_study_level),userInfo.level)
+        binding.profilePercentageTextview.text = String.format(resources.getString(R.string.mypage_study_percentage),userInfo.percentage.toInt())
 
     }
 

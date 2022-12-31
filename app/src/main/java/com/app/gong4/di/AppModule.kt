@@ -1,7 +1,9 @@
 package com.app.gong4.di
 
 import com.app.gong4.MainApplication
+import com.app.gong4.api.QnaService
 import com.app.gong4.api.StudyGroupService
+import com.app.gong4.api.UserCategoryService
 import com.app.gong4.api.UserService
 import com.app.gong4.utils.TokenManager
 import dagger.Module
@@ -53,12 +55,20 @@ object AppModule {
             .client(okHttpClient)
             .build()
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideUserService(retrofit: Retrofit): UserService = retrofit.create(UserService::class.java)
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideStudyGroupService(retrofit: Retrofit): StudyGroupService = retrofit.create(StudyGroupService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideCategoryService(retrofit: Retrofit): UserCategoryService = retrofit.create(UserCategoryService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideQnaService(retrofit: Retrofit): QnaService = retrofit.create(QnaService::class.java)
 
 }

@@ -13,10 +13,25 @@ import javax.inject.Inject
 @HiltViewModel
 class StudyGroupViewModel @Inject constructor(private val studyRepository: StudyGroupRepository):ViewModel(){
     val myStudyGroupLiveData get() = studyRepository.myGroupRes
+    val recommendGroupLiveData get() = studyRepository.recommendGroupRes
+    val studyGroupInfoLiveData get() = studyRepository.studyGroupInfoRes
 
     fun getMyStudyGroup(){
         viewModelScope.launch {
             studyRepository.getMyStudyGroup()
         }
     }
+
+    fun getRecommendStudyGroup(){
+        viewModelScope.launch {
+            studyRepository.getRecommendStudyGroup()
+        }
+    }
+
+    fun getStudyGroupInfo(groupUID:Int){
+        viewModelScope.launch {
+            studyRepository.getStudyGroupInfo(groupUID)
+        }
+    }
+
 }

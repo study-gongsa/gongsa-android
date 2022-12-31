@@ -13,6 +13,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,13 +24,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.app.gong4.MainActivity
 import com.app.gong4.model.res.ResponseCreateStudyGroup
-import com.app.gong4.model.StudyCategory
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentCreateStudygroupBinding
 import com.app.gong4.model.req.RequestCreateStudyGroup
-import com.app.gong4.utils.AppViewModel
 import com.app.gong4.utils.CommonService
+import com.app.gong4.viewmodel.CategoryViewModel
 import com.google.android.material.chip.Chip
+import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -39,7 +40,7 @@ import retrofit2.Response
 import java.io.File
 import java.util.*
 
-
+@AndroidEntryPoint
 class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(FragmentCreateStudygroupBinding::inflate) {
 
     val imageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
@@ -53,8 +54,7 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
         }
     }
 
-    private lateinit var categories : List<StudyCategory>
-    private val viewModel : AppViewModel by activityViewModels()
+    private val categoryViewModel : CategoryViewModel by activityViewModels()
 
     private var imageFile : File? = null
     private var imm : InputMethodManager?=null
@@ -67,7 +67,6 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
         super.onCreate(savedInstanceState)
 
         imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-        categories = viewModel.getCategoryList()
     }
 
     override fun initView() {
@@ -191,9 +190,6 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
 
         }
 
-
-
-
     }
 
     private fun selectGallery(){
@@ -251,6 +247,9 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
     }
 
     private fun showCategories(){
+        Log.d("categories",categoryViewModel.categoryLiveData.value!!.data!!.toString())
+        val categories = categoryViewModel.categoryLiveData.value!!.data!!
+
         for (c in categories){
             binding.categoriyChipGroup.addView(Chip(context).apply {
                 text = c.name

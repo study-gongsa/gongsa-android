@@ -15,18 +15,23 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.app.gong4.MainActivity
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentSettingBinding
 import com.app.gong4.model.res.BaseResponse
 import com.app.gong4.model.req.RequestUserInfo
 import com.app.gong4.model.res.ResponseUserBody
-import com.app.gong4.utils.AppViewModel
 import com.app.gong4.utils.CommonService
 import com.app.gong4.utils.CommonTextWatcher
+import com.app.gong4.utils.NetworkResult
+import com.app.gong4.viewmodel.CategoryViewModel
+import com.app.gong4.viewmodel.UserViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -36,6 +41,7 @@ import retrofit2.Response
 import java.io.File
 import java.util.regex.Pattern
 
+@AndroidEntryPoint
 class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBinding::inflate) {
 
     val imageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
@@ -49,7 +55,8 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBind
         }
     }
 
-    private val categoryViewModel : AppViewModel by activityViewModels()
+    private val categoryViewModel : CategoryViewModel by activityViewModels()
+    private val userViewModel : UserViewModel by viewModels()
     private lateinit var imageFile: File
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +87,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBind
             val nickname = binding.nicknameEditText.text.toString()
             val changeImage = imageFile.isFile
             var requestBody: RequestUserInfo
+            var image : MultipartBody.Part? = null
 
             if(binding.passwordChangeEditText.text.isNotEmpty()){
                 val password = binding.passwordChangeEditText.text.toString()
@@ -90,53 +98,19 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBind
 
             if(imageFile.length().toInt() != 0){
                 val requestFile = RequestBody.create(MediaType.parse("image/jpeg"),imageFile)
-                val image = MultipartBody.Part.createFormData("image",imageFile?.name,requestFile)
-
-                RequestServer.userService.patchUserInfo(image,requestBody).enqueue(object :
-                    Callback<BaseResponse>{
-                    override fun onResponse(
-                        call: Call<BaseResponse>,
-                        response: Response<BaseResponse>
-                    ) {
-
-                        if(response.code().equals(200)){
-                            Toast.makeText(context,"수정이 완료되었습니다.",Toast.LENGTH_SHORT).show()
-                        }else{
-                            val error = response.errorBody()!!.string().trimIndent()
-                            val result = Gson().fromJson(error, BaseResponse::class.java)
-                            Log.d("response",result.toString())
-                            showErrorMsg(result.location, result.msg)
-                        }
-
-                    }
-
-                    override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                        TODO("Not yet implemented")
-                    }
-
-                })
-            }else{
-                RequestServer.userService.patchUserInfo(null,requestBody).enqueue(object :
-                    Callback<BaseResponse>{
-                    override fun onResponse(
-                        call: Call<BaseResponse>,
-                        response: Response<BaseResponse>
-                    ) {
-                        if(response.isSuccessful){
-                            Toast.makeText(context,"수정이 완료되었습니다.",Toast.LENGTH_SHORT).show()
-                        }else{
-                            showErrorMsg(response.body()!!.location.toString(), response.body()!!.msg.toString())
-                        }
-                    }
-
-                    override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                        TODO("Not yet implemented")
-                    }
-
-                })
+                image = MultipartBody.Part.createFormData("image",imageFile?.name,requestFile)
             }
-
-
+            userViewModel.patchUserSettingInfoRes.observe(viewLifecycleOwner, Observer {
+                when(it){
+                    is NetworkResult.Success -> {
+                        showToastMessage("수정이 완료되었습니다.")
+                    }
+                    else -> {
+                        showErrorMsg(it.location.toString(), it.msg.toString())
+                    }
+                }
+            })
+            userViewModel.patchUserInfo(image!!,requestBody)
         }
 
     }
@@ -226,31 +200,31 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBind
     }
 
     fun serverUserInfo(){
-        RequestServer.userService.getuserInfo().enqueue(object : Callback<ResponseUserBody>{
-            override fun onResponse(
-                call: Call<ResponseUserBody>,
-                response: Response<ResponseUserBody>
-            ) {
-                initUserInfo(response.body()!!.data)
+        userViewModel.userSettingInfoRes.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is NetworkResult.Success -> {
+                    initUserInfo(it.data!!)
+                }
+                is NetworkResult.Error -> {
+                    showToastMessage(it.msg.toString())
+                }
+                else -> TODO()
             }
-
-            override fun onFailure(call: Call<ResponseUserBody>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-
         })
+        userViewModel.getSettingUserInfo()
     }
 
     fun initUserInfo(user: ResponseUserBody.UserData){
         binding.nicknameEditText.setText(user.nickname)
-
+        binding.passwordChangeEditText.setText("******")
+        binding.passwordChangeConfirmEditText.setText("******")
         val url = CommonService.getImageGlide(user.imgPath)
         Glide.with(requireContext()).load(url).into(binding.settingProfileImageView)
     }
 
     fun showCategories(){
-        val categories = categoryViewModel.getCategoryList()
-        val userCategory = categoryViewModel.getUserCategoryList()
+        val categories = categoryViewModel.categoryLiveData.value!!.data!!
+        val userCategory = categoryViewModel.myCategoryLiveData.value!!.data!!
         for (c in categories){
             binding.categoryChipGroup.addView(Chip(context).apply {
                 text = c.name

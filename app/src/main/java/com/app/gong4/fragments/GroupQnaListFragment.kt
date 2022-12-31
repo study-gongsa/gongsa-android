@@ -1,5 +1,8 @@
 package com.app.gong4.fragments
 
+import android.util.Log
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -10,36 +13,35 @@ import com.app.gong4.adapter.QnaListAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentGroupQnaListBinding
 import com.app.gong4.onMoveAdapterListener
+import com.app.gong4.utils.NetworkResult
+import com.app.gong4.viewmodel.QnaViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@AndroidEntryPoint
 class GroupQnaListFragment : BaseFragment<FragmentGroupQnaListBinding>(FragmentGroupQnaListBinding::inflate) {
 
     private val args by navArgs<GroupQnaListFragmentArgs>()
-    private var list : ArrayList<QnaItem> = arrayListOf()
+    private val qnaViewModel : QnaViewModel by viewModels()
 
     override fun initView() {
         getQnaList(args.pid)
     }
 
     private fun getQnaList(groupUID:Int){
-        RequestServer.qnaService.getQnaList(groupUID).enqueue(object :
-            Callback<ResponseQnaListBody> {
-            override fun onResponse(
-                call: Call<ResponseQnaListBody>,
-                response: Response<ResponseQnaListBody>
-            ) {
-                list.clear()
-
-                list.addAll(response.body()!!.data.questionList)
-                setAdapter(list)
+        qnaViewModel.getQnaList(groupUID)
+        qnaViewModel.qnaLiveData.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is NetworkResult.Success -> {
+                    setAdapter(it.data!!)
+                }
+                is NetworkResult.Error -> {
+                    showToastMessage(it.msg.toString())
+                }
+                else -> TODO()
             }
-
-            override fun onFailure(call: Call<ResponseQnaListBody>, t: Throwable) {
-
-            }
-
         })
     }
 

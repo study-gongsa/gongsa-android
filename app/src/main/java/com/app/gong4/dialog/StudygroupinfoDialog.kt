@@ -21,7 +21,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class StudygroupinfoDialog(private val data: ResponseStudygroupinfoBody.StduyGroupDetailItem) : DialogFragment() {
+class StudygroupinfoDialog(private val data: ResponseStudygroupinfoBody.StudyGroupDetailItem) : DialogFragment() {
 
     private var _binding: StudygroupinfoDialogBinding? = null
     private val binding get() = _binding!!

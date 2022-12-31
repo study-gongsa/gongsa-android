@@ -1,5 +1,6 @@
 package com.app.gong4.adapter
 
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,7 @@ class RankItemAdapter(val data:ArrayList<Member>) : RecyclerView.Adapter<RankIte
                 rankItemTextView.setTextColor(
                     ContextCompat.getColor(rankItemTextView.context,
                         R.color.green_03_main))
+                rankItemTextView.setTypeface(rankItemTextView.typeface,Typeface.BOLD)
             }
         }
     }

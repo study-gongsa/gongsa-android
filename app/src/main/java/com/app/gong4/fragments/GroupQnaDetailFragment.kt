@@ -3,6 +3,8 @@ package com.app.gong4.fragments
 import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_ENTER
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.gong4.dialog.AlertCustomDialog
@@ -18,15 +20,19 @@ import com.app.gong4.model.res.ResponseQuestionBody
 import com.app.gong4.model.res.ResponseRegisterAnswerBody
 import com.app.gong4.model.res.ResponseUpdateAnswerBody
 import com.app.gong4.onActionListener
+import com.app.gong4.utils.NetworkResult
+import com.app.gong4.viewmodel.QnaViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
+@AndroidEntryPoint
 class GroupQnaDetailFragment : BaseFragment<FragmentGroupQnaDetailBinding>(FragmentGroupQnaDetailBinding::inflate) , CommentAdapter.CommentListener{
 
     private lateinit var mAdapter : CommentAdapter
     private val args by navArgs<GroupQnaDetailFragmentArgs>()
+    private val qnaViewModel : QnaViewModel by viewModels()
 
     var questionUID : Int = 0
     private lateinit var removeDialog : AlertCustomDialog
@@ -40,25 +46,20 @@ class GroupQnaDetailFragment : BaseFragment<FragmentGroupQnaDetailBinding>(Fragm
     }
 
     private fun getQnaDetail(questionUID:Int){
-        RequestServer.qnaService.getQusetionDetail(questionUID).enqueue(object :
-            Callback<ResponseQuestionBody>{
-            override fun onResponse(
-                call: Call<ResponseQuestionBody>,
-                response: Response<ResponseQuestionBody>
-            ) {
-                if(response.isSuccessful){
-                    val data = response.body()!!.data
-                    Log.d("data",data.toString())
-                    setAdapter(data.answerList as ArrayList<Answer>)
-                    binding.qnaTitleTextview.text = data.title
-                    binding.qnaContentTextview.text = data.content
+        qnaViewModel.qnaDetailLiveData.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is NetworkResult.Success -> {
+                    setAdapter(it.data!!.answerList as ArrayList<Answer>)
+                    binding.qnaTitleTextview.text = it.data!!.title
+                    binding.qnaContentTextview.text = it.data!!.content
                 }
-            }
-
-            override fun onFailure(call: Call<ResponseQuestionBody>, t: Throwable) {
-                TODO("Not yet implemented")
+                is NetworkResult.Error -> {
+                    showToastMessage(it.msg.toString())
+                }
+                else -> TODO()
             }
         })
+        qnaViewModel.getQnaDetail(questionUID)
     }
 
     //댓글 버튼 enter 누르면 답변 등록
@@ -76,28 +77,23 @@ class GroupQnaDetailFragment : BaseFragment<FragmentGroupQnaDetailBinding>(Fragm
     private fun postAnswer(){
         val content = binding.commentEdittext.text.toString()
         val requestBody = RequestRegisterAnswer(questionUID,content)
-        RequestServer.qnaService.postAnswer(requestBody).enqueue(object :
-            Callback<ResponseRegisterAnswerBody>{
-            override fun onResponse(
-                call: Call<ResponseRegisterAnswerBody>,
-                response: Response<ResponseRegisterAnswerBody>
-            ) {
-                if(response.isSuccessful){
-                    val questionUID = response.body()!!.data.questionUID
 
+        qnaViewModel.requestAnswerLiveData.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is NetworkResult.Success ->{
+                    val questionUID = it.data!!.data.questionUID
                     showToastMessage(getString(R.string.comment_save_complete))
-
                     getQnaDetail(questionUID)
                     binding.commentEdittext.setText("")
                     hideKeyboard(binding.commentEdittext)
-
                 }
-            }
-
-            override fun onFailure(call: Call<ResponseRegisterAnswerBody>, t: Throwable) {
-                TODO("Not yet implemented")
+                is NetworkResult.Error -> {
+                    showToastMessage(it.msg.toString())
+                }
+                else -> TODO()
             }
         })
+        qnaViewModel.requestAnswer(requestBody)
     }
 
     private fun setAdapter(list: ArrayList<Answer>) {
@@ -110,42 +106,38 @@ class GroupQnaDetailFragment : BaseFragment<FragmentGroupQnaDetailBinding>(Fragm
 
     //답변 삭제
     private fun deleteComment(answerID: Int){
-        RequestServer.qnaService.deleteAnswer(answerID).enqueue(object : Callback<Void>{
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                if(response.isSuccessful){
+        qnaViewModel.deleteAnswerLiveData.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is NetworkResult.Error -> {
+                    showToastMessage(it.msg.toString())
+                }
+                else -> {
                     showToastMessage(getString(R.string.comment_remove_complete))
-
                     getQnaDetail(questionUID)
-                    removeDialog.dismiss()
                 }
             }
-
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
+            removeDialog.dismiss()
         })
+        qnaViewModel.deleteQnaAnswer(answerID)
     }
 
     //답변 수정
     private fun patchComment(answerID: Int, content: String){
         val requestBody = RequestUpdateAnswer(answerID,content)
-        RequestServer.qnaService.patchAnswer(requestBody).enqueue(object :
-            Callback<ResponseUpdateAnswerBody>{
-            override fun onResponse(
-                call: Call<ResponseUpdateAnswerBody>,
-                response: Response<ResponseUpdateAnswerBody>
-            ) {
-                if(response.isSuccessful){
+        qnaViewModel.patchAnswerLiveData.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is NetworkResult.Success -> {
                     showToastMessage(getString(R.string.comment_update_complete))
                     editDialog.dismiss()
                     getQnaDetail(questionUID)
                 }
+                is NetworkResult.Error -> {
+                    showToastMessage(it.msg.toString())
+                }
+                else -> TODO()
             }
-
-            override fun onFailure(call: Call<ResponseUpdateAnswerBody>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-       })
+        })
+        qnaViewModel.patchQnaAnswer(requestBody)
     }
 
     override fun onEditComment(answerID: Int) {

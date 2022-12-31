@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.gong4.*
 import com.app.gong4.model.*
@@ -16,22 +18,29 @@ import com.app.gong4.databinding.FragmentMainBinding
 import com.app.gong4.dialog.*
 import com.app.gong4.model.req.RequestGroupItemBody
 import com.app.gong4.model.res.*
-import com.app.gong4.utils.AppViewModel
+import com.app.gong4.utils.NetworkResult
+import com.app.gong4.viewmodel.CategoryViewModel
+import com.app.gong4.viewmodel.StudyGroupViewModel
+import com.app.gong4.viewmodel.UserViewModel
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
-import kotlinx.coroutines.*
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import kotlin.collections.ArrayList
 
+@AndroidEntryPoint
 class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::inflate) {
 
-    private lateinit var category: ArrayList<StudyCategory>
     private lateinit var dataList : ArrayList<StudyGroupItem>
     private lateinit var dataAllList : ArrayList<StudyGroupItem>
     private lateinit var mAdapter : StudyGroupListAdapter
-    private val viewModel : AppViewModel by activityViewModels()
+
+    private val categoryViewModel : CategoryViewModel by activityViewModels()
+    private val studyViewModel : StudyGroupViewModel by viewModels()
+    private val userViewModel : UserViewModel by activityViewModels()
+
     var mRequest : RequestGroupItemBody?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,14 +49,12 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         val mainActivity = activity as MainActivity
         mainActivity.hideToolbar(true)
 
-        getCategories()
     }
 
     override fun initView() {
-        CoroutineScope(Dispatchers.IO).launch {
-            goRecommendStudygroup()
-            getUserCategory()
-        }
+        getCategories()
+        goRecommendStudygroup()
+        getUserCategory()
 
         showEnterDialog()
         showStudyRoomDialog()
@@ -57,42 +64,36 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
     }
 
     fun serverMyPageInfo(){
-        RequestServer.userService.userMyPage().enqueue(object : Callback<ResponseMyPageInfoBody>{
-            override fun onResponse(
-                call: Call<ResponseMyPageInfoBody>,
-                response: Response<ResponseMyPageInfoBody>
-            ) {
-                val nickname = response.body()!!.data.nickname
-                MainApplication.tokenManager.saveUserName(nickname)
-            }
-
-            override fun onFailure(call: Call<ResponseMyPageInfoBody>, t: Throwable) {
-
+        userViewModel.userInfoRes.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is NetworkResult.Success -> {
+                    val data = it.data!!
+                    MainApplication.tokenManager.saveUserName(data.nickname)
+                }
+                is NetworkResult.Error -> {
+                    showToastMessage(it.msg.toString())
+                }
+                else -> TODO()
             }
         })
+        userViewModel.getUserInfo()
     }
 
-    private fun getUserCategory() : ArrayList<UserCategory>{
-        var userCategory : List<UserCategory> = arrayListOf()
-        RequestServer.userCategoryService.getUserCategory().enqueue(object :
-            Callback<ResponseUserCategory>{
-            override fun onResponse(
-                call: Call<ResponseUserCategory>,
-                response: Response<ResponseUserCategory>
-            ) {
-                userCategory = response.body()!!.data
-                if(userCategory.isEmpty()){
-                    UsercategoryDialog(viewModel.getCategoryList()).show(parentFragmentManager,"UserCategoryDialog")
-                }else{
-                    viewModel.initUserCategoryList(userCategory as ArrayList<UserCategory>)
+    private fun getUserCategory() {
+        categoryViewModel.getUserCategoryList()
+        categoryViewModel.myCategoryLiveData.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is NetworkResult.Success -> {
+                    if(it.data!!.isEmpty()){
+                        UsercategoryDialog(it.data!! as ArrayList<StudyCategory>).show(parentFragmentManager,"UserCategoryDialog")
+                    }
                 }
+                is NetworkResult.Error -> {
+                    showToastMessage(it.msg.toString())
+                }
+                is NetworkResult.Loading -> TODO()
             }
-
-            override fun onFailure(call: Call<ResponseUserCategory>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-       })
-        return userCategory as ArrayList<UserCategory>
+        })
     }
 
     private fun cameraToogle(){
@@ -166,34 +167,28 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
     // 스터디 정보 다이얼로그
     fun showStudyInfoDialog(groupId :Int){
-        RequestServer.studyGroupService.getStudygroupInfo(groupId).enqueue(object :
-            Callback<ResponseStudygroupinfoBody>{
-            override fun onResponse(
-                call: Call<ResponseStudygroupinfoBody>,
-                response: Response<ResponseStudygroupinfoBody>
-            ) {
-                Log.d("studyinfo 응답 결과 : ", response.toString())
-                val data = response.body()!!.data
-                Log.d("categories", category.toString())
-                StudygroupinfoDialog(data).show(parentFragmentManager,"InfoDialog")
+        studyViewModel.getStudyGroupInfo(groupId)
+        studyViewModel.studyGroupInfoLiveData.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is NetworkResult.Success -> {
+                    StudygroupinfoDialog(it.data!!).show(parentFragmentManager,"InfoDialog")
+                }
+                else -> {
+                    showToastMessage(it.msg.toString())
+                }
             }
-
-            override fun onFailure(call: Call<ResponseStudygroupinfoBody>, t: Throwable) {
-                Log.d("스터디 정보 결과 - onFailure", t.toString())
-                showToastMessage(getString(R.string.server_error_msg))
-            }
-
         })
     }
 
     // 필터 다이얼로그 보여주기
     private fun showStudyRoomDialog(){
         binding.filterButton.setOnClickListener {
+            val category = categoryViewModel.categoryLiveData.value!!.data!!
             if(category.isEmpty()){
                 getCategories()
             }else {
                 val mDialog = GroupfilterDialog(category)
-                val listener = object : DialogResult {
+                mDialog.setEventListener(object : DialogResult{
                     override fun result(
                         request: RequestGroupItemBody,
                         category: List<StudyCategory>,
@@ -203,30 +198,15 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                         refreshData(Data as ArrayList<StudyGroupItem>)
                         binding.cameraSegmentButton.visibility = View.VISIBLE
                     }
-                }
-                mDialog.setEventListener(listener)
+
+                })
                 mDialog.show(parentFragmentManager, "filterDialog")
             }
         }
     }
 
-    fun getCategories(){
-        RequestServer.studyGroupService.getCategory().enqueue(object :
-            Callback<ResponseStudycategoryBody>{
-            override fun onResponse(
-                call: Call<ResponseStudycategoryBody>,
-                response: Response<ResponseStudycategoryBody>
-            ) {
-                category = response.body()!!.data as ArrayList<StudyCategory>
-                viewModel.initCategoryList(category)
-            }
-
-            override fun onFailure(call: Call<ResponseStudycategoryBody>, t: Throwable) {
-                showToastMessage(getString(R.string.server_error_msg))
-                Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT)
-            }
-
-        })
+    private fun getCategories(){
+        categoryViewModel.getCategoryList()
     }
 
     // 카테고리 chip 띄우기
@@ -285,32 +265,20 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
     // 추천 스터디 그룹 보여주기
     private fun goRecommendStudygroup() {
-        RequestServer.studyGroupService.recommend(type = "main").enqueue(object :
-            Callback<ResponseGroupItemBody> {
-            override fun onResponse(
-                call: Call<ResponseGroupItemBody>,
-                response: Response<ResponseGroupItemBody>
-            ) {
-                if (response.isSuccessful) {
-                    val data: ResponseGroupItemBody? = response.body()
-                    data.let { it ->
-                        dataAllList = it!!.data.studyGroupList as ArrayList<StudyGroupItem>
-                        dataList = dataAllList
-                        setAdapter(dataList)
-                    }
-                } else {
-                    val error = response.errorBody()!!.string().trimIndent()
-                    val result = Gson().fromJson(error, ResponseGroupItemBody::class.java)
-                    Log.d("스터디그룹 응답- tostring", result.toString())
+        studyViewModel.recommendGroupLiveData.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is NetworkResult.Success -> {
+                    dataAllList = it!!.data as ArrayList<StudyGroupItem>
+                    dataList = dataAllList
+                    setAdapter(dataList)
                 }
+                is NetworkResult.Error -> {
+                    showToastMessage(it.msg.toString())
+                }
+                else -> TODO()
             }
-
-            override fun onFailure(call: Call<ResponseGroupItemBody>, t: Throwable) {
-                Log.d("결과 - onFailure", t.toString())
-                Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT)
-            }
-
         })
+        studyViewModel.getRecommendStudyGroup()
     }
 
     fun setAdapter(list: List<StudyGroupItem>) {

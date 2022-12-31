@@ -4,6 +4,8 @@ import android.graphics.Rect
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
@@ -14,23 +16,34 @@ import com.app.gong4.adapter.CategoryAdapter
 import com.app.gong4.adapter.PeopleAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentStudyGroupBinding
+import com.app.gong4.dialog.StudygroupinfoDialog
 import com.app.gong4.model.res.ResponseStudyMembers
 import com.app.gong4.model.res.ResponseStudygroupinfoBody
 import com.app.gong4.utils.CommonService
+import com.app.gong4.utils.NetworkResult
+import com.app.gong4.viewmodel.StudyGroupViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
+@AndroidEntryPoint
 class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>(FragmentStudyGroupBinding::inflate){
 
     private val args by navArgs<StudyGroupFragmentArgs>()
     private lateinit var cAdapter : CategoryAdapter
     private lateinit var pAdapter : PeopleAdapter
 
+    private val studyViewModel : StudyGroupViewModel by viewModels()
+
     override fun initView() {
         getStudyGroupInfo(args.pid)
         getPeopleInfo(args.pid)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
         clickQnaButton()
     }
 
@@ -41,33 +54,30 @@ class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>(FragmentStudy
         }
     }
     private fun getStudyGroupInfo(pid: Int) {
-        RequestServer.studyGroupService.getStudygroupInfo(pid).enqueue(object :
-            Callback<ResponseStudygroupinfoBody> {
-            override fun onResponse(
-                call: Call<ResponseStudygroupinfoBody>,
-                response: Response<ResponseStudygroupinfoBody>
-            ) {
-                val data: ResponseStudygroupinfoBody.StduyGroupDetailItem = response.body()!!.data
+        studyViewModel.getStudyGroupInfo(pid)
+        studyViewModel.studyGroupInfoLiveData.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is NetworkResult.Success -> {
+                    val data: ResponseStudygroupinfoBody.StudyGroupDetailItem = it.data!!
 
-                binding.studyNameTextView.text = binding.studyNameTextView.text.toString() + " ${data.name}"
-                binding.studyTermTextView.text = binding.studyTermTextView.text.toString() +
-                        " ${CommonService.convertTimestampToDate(data.createdAt)} ~ ${CommonService.convertTimestampToDate(data.expiredAt)}"
-                if (data.isCam) {
-                    binding.studyCamTextView.text = binding.studyCamTextView.text.toString() + " 필수"
-                } else {
-                    binding.studyCamTextView.text = binding.studyCamTextView.text.toString() + " 필수 아님"
+                    binding.studyNameTextView.text = binding.studyNameTextView.text.toString() + " ${data.name}"
+                    binding.studyTermTextView.text = binding.studyTermTextView.text.toString() +
+                            " ${CommonService.convertTimestampToDate(data.createdAt)} ~ ${CommonService.convertTimestampToDate(data.expiredAt)}"
+                    if (data.isCam) {
+                        binding.studyCamTextView.text = binding.studyCamTextView.text.toString() + " 필수"
+                    } else {
+                        binding.studyCamTextView.text = binding.studyCamTextView.text.toString() + " 필수 아님"
+                    }
+                    //벌점 기준 전송 안됨
+                    binding.studyMinTimeTextView.text = binding.studyMinTimeTextView.text.toString() +
+                            " 주 ${data.minStudyHour.substring(0, 2)}시간 ${data.minStudyHour.substring(3, 5)}분 이상"
+
+                    setCategoryAdapter(data.categories)
                 }
-                //벌점 기준 전송 안됨
-                binding.studyMinTimeTextView.text = binding.studyMinTimeTextView.text.toString() +
-                        " 주 ${data.minStudyHour.substring(0, 2)}시간 ${data.minStudyHour.substring(3, 5)}분 이상"
-
-                setCategoryAdapter(data.categories)
+                else -> {
+                    showToastMessage(it.msg.toString())
+                }
             }
-
-            override fun onFailure(call: Call<ResponseStudygroupinfoBody>, t: Throwable) {
-                Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT)
-            }
-
         })
     }
 

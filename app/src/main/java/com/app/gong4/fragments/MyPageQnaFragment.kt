@@ -1,6 +1,9 @@
 package com.app.gong4.fragments
 
 import android.os.Bundle
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +17,8 @@ import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentMyPageQnaBinding
 import com.app.gong4.onMoveAdapterListener
 import com.app.gong4.utils.CommonService
+import com.app.gong4.utils.NetworkResult
+import com.app.gong4.viewmodel.QnaViewModel
 import com.bumptech.glide.Glide
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,6 +27,8 @@ import retrofit2.Response
 
 class MyPageQnaFragment : BaseFragment<FragmentMyPageQnaBinding>(FragmentMyPageQnaBinding::inflate) {
     private val args by navArgs<MyPageQnaFragmentArgs>()
+
+    private val qnaViewModel : QnaViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,20 +61,18 @@ class MyPageQnaFragment : BaseFragment<FragmentMyPageQnaBinding>(FragmentMyPageQ
     }
 
     fun getQnaList(){
-        RequestServer.qnaService.getMyQnaList().enqueue(object : Callback<ResponseQnaListBody>{
-            override fun onResponse(
-                call: Call<ResponseQnaListBody>,
-                response: Response<ResponseQnaListBody>
-            ) {
-                val qnaList = response.body()!!.data.questionList
-                setAdapter(qnaList)
-            }
+        qnaViewModel.myQnaLiveData.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is NetworkResult.Success -> {
+                    setAdapter(it.data!!)
+                }
+                is NetworkResult.Error -> {
 
-            override fun onFailure(call: Call<ResponseQnaListBody>, t: Throwable) {
-                TODO("Not yet implemented")
+                }
+                else -> TODO()
             }
-
         })
+        qnaViewModel.getMyQnaList()
     }
 
     fun setAdapter(list: List<QnaItem>) {

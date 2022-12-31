@@ -9,13 +9,10 @@ import retrofit2.http.*
 
 interface StudyGroupService {
     @GET("/api/study-group/recommend")
-    fun recommend(@Query("groupUID")groupUID : Int?=null, @Query("type")type : String?=null) : Call<ResponseGroupItemBody>
-
-    @GET("/api/category")
-    fun getCategory() : Call<ResponseStudycategoryBody>
+    suspend fun recommend(@Query("groupUID")groupUID : Int?=null, @Query("type")type : String?=null) : Response<ResponseGroupItemBody>
 
     @GET("/api/study-group/{groupUID}")
-    fun getStudygroupInfo(@Path("groupUID")groupUID:Int) : Call<ResponseStudygroupinfoBody>
+    suspend fun getStudygroupInfo(@Path("groupUID")groupUID:Int) : Response<ResponseStudygroupinfoBody>
 
     @GET("/api/study-group/search")
     fun getStudygroupfilterInfo(
