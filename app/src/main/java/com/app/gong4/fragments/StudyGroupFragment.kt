@@ -7,18 +7,22 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.app.gong4.R
 import com.app.gong4.model.*
 import com.app.gong4.adapter.CategoryAdapter
 import com.app.gong4.adapter.PeopleAdapter
 import com.app.gong4.api.RequestServer
 import com.app.gong4.databinding.FragmentStudyGroupBinding
+import com.app.gong4.dialog.AlertCustomDialog
 import com.app.gong4.dialog.StudygroupinfoDialog
 import com.app.gong4.model.res.ResponseStudyMembers
 import com.app.gong4.model.res.ResponseStudygroupinfoBody
+import com.app.gong4.onActionListener
 import com.app.gong4.utils.CommonService
 import com.app.gong4.utils.NetworkResult
 import com.app.gong4.viewmodel.StudyGroupViewModel
@@ -45,6 +49,39 @@ class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>(FragmentStudy
         super.onResume()
 
         clickQnaButton()
+        leaveGroup()
+    }
+
+    private fun leaveGroup(){
+        binding.leaveButton.setOnClickListener {
+            val dialog = AlertCustomDialog()
+            dialog.setData(resources.getString(R.string.study_qna_delete_dialog_title),resources.getString(
+                R.string.study_qna_delete_dialog_content
+            ))
+            dialog.setActionListener(object : onActionListener {
+                override fun onAction() {
+                    gotoServer()
+                    dialog.dismiss()
+                }
+            })
+            dialog.show(parentFragmentManager,"RemoveDialog")
+        }
+    }
+
+    private fun gotoServer(){
+        studyViewModel.leaveStudyGroupLiveData.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is NetworkResult.Error -> {
+                    showToastMessage(it.msg.toString())
+                }
+                else -> {
+                    showToastMessage(resources.getString(R.string.study_qna_delete_dialog_complete_msg))
+                    findNavController().navigate(R.id.action_studyGroupFragment_to_myStudyGroupFragment)
+
+                }
+            }
+        })
+        studyViewModel.leaveStudyGroup(args.pid)
     }
 
     fun clickQnaButton(){

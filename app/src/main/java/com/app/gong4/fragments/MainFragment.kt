@@ -91,7 +91,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                 is NetworkResult.Error -> {
                     showToastMessage(it.msg.toString())
                 }
-                is NetworkResult.Loading -> TODO()
+                else -> TODO()
             }
         })
     }

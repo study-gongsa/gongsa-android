@@ -8,6 +8,7 @@ import com.app.gong4.R
 import com.app.gong4.api.StudyGroupService
 import com.app.gong4.model.StudyGroupItem
 import com.app.gong4.model.req.RequestCreateStudyGroup
+import com.app.gong4.model.res.BaseResponse
 import com.app.gong4.model.res.ResponseCreateStudyGroup
 import com.app.gong4.model.res.ResponseGroupItemBody
 import com.app.gong4.model.res.ResponseStudygroupinfoBody
@@ -36,6 +37,10 @@ class StudyGroupRepository @Inject constructor(private val studyGroupService: St
     private val _createStudyGroupRes = SingleLiveEvent<NetworkResult<ResponseCreateStudyGroup>>()
     val createStudyGroupRes : LiveData<NetworkResult<ResponseCreateStudyGroup>>
         get() = _createStudyGroupRes
+
+    private val _leaveStudyGroupRes = SingleLiveEvent<NetworkResult<BaseResponse>>()
+    val leaveStudyGroupRes : LiveData<NetworkResult<BaseResponse>>
+        get() = _leaveStudyGroupRes
 
     suspend fun getMyStudyGroup(){
         val response = studyGroupService.getMyStudyGroup()
@@ -94,5 +99,14 @@ class StudyGroupRepository @Inject constructor(private val studyGroupService: St
 
            }
        })
+    }
+
+    suspend fun leaveGroup(groupUID: Int){
+        val response = studyGroupService.leaveGroup(groupUID)
+        if(response.isSuccessful){
+            _leaveStudyGroupRes.postValue(NetworkResult.ResultEmpty())
+        }else{
+            _leaveStudyGroupRes.value = NetworkResult.Error(null)
+        }
     }
 }

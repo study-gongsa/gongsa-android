@@ -43,4 +43,8 @@ interface StudyGroupService {
         @Part image:MultipartBody.Part,
         @Part("json") body: Any
     ) : Call<ResponseCreateStudyGroup>
+
+    // 스터디 그룹 탈퇴
+    @DELETE("/api/group-member/{groupUID}")
+    suspend fun leaveGroup(@Path("groupUID")groupUID:Int) : Response<BaseResponse>
 }

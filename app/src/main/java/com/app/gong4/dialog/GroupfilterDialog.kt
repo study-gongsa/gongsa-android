@@ -22,27 +22,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFragment() {
+class GroupfilterDialog(private val categories:List<StudyCategory>) : BaseDialog<GroupfilterDialogBinding>(GroupfilterDialogBinding::inflate) {
 
-    private var _binding: GroupfilterDialogBinding? = null
-    private val binding get() = _binding!!
     internal lateinit var listener: DialogResult
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = GroupfilterDialogBinding.inflate(inflater,container,false)
-        val view = binding.root
-
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-
+    override fun initDialog() {
         showCategories()
         saveFilter()
-
-        return view
     }
 
     fun setEventListener(listener: DialogResult){
@@ -159,60 +145,6 @@ class GroupfilterDialog(private val categories:List<StudyCategory>) : DialogFrag
                 )
             })
         }
-    }
-    override fun onResume() {
-        super.onResume()
-
-        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
-        val windowManager = activity?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val size = windowManager.currentWindowMetricsPointCompat()
-        val deviceWidth = size.x
-
-        params?.width = (deviceWidth * 0.83).toInt()
-        dialog?.window?.attributes = params as WindowManager.LayoutParams
-     //   dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    }
-
-    fun resizeDialog() {
-        val windowManager = activity?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
-        val deviceWidth = size.x
-        val deviceHeight = size.y
-        params?.width = (deviceWidth * 0.8).toInt()
-        params?.height = (deviceHeight * 0.3).toInt()
-        dialog?.window?.attributes = params as WindowManager.LayoutParams
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    }
-
-    fun WindowManager.currentWindowMetricsPointCompat(): Point {
-        return if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R){
-            val windowInsets = currentWindowMetrics.windowInsets
-            var insets: Insets = windowInsets.getInsets(WindowInsets.Type.navigationBars())
-            windowInsets.displayCutout?.run {
-                insets = Insets.max(
-                    insets,
-                    Insets.of(safeInsetLeft,safeInsetTop,safeInsetRight,safeInsetBottom)
-                )
-            }
-            val insetsWidth = insets.right + insets.left
-            val insetsHeight = insets.top + insets.bottom
-            Point(
-                currentWindowMetrics.bounds.width() - insetsWidth,
-                currentWindowMetrics.bounds.height() - insetsHeight
-            )
-        }else{
-            Point().apply {
-                defaultDisplay.getSize(this)
-            }
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
 }

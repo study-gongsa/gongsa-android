@@ -84,6 +84,9 @@
         <action
             android:id="@+id/action_studyGroupFragment_to_groupQnaListFragment"
             app:destination="@id/groupQnaListFragment" />
+        <action
+            android:id="@+id/action_studyGroupFragment_to_myStudyGroupFragment"
+            app:destination="@id/myStudyGroupFragment" />
     </fragment>
     <fragment
         android:id="@+id/groupQnaListFragment"

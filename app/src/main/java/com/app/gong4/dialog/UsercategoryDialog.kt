@@ -24,25 +24,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import kotlin.collections.ArrayList
 
-class UsercategoryDialog(val categories : ArrayList<StudyCategory>) : DialogFragment() {
+class UsercategoryDialog(val categories : ArrayList<StudyCategory>) : BaseDialog<UsercategoryDialogBinding>(UsercategoryDialogBinding::inflate) {
 
-    private var _binding: UsercategoryDialogBinding? = null
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = UsercategoryDialogBinding.inflate(inflater,container,false)
-        val view = binding.root
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-
+    override fun initDialog() {
         showCategories()
         saveCategory()
-
-        return view
     }
 
     private fun showCategories(){
@@ -106,42 +92,5 @@ class UsercategoryDialog(val categories : ArrayList<StudyCategory>) : DialogFrag
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
-        val windowManager = activity?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val size = windowManager.currentWindowMetricsPointCompat()
-        val deviceWidth = size.x
 
-        params?.width = (deviceWidth * 0.8).toInt()
-        dialog?.window?.attributes = params as WindowManager.LayoutParams
-    }
-
-    fun WindowManager.currentWindowMetricsPointCompat():Point{
-        return if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R){
-            val windowInsets = currentWindowMetrics.windowInsets
-            var insets:Insets = windowInsets.getInsets(WindowInsets.Type.navigationBars())
-            windowInsets.displayCutout?.run {
-                insets = Insets.max(
-                    insets,
-                    Insets.of(safeInsetLeft,safeInsetTop,safeInsetRight,safeInsetBottom)
-                )
-            }
-            val insetsWidth = insets.right + insets.left
-            val insetsHeight = insets.top + insets.bottom
-            Point(
-                currentWindowMetrics.bounds.width() - insetsWidth,
-                currentWindowMetrics.bounds.height() - insetsHeight
-            )
-        }else{
-            Point().apply {
-                defaultDisplay.getSize(this)
-            }
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
 }

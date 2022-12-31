@@ -1,13 +1,10 @@
 package com.app.gong4.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.app.gong4.api.QnaService
-import com.app.gong4.api.StudyGroupService
 import com.app.gong4.model.QnaItem
 import com.app.gong4.model.QuestionUID
-import com.app.gong4.model.StudyCategory
 import com.app.gong4.model.req.RequestQuestion
 import com.app.gong4.model.req.RequestRegisterAnswer
 import com.app.gong4.model.req.RequestUpdateAnswer
@@ -92,7 +89,7 @@ class QnaRepository @Inject constructor(private val qnaService: QnaService){
                 if(response.code()!=204){
                     _deleteAnswerRes.postValue(NetworkResult.Error(response.body()!!.location,response.body()!!.msg))
                 }else{
-                    _deleteAnswerRes.postValue(NetworkResult.Success(null!!))
+                    _deleteAnswerRes.postValue(NetworkResult.ResultEmpty())
                 }
             }
 

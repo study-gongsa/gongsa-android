@@ -18,6 +18,7 @@ class StudyGroupViewModel @Inject constructor(private val studyRepository: Study
     val recommendGroupLiveData get() = studyRepository.recommendGroupRes
     val studyGroupInfoLiveData get() = studyRepository.studyGroupInfoRes
     val createStudyGroupLiveData get() = studyRepository.createStudyGroupRes
+    val leaveStudyGroupLiveData get() = studyRepository.leaveStudyGroupRes
 
     fun getMyStudyGroup(){
         viewModelScope.launch {
@@ -40,6 +41,12 @@ class StudyGroupViewModel @Inject constructor(private val studyRepository: Study
     fun createStudygroup(image: MultipartBody.Part, requestBody: RequestCreateStudyGroup){
         viewModelScope.launch {
             studyRepository.createStudyGroup(image,requestBody)
+        }
+    }
+
+    fun leaveStudyGroup(groupUID: Int){
+        viewModelScope.launch {
+            studyRepository.leaveGroup(groupUID)
         }
     }
 

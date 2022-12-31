@@ -37,7 +37,7 @@ class MyStudyGroupFragment : BaseFragment<FragmentMyStudyGroupBinding>(FragmentM
                 is NetworkResult.Error -> {
                     showToastMessage(it.msg as String)
                 }
-                is NetworkResult.Loading -> TODO()
+                else -> TODO()
             }
         })
 
