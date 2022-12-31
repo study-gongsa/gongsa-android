@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyPageQnaFragment">
+    tools:context=".fragments.MyPageQnaFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -122,7 +122,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/qna_recylcerview"
-            android:layout_width="358dp"
+            android:layout_width="0dp"
             android:layout_height="451dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

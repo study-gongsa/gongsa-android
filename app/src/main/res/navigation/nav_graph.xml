@@ -6,7 +6,7 @@
     app:startDestination="@id/settingFragment">
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.app.gong4.LoginFragment"
+        android:name="com.app.gong4.fragments.LoginFragment"
         android:label="로그인"
         tools:layout="@layout/fragment_login" >
         <action
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/signupFragment"
-        android:name="com.app.gong4.SignupFragment"
+        android:name="com.app.gong4.fragments.SignupFragment"
         android:label="회원가입"
 
         tools:layout="@layout/fragment_signup" >
@@ -31,12 +31,12 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.app.gong4.MainFragment"
+        android:name="com.app.gong4.fragments.MainFragment"
         android:label="메인화면"
         tools:layout="@layout/fragment_main" />
     <fragment
         android:id="@+id/findpasswordFragment"
-        android:name="com.app.gong4.FindpasswordFragment"
+        android:name="com.app.gong4.fragments.FindpasswordFragment"
         android:label="비밀번호 찾기"
         tools:layout="@layout/fragment_findpassword" >
         <action
@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/certifyEmailFragment"
-        android:name="com.app.gong4.CertifyEmailFragment"
+        android:name="com.app.gong4.fragments.CertifyEmailFragment"
         android:label="이메일 인증"
         tools:layout="@layout/fragment_certify_email" >
         <argument
@@ -57,7 +57,7 @@
     </fragment>
     <fragment
         android:id="@+id/createStudygroupFragment"
-        android:name="com.app.gong4.CreateStudygroupFragment"
+        android:name="com.app.gong4.fragments.CreateStudygroupFragment"
         android:label="스터디그룹 생성"
         tools:layout="@layout/fragment_create_studygroup" >
         <action
@@ -66,12 +66,16 @@
     </fragment>
     <fragment
         android:id="@+id/completeStudygroupFragment"
-        android:name="com.app.gong4.CompleteStudygroupFragment"
+        android:name="com.app.gong4.fragments.CompleteStudygroupFragment"
         android:label="fragment_complete_studygroup"
-        tools:layout="@layout/fragment_complete_studygroup" />
+        tools:layout="@layout/fragment_complete_studygroup" >
+        <action
+            android:id="@+id/action_completeStudygroupFragment_to_myStudyGroupFragment"
+            app:destination="@id/myStudyGroupFragment" />
+    </fragment>
     <fragment
         android:id="@+id/studyGroupFragment"
-        android:name="com.app.gong4.StudyGroupFragment"
+        android:name="com.app.gong4.fragments.StudyGroupFragment"
         android:label="fragment_study_group"
         tools:layout="@layout/fragment_study_group" >
         <argument
@@ -80,10 +84,13 @@
         <action
             android:id="@+id/action_studyGroupFragment_to_groupQnaListFragment"
             app:destination="@id/groupQnaListFragment" />
+        <action
+            android:id="@+id/action_studyGroupFragment_to_myStudyGroupFragment"
+            app:destination="@id/myStudyGroupFragment" />
     </fragment>
     <fragment
         android:id="@+id/groupQnaListFragment"
-        android:name="com.app.gong4.GroupQnaListFragment"
+        android:name="com.app.gong4.fragments.GroupQnaListFragment"
         android:label="fragment_group_qna_list"
         tools:layout="@layout/fragment_group_qna_list">
         <argument
@@ -92,11 +99,14 @@
         <action
             android:id="@+id/action_groupQnaListFragment_to_groupQnaDetailFragment"
             app:destination="@id/groupQnaDetailFragment" />
+        <action
+            android:id="@+id/action_groupQnaListFragment_to_qnaRegisterFragment"
+            app:destination="@id/qnaRegisterFragment" />
 
     </fragment>
     <fragment
         android:id="@+id/myStudyGroupFragment"
-        android:name="com.app.gong4.MyStudyGroupFragment"
+        android:name="com.app.gong4.fragments.MyStudyGroupFragment"
         android:label="fragment_my_study_group"
         tools:layout="@layout/fragment_my_study_group" >
         <action
@@ -105,7 +115,7 @@
     </fragment>
     <fragment
         android:id="@+id/groupQnaDetailFragment"
-        android:name="com.app.gong4.GroupQnaDetailFragment"
+        android:name="com.app.gong4.fragments.GroupQnaDetailFragment"
         android:label="fragment_group_qna_detail"
         tools:layout="@layout/fragment_group_qna_detail" >
         <argument
@@ -114,7 +124,7 @@
     </fragment>
     <fragment
         android:id="@+id/myPageFragment"
-        android:name="com.app.gong4.MyPageFragment"
+        android:name="com.app.gong4.fragments.MyPageFragment"
         android:label="fragment_my_page"
         tools:layout="@layout/fragment_my_page" >
         <action
@@ -126,7 +136,7 @@
     </fragment>
     <fragment
         android:id="@+id/myPageQnaFragment"
-        android:name="com.app.gong4.MyPageQnaFragment"
+        android:name="com.app.gong4.fragments.MyPageQnaFragment"
         android:label="@string/study_qna"
         tools:layout="@layout/fragment_my_page_qna" >
         <argument
@@ -138,7 +148,19 @@
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.app.gong4.SettingFragment"
+        android:name="com.app.gong4.fragments.SettingFragment"
         android:label="@string/setting"
         tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/qnaRegisterFragment"
+        android:name="com.app.gong4.fragments.QnaRegisterFragment"
+        android:label="@string/study_qna"
+        tools:layout="@layout/fragment_qna_register" >
+        <argument
+            android:name="groupUID"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_qnaRegisterFragment_to_groupQnaDetailFragment"
+            app:destination="@id/groupQnaDetailFragment" />
+    </fragment>
 </navigation>

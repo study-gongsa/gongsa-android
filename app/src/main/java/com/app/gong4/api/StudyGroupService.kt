@@ -1,19 +1,18 @@
 package com.app.gong4.api
 
-import com.app.gong4.model.*
+import com.app.gong4.model.req.RequestEnterMember
+import com.app.gong4.model.res.*
 import okhttp3.MultipartBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface StudyGroupService {
     @GET("/api/study-group/recommend")
-    fun recommend(@Query("groupUID")groupUID : Int?=null, @Query("type")type : String?=null) : Call<ResponseGroupItemBody>
-
-    @GET("/api/category")
-    fun getCategory() : Call<ResponseStudycategoryBody>
+    suspend fun recommend(@Query("groupUID")groupUID : Int?=null, @Query("type")type : String?=null) : Response<ResponseGroupItemBody>
 
     @GET("/api/study-group/{groupUID}")
-    fun getStudygroupInfo(@Path("groupUID")groupUID:Int) : Call<ResponseStudygroupinfoBody>
+    suspend fun getStudygroupInfo(@Path("groupUID")groupUID:Int) : Response<ResponseStudygroupinfoBody>
 
     @GET("/api/study-group/search")
     fun getStudygroupfilterInfo(
@@ -24,18 +23,18 @@ interface StudyGroupService {
     ) : Call<ResponseGroupItemBody>
 
     @GET("/api/study-group/code/{code}")
-    fun getStudygroupCodeInfo(@Path("code")code:String) : Call<ResponseStudygroupinfoBody>
+    suspend fun getStudygroupCodeInfo(@Path("code")code:String) : Response<ResponseStudygroupinfoBody>
 
     @POST("/api/group-member")
-    fun getStudyEnter(@Body body:RequestEnterMember) : Call<ResponseEnterMember>
+    suspend fun getStudyEnter(@Body body: RequestEnterMember) : Response<ResponseEnterMember>
 
     //나의 스터디 그룹 조회
     @GET("/api/study-group/my-group")
-    fun getMyStudyGroup() : Call<ResponseGroupItemBody>
+    suspend fun getMyStudyGroup() : Response<ResponseGroupItemBody>
 
     //스터디 그룹 내 멤버 정보 조회
     @GET("/api/group-member/{groupUID}")
-    fun getStudyMembers(@Path("groupUID")groupUID:Int) : Call<ResponseStudyMembers>
+    suspend fun getStudyMembers(@Path("groupUID")groupUID:Int) : Response<ResponseStudyMembers>
 
     @Multipart
     @Headers("accept: application/json")
@@ -44,4 +43,8 @@ interface StudyGroupService {
         @Part image:MultipartBody.Part,
         @Part("json") body: Any
     ) : Call<ResponseCreateStudyGroup>
+
+    // 스터디 그룹 탈퇴
+    @DELETE("/api/group-member/{groupUID}")
+    suspend fun leaveGroup(@Path("groupUID")groupUID:Int) : Response<BaseResponse>
 }

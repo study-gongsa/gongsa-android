@@ -8,17 +8,17 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.app.gong4.model.StduyGroupItem
-import com.app.gong4.MainFragment
+import com.app.gong4.model.StudyGroupItem
+import com.app.gong4.fragments.MainFragment
 import com.app.gong4.R
-import com.app.gong4.util.CommonService
+import com.app.gong4.utils.CommonService
 import com.bumptech.glide.Glide
 
-class StudyGroupListAdapter(private val context: MainFragment, val dataSet: ArrayList<StduyGroupItem>)
+class StudyGroupListAdapter(private val context: MainFragment, val dataSet: ArrayList<StudyGroupItem>)
     : RecyclerView.Adapter<StudyGroupListAdapter.ViewHolder>() {
 
-    var searchList = ArrayList<StduyGroupItem>()
-    var searchAllList = ArrayList<StduyGroupItem>()
+    var searchList = ArrayList<StudyGroupItem>()
+    var searchAllList = ArrayList<StudyGroupItem>()
 
     init {
         Log.d("searchList", dataSet.toString())
@@ -54,7 +54,7 @@ class StudyGroupListAdapter(private val context: MainFragment, val dataSet: Arra
         holder.group_date_textView.text = "${CommonService.convertTimestampToDate(dataSet[position].createdAt)} ~ ${CommonService.convertTimestampToDate(dataSet[position].expiredAt)}"
 
         val url = CommonService.getImageGlide(dataSet[position].imgPath)
-        Glide.with(context).load(url).into(holder.group_image_imageView)
+        Glide.with(context).load(url).error(R.drawable.error_image).into(holder.group_image_imageView)
         if (!dataSet[position].isCam) {
             holder.group_cam_button.setImageResource(R.drawable.ic_camera_off_22)
         } else {

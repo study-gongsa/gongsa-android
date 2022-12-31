@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-parcelize'
+    id 'kotlin-kapt'
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -46,6 +48,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.fragment:fragment-ktx:1.5.5'
 
     // navigation
     implementation "androidx.navigation:navigation-fragment-ktx:2.5.0"
@@ -69,6 +72,14 @@ dependencies {
 
     /*custom library*/
     implementation 'com.github.addisonelliott:SegmentedButton:3.1.9'
-
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.1'
+
+    //hilt
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+}
+kapt {
+    correctErrorTypes = true
 }
