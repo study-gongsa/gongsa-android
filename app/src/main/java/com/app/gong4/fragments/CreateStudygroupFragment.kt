@@ -21,7 +21,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.app.gong4.MainActivity
 import com.app.gong4.model.res.ResponseCreateStudyGroup
 import com.app.gong4.api.RequestServer
@@ -29,8 +31,10 @@ import com.app.gong4.databinding.FragmentCreateStudygroupBinding
 import com.app.gong4.model.req.RequestCreateStudyGroup
 import com.app.gong4.onActionListener
 import com.app.gong4.utils.CommonService
+import com.app.gong4.utils.NetworkResult
 import com.app.gong4.utils.TimePickerCustomDialog
 import com.app.gong4.viewmodel.CategoryViewModel
+import com.app.gong4.viewmodel.StudyGroupViewModel
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType
@@ -57,9 +61,12 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
     }
 
     private val categoryViewModel : CategoryViewModel by activityViewModels()
+    private val studyViewModel : StudyGroupViewModel by viewModels()
 
-    private var imageFile : File? = null
+    private var imageFile: File?=null
     private var imm : InputMethodManager?=null
+
+    private var studyTime : Int = 0
 
     companion object{
         const val REQ_GALLERY = 1
@@ -159,42 +166,42 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
             val checkedChipList =
                 binding.categoriyChipGroup.children?.filter { (it as Chip).isChecked }?.map { it.id }?.toList()!!//카테고리 선택
             val isPenalty = checkedPanelty // 벌점유무
-            val maxPenalty = binding.paneltyEdittext.text.toString().toInt() //최대 가능 벌점 횟수
-            val maxTodayStudy = binding.inputEdittext.text.toString().toInt() //스터디 재진입 횟수
+            val maxPenalty = if(binding.paneltyEdittext.text.toString().isEmpty()) 0 else binding.paneltyEdittext.text.toString().toInt() //최대 가능 벌점 횟수
+            val maxTodayStudy = if(binding.inputEdittext.text.toString().isEmpty()) 0 else binding.inputEdittext.text.toString().toInt()//스터디 재진입 횟수
             val expiredDate = binding.endDate.text.toString()//만료날짜
-            val minStudyHour = binding.timeTextView.text.toString().toInt()//스터디목표시간
+            val minStudyHour = studyTime//스터디목표시간
 
             val requestBody : RequestCreateStudyGroup = RequestCreateStudyGroup(
                 checkedChipList,expiredDate,isCam,isPenalty,isPrivate,maxPenalty,
                 maxMember,maxTodayStudy,minStudyHour,roomName)
 
-            val requestFile = RequestBody.create(MediaType.parse("image/jpeg"),imageFile)
-            val image = MultipartBody.Part.createFormData("image",imageFile?.name,requestFile)
+            var image : MultipartBody.Part? = null
 
-            RequestServer.studyGroupService.createStudygroup(image,requestBody).enqueue(object :
-                Callback<ResponseCreateStudyGroup> {
-                override fun onResponse(
-                    call: Call<ResponseCreateStudyGroup>,
-                    response: Response<ResponseCreateStudyGroup>
-                ) {
-                    if(response.isSuccessful && response.body()!!.data.groupUID != null){
-                        view.findNavController().navigate(com.app.gong4.R.id.action_createStudyFragment_to_completeStudyFragment)
-                    }else{
-                        var msg = ""
-                        if(response.body()!!.msg != null){
-                            msg = response.body()!!.msg
-                        }
-                        showToastMessage(msg)
-                    }
-                }
+            if(imageFile!!.length().toInt() != 0){
+                val requestFile = RequestBody.create(MediaType.parse("image/jpeg"),imageFile)
+                image = MultipartBody.Part.createFormData("image",imageFile?.name,requestFile)
+            }
 
-                override fun onFailure(call: Call<ResponseCreateStudyGroup>, t: Throwable) {
-                    Toast.makeText(context,"서버와의 통신이 원활하지 않습니다.", Toast.LENGTH_SHORT).show()
-                }
-            })
+            goServerCreateStudy(image!!,requestBody)
 
         }
 
+    }
+
+    private fun goServerCreateStudy(image:MultipartBody.Part,requestBody:RequestCreateStudyGroup){
+        studyViewModel.createStudyGroupLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            when(it){
+                is NetworkResult.Success -> {
+                    val action = CreateStudygroupFragmentDirections.actionCreateStudyFragmentToCompleteStudyFragment()
+                    findNavController().navigate(action)
+                }
+                is NetworkResult.Error -> {
+                    showToastMessage(it.msg.toString())
+                }
+                else -> TODO()
+            }
+        })
+        studyViewModel.createStudygroup(image,requestBody)
     }
 
     private fun selectGallery(){
@@ -219,13 +226,20 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
 
     private fun showDatePicker(){
         val today = Calendar.getInstance()
+
+        val endMonth = if(today.get(Calendar.MONTH)+1<=9) "0${today.get(Calendar.MONTH)+1}" else today.get(Calendar.MONTH)+1
+        val endDay =  if(today.get(Calendar.DATE)<=9) "0${today.get(Calendar.DATE)}" else today.get(Calendar.DATE)
+
         binding.startDate.text ="${today.get(Calendar.YEAR)}-${today.get(Calendar.MONTH)+1}-${today.get(Calendar.DATE)}"
-        binding.endDate.text ="${today.get(Calendar.YEAR)}-${today.get(Calendar.MONTH)+1}-${today.get(Calendar.DATE)}"
+        binding.endDate.text ="${today.get(Calendar.YEAR)}-${endMonth}-${endDay}"
 
         binding.endDate.setOnClickListener {
             val cal = Calendar.getInstance()
             val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
-                binding.endDate.text = "${year}-${month+1}-${day}"
+                val endMonth = if(month+1<=9) "0${month+1}" else month+1
+                val endDay =  if(day<=9) "0${day}" else day
+
+                binding.endDate.text = "${year}-${endMonth}-${endDay}"
 
             }
             DatePickerDialog(requireContext(), data, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
@@ -235,33 +249,17 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
     }
 
     private fun showTimePicker(){
-        binding.timeTextView.text = "1 : 00"
+        binding.timeTextView.text = "1:00"
         binding.timeTextView.setOnClickListener {
             val picker = TimePickerCustomDialog()
             picker.setActionListener(object : onActionListener{
                 override fun onAction() {
                     val hour = picker.getHour()
+                    studyTime = hour
                     binding.timeTextView.text = if(hour<=9) "0${hour}:00" else "${hour}:00"
                 }
             })
             picker.show(parentFragmentManager,"TimePickerDialog")
-        }
-    }
-
-    private fun showTimePicker1(){
-        binding.timeTextView.text = "1 : 00"
-        binding.timeTextView.setOnClickListener {
-            val cal = Calendar.getInstance()
-            val time = OnTimeSetListener { view, hour, minute ->
-
-                binding.timeTextView.text = if(hour<=9) "0${hour}:00" else "${hour}:00"
-            }
-
-            val picker = TimePickerDialog(requireContext(),
-                R.style.Theme_Holo_Light_Dialog_NoActionBar,time,cal.get(Calendar.HOUR_OF_DAY), 0,true)
-
-            picker.window!!.setBackgroundDrawableResource(R.color.transparent)
-            picker.show()
         }
     }
 

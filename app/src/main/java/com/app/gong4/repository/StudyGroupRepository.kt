@@ -1,15 +1,23 @@
 package com.app.gong4.repository
 
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.findNavController
 import com.app.gong4.R
 import com.app.gong4.api.StudyGroupService
 import com.app.gong4.model.StudyGroupItem
+import com.app.gong4.model.req.RequestCreateStudyGroup
+import com.app.gong4.model.res.ResponseCreateStudyGroup
 import com.app.gong4.model.res.ResponseGroupItemBody
 import com.app.gong4.model.res.ResponseStudygroupinfoBody
 import com.app.gong4.utils.NetworkResult
 import com.app.gong4.utils.SingleLiveEvent
 import com.google.gson.Gson
+import okhttp3.MultipartBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import javax.inject.Inject
 
 class StudyGroupRepository @Inject constructor(private val studyGroupService: StudyGroupService){
@@ -24,6 +32,10 @@ class StudyGroupRepository @Inject constructor(private val studyGroupService: St
     private val _studyGroupInfoRes = SingleLiveEvent<NetworkResult<ResponseStudygroupinfoBody.StudyGroupDetailItem>>()
     val studyGroupInfoRes : LiveData<NetworkResult<ResponseStudygroupinfoBody.StudyGroupDetailItem>>
         get() = _studyGroupInfoRes
+
+    private val _createStudyGroupRes = SingleLiveEvent<NetworkResult<ResponseCreateStudyGroup>>()
+    val createStudyGroupRes : LiveData<NetworkResult<ResponseCreateStudyGroup>>
+        get() = _createStudyGroupRes
 
     suspend fun getMyStudyGroup(){
         val response = studyGroupService.getMyStudyGroup()
@@ -62,5 +74,25 @@ class StudyGroupRepository @Inject constructor(private val studyGroupService: St
         }else{
             _recommendGroupRes.value = NetworkResult.Error(null, R.string.server_error_msg)
         }
+    }
+
+    fun createStudyGroup(image: MultipartBody.Part, requestBody: RequestCreateStudyGroup){
+       studyGroupService.createStudygroup(image,requestBody).enqueue(object :
+           Callback<ResponseCreateStudyGroup> {
+           override fun onResponse(
+               call: Call<ResponseCreateStudyGroup>,
+               response: Response<ResponseCreateStudyGroup>
+           ) {
+               if(response.isSuccessful && response.body() != null){
+                   _createStudyGroupRes.postValue(NetworkResult.Success(response.body()!!))
+               }else{
+                   _createStudyGroupRes.value = NetworkResult.Error(response.body()!!.location,response.body()!!.msg)
+               }
+           }
+
+           override fun onFailure(call: Call<ResponseCreateStudyGroup>, t: Throwable) {
+
+           }
+       })
     }
 }

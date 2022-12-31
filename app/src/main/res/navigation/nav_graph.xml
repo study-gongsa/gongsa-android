@@ -68,7 +68,11 @@
         android:id="@+id/completeStudygroupFragment"
         android:name="com.app.gong4.fragments.CompleteStudygroupFragment"
         android:label="fragment_complete_studygroup"
-        tools:layout="@layout/fragment_complete_studygroup" />
+        tools:layout="@layout/fragment_complete_studygroup" >
+        <action
+            android:id="@+id/action_completeStudygroupFragment_to_myStudyGroupFragment"
+            app:destination="@id/myStudyGroupFragment" />
+    </fragment>
     <fragment
         android:id="@+id/studyGroupFragment"
         android:name="com.app.gong4.fragments.StudyGroupFragment"
