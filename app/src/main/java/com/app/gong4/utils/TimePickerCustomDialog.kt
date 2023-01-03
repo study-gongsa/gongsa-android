@@ -81,6 +81,11 @@ class TimePickerCustomDialog : DialogFragment() {
 //                i += TIME_PICKER_INTERVAL
 //            }
 //            minutePicker.displayedValues = displayedValues.toTypedArray()
+
+            val hourPicker = timePicker.findViewById(Resources.getSystem().getIdentifier("hour", "id", "android")) as NumberPicker
+            hourPicker.minValue = 1
+            hourPicker.maxValue = 24
+
         } catch (e: Exception) {
             Toast.makeText(context,"error TimePicker",Toast.LENGTH_SHORT).show()
         }

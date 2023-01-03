@@ -3,24 +3,29 @@ package com.app.gong4.fragments
 import android.Manifest
 import android.R
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.app.gong4.MainActivity
 import com.app.gong4.databinding.FragmentSettingBinding
+import com.app.gong4.model.req.RequestSaveUserCateogry
 import com.app.gong4.model.req.RequestUserInfo
 import com.app.gong4.model.res.ResponseUserBody
 import com.app.gong4.utils.CommonService
 import com.app.gong4.utils.CommonTextWatcher
+import com.app.gong4.utils.GlideApp
 import com.app.gong4.utils.NetworkResult
 import com.app.gong4.viewmodel.CategoryViewModel
 import com.app.gong4.viewmodel.UserViewModel
@@ -42,19 +47,23 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBind
             val imageUri = result.data?.data
             imageUri?.let {
                 imageFile = File(CommonService.getRealPathFromURI(requireActivity(),it)) // 이미지 -> 파일형태로 변환
-                Glide.with(requireContext()).load(imageFile).into(binding.settingProfileImageView)
+                GlideApp.with(requireContext()).load(imageFile).into(binding.settingProfileImageView)
             }
+            changeImage = true
         }
     }
 
     private val categoryViewModel : CategoryViewModel by activityViewModels()
     private val userViewModel : UserViewModel by viewModels()
-    private lateinit var imageFile: File
+    private var imageFile: File?=null
+    private var changeImage: Boolean = false
+    private lateinit var currentCategory : List<Int>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onResume() {
+        super.onResume()
         val mainActivity = activity as MainActivity
         mainActivity.hideToolbar(false)
+        serverUserInfo()
     }
 
     override fun onStop() {
@@ -64,7 +73,6 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBind
     }
 
     override fun initView() {
-        serverUserInfo()
         showCategories()
         checkNickname()
         checkPassword()
@@ -77,9 +85,14 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBind
     fun patchUserInfo(){
         binding.settingConfirmButton.setOnClickListener {
             val nickname = binding.nicknameEditText.text.toString()
-            val changeImage = imageFile.isFile
+
             var requestBody: RequestUserInfo
             var image : MultipartBody.Part? = null
+
+            if(changeImage) {
+                val requestFile = RequestBody.create(MediaType.parse("image/jpeg"), imageFile)
+                image = MultipartBody.Part.createFormData("image", imageFile?.name, requestFile)
+            }
 
             if(binding.passwordChangeEditText.text.isNotEmpty()){
                 val password = binding.passwordChangeEditText.text.toString()
@@ -88,10 +101,6 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBind
                 requestBody = RequestUserInfo(nickname = nickname,changeImage = changeImage)
             }
 
-            if(imageFile.length().toInt() != 0){
-                val requestFile = RequestBody.create(MediaType.parse("image/jpeg"),imageFile)
-                image = MultipartBody.Part.createFormData("image",imageFile?.name,requestFile)
-            }
             userViewModel.patchUserSettingInfoRes.observe(viewLifecycleOwner, Observer {
                 when(it){
                     is NetworkResult.Success -> {
@@ -102,7 +111,8 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBind
                     }
                 }
             })
-            userViewModel.patchUserInfo(image!!,requestBody)
+            userViewModel.patchUserInfo(image=image,requestUserInfo=requestBody)
+            saveCategory()
         }
 
     }
@@ -170,11 +180,9 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBind
     fun checkPasswordConfirm(){
         binding.passwordChangeConfirmEditText.addTextChangedListener(CommonTextWatcher(
             onChanged = { text,_,_,_ ->
-                if(!Pattern.matches("^(?=.*\\d)(?=.*[~`!@#$%\\^&*()-])(?=.*[a-zA-Z]).{8,16}$", text.toString()))
+                if(text.toString() != binding.validPasswordChangeTextView.text.toString())
                 {
-                    binding.validPasswordChangeConfirmTextView.text = String.format(resources.getString(
-                        com.app.gong4.R.string.login_fragment_wrong_answer
-                    ),"비밀번호")
+                    binding.validPasswordChangeConfirmTextView.text = resources.getString(com.app.gong4.R.string.signup_wrong_password)
                     binding.passwordChangeConfirmEditText.background = requireContext().resources.getDrawable(
                         com.app.gong4.R.drawable.custom_error_input
                     )
@@ -206,17 +214,37 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBind
         userViewModel.getSettingUserInfo()
     }
 
+    fun saveCategory(){
+        val checkedChipList =
+            binding.categoryChipGroup.children?.filter { (it as Chip).isChecked }?.map { it.id }?.toList()!!
+
+        if(checkedChipList != currentCategory){
+            val requestSaveUserCateogry = RequestSaveUserCateogry(checkedChipList)
+            categoryViewModel.putCategoryList(requestSaveUserCateogry)
+        }
+
+        categoryViewModel.putCategoryLiveData.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is NetworkResult.Success -> TODO()
+                is NetworkResult.Error -> showErrorMsg(it?.location.toString(), it?.msg.toString())
+                else -> {
+                    showToastMessage(it.msg.toString())
+                }
+            }
+        })
+
+    }
+
     fun initUserInfo(user: ResponseUserBody.UserData){
         binding.nicknameEditText.setText(user.nickname)
-        binding.passwordChangeEditText.setText("******")
-        binding.passwordChangeConfirmEditText.setText("******")
         val url = CommonService.getImageGlide(user.imgPath)
-        Glide.with(requireContext()).load(url).into(binding.settingProfileImageView)
+        GlideApp.with(requireContext()).load(url).into(binding.settingProfileImageView)
     }
 
     fun showCategories(){
         val categories = categoryViewModel.categoryLiveData.value!!.data!!
         val userCategory = categoryViewModel.myCategoryLiveData.value!!.data!!
+
         for (c in categories){
             binding.categoryChipGroup.addView(Chip(context).apply {
                 text = c.name
@@ -254,5 +282,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(FragmentSettingBind
                 )
             })
         }
+        currentCategory = binding.categoryChipGroup.children?.filter { (it as Chip).isChecked }?.map { it.id }?.toList()!!
+        Log.d("currentCategory",currentCategory.toString())
     }
 }

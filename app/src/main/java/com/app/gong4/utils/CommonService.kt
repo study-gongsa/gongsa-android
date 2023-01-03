@@ -3,6 +3,7 @@ package com.app.gong4.utils
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
 import com.app.gong4.MainApplication
 import com.app.gong4.utils.Constants.BASE_URL
 import com.bumptech.glide.load.model.GlideUrl

@@ -9,6 +9,7 @@ import com.app.gong4.model.UserCategory
 import com.app.gong4.model.req.RequestSaveUserCateogry
 import com.app.gong4.model.res.ResponseStudycategoryBody
 import com.app.gong4.utils.NetworkResult
+import com.app.gong4.utils.SingleLiveEvent
 import com.google.gson.Gson
 import javax.inject.Inject
 
@@ -21,7 +22,7 @@ class CategoryRepository @Inject constructor(private val userCategoryService: Us
     val myCategoryRes : LiveData<NetworkResult<List<UserCategory>>>
         get() = _myCategoryRes
 
-    private val _putCategoryRes = MutableLiveData<NetworkResult<List<UserCategory>>>()
+    private val _putCategoryRes = SingleLiveEvent<NetworkResult<List<UserCategory>>>()
     val putCategoryRes : LiveData<NetworkResult<List<UserCategory>>>
         get() = _putCategoryRes
 
@@ -55,7 +56,7 @@ class CategoryRepository @Inject constructor(private val userCategoryService: Us
         val response = userCategoryService.putUserCategory(saveUserCateogry)
         if(response.isSuccessful){
             _putCategoryRes.postValue(NetworkResult.ResultEmpty())
-        }else{
+        }else if(response.body()!!.msg!=null){
             _putCategoryRes.value =NetworkResult.Error(response.body()!!.location,response.body()!!.msg)
         }
     }

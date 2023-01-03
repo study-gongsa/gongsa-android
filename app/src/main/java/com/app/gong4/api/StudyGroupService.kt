@@ -1,5 +1,6 @@
 package com.app.gong4.api
 
+import com.app.gong4.model.req.RequestCreateStudyGroup
 import com.app.gong4.model.req.RequestEnterMember
 import com.app.gong4.model.res.*
 import okhttp3.MultipartBody
@@ -40,8 +41,8 @@ interface StudyGroupService {
     @Headers("accept: application/json")
     @POST("/api/study-group")
     fun createStudygroup(
-        @Part image:MultipartBody.Part,
-        @Part("json") body: Any
+        @Part image:MultipartBody.Part?=null,
+        @Part("json") body: RequestCreateStudyGroup
     ) : Call<ResponseCreateStudyGroup>
 
     // 스터디 그룹 탈퇴

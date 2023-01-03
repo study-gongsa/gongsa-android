@@ -125,7 +125,7 @@ class UserRepository @Inject constructor(private val userService: UserService){
         }
     }
 
-    suspend fun patchUserInfo(image : MultipartBody.Part, requestUserInfo: RequestUserInfo){
+    suspend fun patchUserInfo(image : MultipartBody.Part?=null, requestUserInfo: RequestUserInfo){
         val response = userService.patchUserInfo(image,requestUserInfo)
         if(response.isSuccessful && response.body()!=null){
             _patchSettingRes.postValue(NetworkResult.Success(response.body()!!))

@@ -13,6 +13,7 @@ import com.app.gong4.fragments.MyStudyGroupFragment
 import com.app.gong4.R
 import com.app.gong4.fragments.MyStudyGroupFragmentDirections
 import com.app.gong4.utils.CommonService
+import com.app.gong4.utils.GlideApp
 import com.bumptech.glide.Glide
 
 class MyStudyGroupAdapter(private val context: MyStudyGroupFragment, val dataSet: ArrayList<StudyGroupItem>)
@@ -49,7 +50,7 @@ class MyStudyGroupAdapter(private val context: MyStudyGroupFragment, val dataSet
         holder.group_date_textView.text = "$start_date ~ $end_date"
 
         val url = CommonService.getImageGlide(dataSet[position].imgPath)
-        Glide.with(context).load(url).error(R.drawable.error_image).into(holder.group_image_imageView)
+        GlideApp.with(context).load(url).error(R.drawable.error_image).into(holder.group_image_imageView)
         if (!dataSet[position].isCam) {
             holder.group_cam_button.setImageResource(R.drawable.ic_camera_off_22)
         } else {

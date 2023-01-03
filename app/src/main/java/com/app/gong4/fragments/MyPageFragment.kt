@@ -10,6 +10,7 @@ import com.app.gong4.model.UserInfo
 import com.app.gong4.adapter.StudyRankingAdapter
 import com.app.gong4.databinding.FragmentMyPageBinding
 import com.app.gong4.utils.CommonService
+import com.app.gong4.utils.GlideApp
 import com.app.gong4.utils.NetworkResult
 import com.app.gong4.viewmodel.UserViewModel
 import com.bumptech.glide.Glide
@@ -22,9 +23,14 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(FragmentMyPageBinding
 
     override fun initView() {
         getMyPageInfo()
-        myRankInfo()
+
         clickQnaButton()
         clickSettingButton()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        myRankInfo()
     }
 
     fun clickQnaButton(){
@@ -66,7 +72,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(FragmentMyPageBinding
         userInfo = userViewModel.userInfoRes.value!!.data!!
 
         val imgPath = CommonService.getImageGlide(userInfo.imgPath)
-        Glide.with(requireContext()).load(imgPath).error(R.drawable.error_image).into(binding.profileImageview)
+        GlideApp.with(requireContext()).load(imgPath).error(R.drawable.error_image).into(binding.profileImageview)
 
         val studyHour = userInfo.totalStudyTime.substring(0,2)
         val studyMinute = userInfo.totalStudyTime.substring(3,5)

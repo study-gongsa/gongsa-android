@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -48,6 +49,7 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
                 imageFile = File(CommonService.getRealPathFromURI(requireActivity(),it)) // 이미지 -> 파일형태로 변환
                 binding.imageSelectButton.text = imageFile?.name
             }
+            checkedImage = true
         }
     }
 
@@ -55,6 +57,7 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
     private val studyViewModel : StudyGroupViewModel by viewModels()
 
     private var imageFile: File?=null
+    private var checkedImage: Boolean = false
     private var imm : InputMethodManager?=null
 
     private var studyTime : Int = 0
@@ -84,7 +87,6 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
     private fun createStudyGroup(){
         var checkedCamera = true
         var checkedOpened = true
-        var checkedInput = true
         var checkedPanelty = true
 
         binding.cameraRadioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
@@ -101,89 +103,92 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
             }
         }//공개여부
 
-        binding.paneltyEdittext.isFocusable = false
+        setUseableEditText(binding.paneltyEdittext,false)
         binding.penaltyRadioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
             when(checkedId){
                 binding.paneltyTrue.id -> {
                     checkedPanelty = true
-                    binding.paneltyEdittext.isFocusable = true
+                    setUseableEditText(binding.paneltyEdittext,true)
                 }
                 binding.paneltyFalse.id -> {
                     checkedPanelty = false
                     binding.paneltyEdittext.text.clear()
-                    binding.paneltyEdittext.isFocusable = false
+                    setUseableEditText(binding.paneltyEdittext,false)
                     view?.let { hideKeyboard(it) }
                 }
             }
         }//벌점
 
-        binding.inputEdittext.isFocusable = false
         binding.inputRadioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
             when(checkedId){
                 binding.inputTrue.id -> {
-                    checkedInput = true
-                    binding.inputEdittext.isFocusable = true
+                    setUseableEditText(binding.inputEdittext,true)
                 }
                 binding.inputFalse.id -> {
-                    checkedInput = false
                     binding.inputEdittext.text.clear()
-                    binding.inputEdittext.isFocusable = false
+                    setUseableEditText(binding.inputEdittext,false)
                     view?.let { hideKeyboard(it) }
                 }
             }
         }//스터디 재진입
 
         //배경이미지
-        var checkedImage = false
-        binding.imageSelectButton.isClickable = false
+        binding.imageSelectButton.isEnabled = false
         binding.backgroundRadioGroup.setOnCheckedChangeListener { radioGroup, checkedId ->
             when(checkedId){
                 binding.imageTrue.id -> {
-                    checkedImage = true
-                    binding.imageSelectButton.isClickable = true
+                    binding.imageSelectButton.isEnabled = true
                 }
                 binding.imageFalse.id -> {
-                    checkedImage = false
-                    binding.imageSelectButton.isClickable = false
+                    binding.imageSelectButton.isEnabled = false
                 }
             }
         }
 
         binding.createButton.setOnClickListener { view ->
-            val roomName = binding.roomEdittext.text.toString()//방제목
-            val isCam = checkedCamera // 캠 필수여부
-            val maxMember = binding.peopleSegmented.position+1 //최대 인원 수
-            val isPrivate = checkedOpened // 방공개여부
-            val checkedChipList =
-                binding.categoriyChipGroup.children?.filter { (it as Chip).isChecked }?.map { it.id }?.toList()!!//카테고리 선택
-            val isPenalty = checkedPanelty // 벌점유무
-            val maxPenalty = if(binding.paneltyEdittext.text.toString().isEmpty()) 0 else binding.paneltyEdittext.text.toString().toInt() //최대 가능 벌점 횟수
-            val maxTodayStudy = if(binding.inputEdittext.text.toString().isEmpty()) 0 else binding.inputEdittext.text.toString().toInt()//스터디 재진입 횟수
-            val expiredDate = binding.endDate.text.toString()//만료날짜
-            val minStudyHour = studyTime//스터디목표시간
-
-            val requestBody : RequestCreateStudyGroup = RequestCreateStudyGroup(
-                checkedChipList,expiredDate,isCam,isPenalty,isPrivate,maxPenalty,
-                maxMember,maxTodayStudy,minStudyHour,roomName)
-
-            var image : MultipartBody.Part? = null
-
-            if(imageFile!!.length().toInt() != 0){
-                val requestFile = RequestBody.create(MediaType.parse("image/jpeg"),imageFile)
-                image = MultipartBody.Part.createFormData("image",imageFile?.name,requestFile)
-            }
-
-            goServerCreateStudy(image!!,requestBody)
-
+            goServerCreateStudy(checkedCamera, checkedOpened, checkedPanelty)
         }
 
     }
 
-    private fun goServerCreateStudy(image:MultipartBody.Part,requestBody:RequestCreateStudyGroup){
+    private fun goServerCreateStudy(checkedCamera:Boolean,checkedOpened:Boolean,checkedPanelty:Boolean){
+        val roomName = binding.roomEdittext.text.toString()//방제목
+        val isCam = checkedCamera // 캠 필수여부
+        val maxMember = binding.peopleSegmented.position+1 //최대 인원 수
+        val isPrivate = checkedOpened // 방공개여부
+        val checkedChipList =
+            binding.categoriyChipGroup.children.filter { (it as Chip).isChecked }?.map { it.id }?.toList()!!//카테고리 선택
+        val isPenalty = checkedPanelty // 벌점유무
+        val maxPenalty : Int? = if(binding.paneltyEdittext.text.toString().isEmpty()) null else binding.paneltyEdittext.text.toString().toInt() //최대 가능 벌점 횟수
+        val maxTodayStudy = if(binding.inputEdittext.text.toString().isEmpty()) 0 else binding.inputEdittext.text.toString().toInt()//스터디 재진입 횟수
+        val expiredDate = binding.endDate.text.toString()//만료날짜
+        val minStudyHour = studyTime//스터디목표시간
+
+
+        val requestBody = RequestCreateStudyGroup(
+            categoryUIDs = checkedChipList,
+            expiredAt = expiredDate,
+            isCam = isCam,
+            isPenalty = isPenalty,
+            isPrivate= isPrivate,
+            maxPenalty = maxPenalty!!,
+            maxMember = maxMember,
+            maxTodayStudy = maxTodayStudy,
+            minStudyHour = minStudyHour,
+            name = roomName)
+
+        var image : MultipartBody.Part? = null
+
+        if(checkedImage){
+            val requestFile = RequestBody.create(MediaType.parse("image/jpeg"),imageFile)
+            image = MultipartBody.Part.createFormData("image",imageFile?.name,requestFile)
+        }
+
         studyViewModel.createStudyGroupLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             when(it){
                 is NetworkResult.Success -> {
-                    val action = CreateStudygroupFragmentDirections.actionCreateStudyFragmentToCompleteStudyFragment()
+                    val groupUID = it.data!!.data.groupUID
+                    val action = CreateStudygroupFragmentDirections.actionCreateStudyFragmentToCompleteStudyFragment(groupUID)
                     findNavController().navigate(action)
                 }
                 is NetworkResult.Error -> {
@@ -192,7 +197,7 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
                 else -> TODO()
             }
         })
-        studyViewModel.createStudygroup(image,requestBody)
+        studyViewModel.createStudygroup(image=image, requestBody = requestBody)
     }
 
     private fun selectGallery(){
@@ -221,7 +226,11 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
         val endMonth = if(today.get(Calendar.MONTH)+1<=9) "0${today.get(Calendar.MONTH)+1}" else today.get(Calendar.MONTH)+1
         val endDay =  if(today.get(Calendar.DATE)<=9) "0${today.get(Calendar.DATE)}" else today.get(Calendar.DATE)
 
-        binding.startDate.text ="${today.get(Calendar.YEAR)}-${today.get(Calendar.MONTH)+1}-${today.get(Calendar.DATE)}"
+        val startMonth = if(today.get(Calendar.MONTH)+1<=9) "0${today.get(Calendar.MONTH)+1}" else today.get(Calendar.MONTH)+1
+        val startDay =  if(today.get(Calendar.DATE)<=9) "0${today.get(Calendar.DATE)}" else today.get(Calendar.DATE)
+
+        binding.startDate.text ="${today.get(Calendar.YEAR)}-${startMonth}-${startDay}"
+
         binding.endDate.text ="${today.get(Calendar.YEAR)}-${endMonth}-${endDay}"
 
         binding.endDate.setOnClickListener {
@@ -240,7 +249,7 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
     }
 
     private fun showTimePicker(){
-        binding.timeTextView.text = "1:00"
+        binding.timeTextView.text = "01:00"
         binding.timeTextView.setOnClickListener {
             val picker = TimePickerCustomDialog()
             picker.setActionListener(object : onActionListener{
@@ -255,7 +264,6 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
     }
 
     private fun showCategories(){
-        Log.d("categories",categoryViewModel.categoryLiveData.value!!.data!!.toString())
         val categories = categoryViewModel.categoryLiveData.value!!.data!!
 
         for (c in categories){
@@ -281,6 +289,13 @@ class CreateStudygroupFragment : BaseFragment<FragmentCreateStudygroupBinding>(F
                 )
             })
         }
+    }
+
+    private fun setUseableEditText(et:EditText, useable:Boolean) {
+        et.isClickable = useable
+        et.isEnabled = useable
+        et.isFocusable = useable
+        et.isFocusableInTouchMode = useable
     }
 
 }

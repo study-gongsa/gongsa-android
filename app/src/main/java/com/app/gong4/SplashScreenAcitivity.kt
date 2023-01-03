@@ -24,7 +24,6 @@ class SplashScreenAcitivity : AppCompatActivity() {
     }
 
     fun goServerAutoLogin(){
-        val refreshToken = RequestRefreshTokenBody(MainApplication.tokenManager.getRefreshToken()!!)
         userViewModel.loginRefreshRes.observe(this){
             when(it){
                 is NetworkResult.Success -> {
@@ -38,7 +37,13 @@ class SplashScreenAcitivity : AppCompatActivity() {
                 }
             }
         }
-        userViewModel.refreshToken(refreshToken)
+
+        val refreshToken: String = MainApplication.tokenManager.getRefreshToken()!!
+        if(refreshToken == ""){ // 앱 설치 후 최초 로그인
+            goIntent()
+        }else{
+            userViewModel.refreshToken(RequestRefreshTokenBody(refreshToken))
+        }
     }
 
     private fun onValidateSuccess(response: ResponseRefreshTokenBody) {

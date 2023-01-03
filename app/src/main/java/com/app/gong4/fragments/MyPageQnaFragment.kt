@@ -14,6 +14,7 @@ import com.app.gong4.adapter.QnaListAdapter
 import com.app.gong4.databinding.FragmentMyPageQnaBinding
 import com.app.gong4.onMoveAdapterListener
 import com.app.gong4.utils.CommonService
+import com.app.gong4.utils.GlideApp
 import com.app.gong4.utils.NetworkResult
 import com.app.gong4.viewmodel.QnaViewModel
 import com.bumptech.glide.Glide
@@ -44,7 +45,7 @@ class MyPageQnaFragment : BaseFragment<FragmentMyPageQnaBinding>(FragmentMyPageQ
 
     fun getMyPageInfo(info: UserInfo){
         val imgPath = CommonService.getImageGlide(info.imgPath)
-        Glide.with(requireContext()).load(imgPath).error(R.drawable.error_image).into(binding.profileImageview)
+        GlideApp.with(requireContext()).load(imgPath).error(R.drawable.error_image).into(binding.profileImageview)
 
         val studyHour = info.totalStudyTime.substring(0,2)
         val studyMinute = info.totalStudyTime.substring(3,5)
