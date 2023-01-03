@@ -85,7 +85,7 @@ class StudyGroupRepository @Inject constructor(private val studyGroupService: St
         }
     }
 
-    fun createStudyGroup(image: MultipartBody.Part, requestBody: RequestCreateStudyGroup){
+    fun createStudyGroup(image: MultipartBody.Part?=null, requestBody: RequestCreateStudyGroup){
        studyGroupService.createStudygroup(image,requestBody).enqueue(object :
            Callback<ResponseCreateStudyGroup> {
            override fun onResponse(
@@ -95,7 +95,9 @@ class StudyGroupRepository @Inject constructor(private val studyGroupService: St
                if(response.isSuccessful && response.body() != null){
                    _createStudyGroupRes.postValue(NetworkResult.Success(response.body()!!))
                }else{
-                   _createStudyGroupRes.value = NetworkResult.Error(response.body()!!.location,response.body()!!.msg)
+                   val error = response.errorBody()!!.string().trimIndent()
+                   val result = Gson().fromJson(error, ResponseCreateStudyGroup::class.java)
+                   _createStudyGroupRes.value = NetworkResult.Error(result.location,result.msg)
                }
            }
 

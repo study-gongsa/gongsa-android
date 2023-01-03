@@ -60,7 +60,7 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
         }
     }
 
-    fun patchUserInfo(image : MultipartBody.Part, requestUserInfo: RequestUserInfo){
+    fun patchUserInfo(image : MultipartBody.Part?=null, requestUserInfo: RequestUserInfo){
         viewModelScope.launch {
             userRepository.patchUserInfo(image,requestUserInfo)
         }

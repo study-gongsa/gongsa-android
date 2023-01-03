@@ -47,7 +47,7 @@ class StudyGroupViewModel @Inject constructor(private val studyRepository: Study
         }
     }
 
-    fun createStudygroup(image: MultipartBody.Part, requestBody: RequestCreateStudyGroup){
+    fun createStudygroup(image: MultipartBody.Part?=null, requestBody: RequestCreateStudyGroup){
         viewModelScope.launch {
             studyRepository.createStudyGroup(image,requestBody)
         }

@@ -6,7 +6,7 @@ data class RequestCreateStudyGroup(
     val isCam: Boolean,
     val isPenalty: Boolean,
     val isPrivate: Boolean,
-    val maxPenalty : Int,
+    var maxPenalty : Int?=null,
     val maxMember: Int,
     val maxTodayStudy: Int,
     val minStudyHour: Int,
