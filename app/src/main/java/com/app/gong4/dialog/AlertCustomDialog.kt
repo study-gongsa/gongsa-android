@@ -11,29 +11,11 @@ import androidx.fragment.app.DialogFragment
 import com.app.gong4.databinding.AlertCustomDialogBinding
 import com.app.gong4.onActionListener
 
-class AlertCustomDialog :DialogFragment(){
-    private var _binding : AlertCustomDialogBinding?=null
-    private val binding get() = _binding!!
-
-    private lateinit var listener: onActionListener
-
+class AlertCustomDialog : BaseDialog<AlertCustomDialogBinding>(AlertCustomDialogBinding::inflate){
     private lateinit var title:String //타이틀
     private lateinit var content:String //내용
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = AlertCustomDialogBinding.inflate(inflater,container,false)
-
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        showDialogView()
-
-        return binding.root
-    }
-
-    fun showDialogView(){
+    override fun initDialog() {
         binding.dialogTitleTextview.text = title
         binding.dialogContentTextview.text = content
 
@@ -44,51 +26,8 @@ class AlertCustomDialog :DialogFragment(){
 
         //커스텀 액션
         binding.actionButton.setOnClickListener {
-            listener.onAction()
+            getActionListener().onAction()
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
-        val windowManager = activity?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val size = windowManager.currentWindowMetricsPointCompat()
-        val deviceWidth = size.x
-
-        params?.width = (deviceWidth * 0.8).toInt()
-        dialog?.window?.attributes = params as WindowManager.LayoutParams
-    }
-
-    fun WindowManager.currentWindowMetricsPointCompat(): Point {
-        return if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R){
-            val windowInsets = currentWindowMetrics.windowInsets
-            var insets: Insets = windowInsets.getInsets(WindowInsets.Type.navigationBars())
-            windowInsets.displayCutout?.run {
-                insets = Insets.max(
-                    insets,
-                    Insets.of(safeInsetLeft,safeInsetTop,safeInsetRight,safeInsetBottom)
-                )
-            }
-            val insetsWidth = insets.right + insets.left
-            val insetsHeight = insets.top + insets.bottom
-            Point(
-                currentWindowMetrics.bounds.width() - insetsWidth,
-                currentWindowMetrics.bounds.height() - insetsHeight
-            )
-        }else{
-            Point().apply {
-                defaultDisplay.getSize(this)
-            }
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    fun setActionListener(listener: onActionListener){
-        this.listener = listener
     }
 
     fun setData(title:String,content:String){
@@ -99,4 +38,5 @@ class AlertCustomDialog :DialogFragment(){
     fun setActionButtonText(text:String){
         binding.actionButton.text = text
     }
+
 }

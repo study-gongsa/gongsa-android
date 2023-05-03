@@ -19,8 +19,12 @@ abstract class BaseDialog<T: ViewBinding>(private val inflate: Inflate<T>) :Dial
 
     private lateinit var listener: onActionListener
 
-    fun setActionListener(listener: onActionListener){
+    fun setActionListener(listener: onActionListener) {
         this.listener = listener
+    }
+
+    fun getActionListener(): onActionListener {
+        return listener
     }
 
     override fun onCreateView(
