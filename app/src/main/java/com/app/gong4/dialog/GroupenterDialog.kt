@@ -14,7 +14,7 @@ class GroupenterDialog : BaseDialog<GroupenterDialogBinding>(GroupenterDialogBin
     private val studyGroupViewModel: StudyGroupViewModel by viewModels()
 
     override fun initDialog() {
-        binding.joinButton.setOnClickListener {
+        binding.saveButton.setOnClickListener {
             val code = binding.codeEditview.text.toString()
 
             studyGroupViewModel.studyGroupInfoLiveData.observe(viewLifecycleOwner, Observer {
