@@ -54,7 +54,7 @@
                 android:layout_marginRight="17dp"
                 android:theme="@style/CustomRadioButton"
                 android:text="@string/main_filter_isCam_all"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/filter_cam_true"
@@ -63,7 +63,7 @@
                 android:layout_marginRight="17dp"
                 android:theme="@style/CustomRadioButton"
                 android:text="@string/main_filter_isCam_true"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/filter_cam_false"
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:theme="@style/CustomRadioButton"
                 android:text="@string/main_filter_isCam_false"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
         </RadioGroup>
 
         <TextView
