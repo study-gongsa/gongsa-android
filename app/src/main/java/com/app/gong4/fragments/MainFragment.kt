@@ -3,6 +3,8 @@ package com.app.gong4.fragments
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.activityViewModels
@@ -16,6 +18,7 @@ import com.app.gong4.databinding.FragmentMainBinding
 import com.app.gong4.dialog.*
 import com.app.gong4.dialog.StudygroupinfoDialog
 import com.app.gong4.model.req.RequestGroupItemBody
+import com.app.gong4.utils.DebounceSearchListener
 import com.app.gong4.utils.NetworkResult
 import com.app.gong4.viewmodel.CategoryViewModel
 import com.app.gong4.viewmodel.StudyGroupViewModel
@@ -101,26 +104,14 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
     }
 
     private fun searchKeyword(){
-        var searchViewTextListener: SearchView.OnQueryTextListener =
-            object : SearchView.OnQueryTextListener {
-                //검색버튼 입력시 호출, 검색버튼이 없으므로 사용하지 않음
-                override fun onQueryTextSubmit(s: String): Boolean {
+        val debounceSearchListener = DebounceSearchListener(delay = 500L) { query ->
+            val sAlign = mRequest?.align
+            val sIsCam = mRequest?.isCam
+            val sCategory = mRequest?.categoryUIDs
 
-                    val sAlign = mRequest?.align
-                    val sIsCam = mRequest?.isCam
-                    val sCategory = mRequest?.categoryUIDs
-
-                    searchWordApiCall(sAlign,sIsCam,sCategory,s)
-
-                    return false
-                }
-
-                //텍스트 입력/수정시에 호출
-                override fun onQueryTextChange(s: String): Boolean {
-                    return false
-                }
-            }
-        binding.searchView.setOnQueryTextListener(searchViewTextListener)
+            searchWordApiCall(sAlign, sIsCam, sCategory, query)
+        }
+        binding.searchView.setOnQueryTextListener(debounceSearchListener)
     }
 
     private fun searchWordApiCall(sAlign:String?,sIsCam:Boolean?,sCategory:List<Int>?,s:String?){

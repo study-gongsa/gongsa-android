@@ -36,9 +36,9 @@ class StudygroupinfoDialog(private val data: ResponseStudygroupinfoBody.StudyGro
 
         if(data.maxMember == data.currentMember){
             binding.remainpeopleTextview.text = resources.getString(R.string.main_study_info_pepole_cnt_err_msg)
-            binding.joinButton.setBackgroundColor(R.color.black02)
             binding.joinButton.isClickable = false
-            binding.buttonText.setTextColor(R.color.black03)
+            binding.joinButton.setBackgroundColor(R.color.black02)
+            binding.joinButton.setTextColor(R.color.black03)
         }else{
             binding.remainpeopleTextview.text = String.format(resources.getString(R.string.main_study_info_pepole_cnt_msg),data.maxMember - data.currentMember)
         }
